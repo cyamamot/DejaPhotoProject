@@ -10,11 +10,47 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Use Gallery:"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.032" />
+
+    <RadioGroup
+        android:layout_width="173dp"
+        android:layout_height="68dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="105dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:checkedButton="@+id/radioBtn_cameraRoll"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.204"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018">
+
+        <RadioButton
+            android:id="@+id/radioBtn_cameraRoll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.02"
+            android:text="@string/default_album"
+            android:onClick="selectDefaultAlbum"/>
+
+
+        <RadioButton
+            android:id="@+id/radioBtn_dejaPhotoAlbum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.02"
+            android:text="@string/custom_album"
+            android:onClick="selectCustomAlbum"/>
+    </RadioGroup>
 
     <Button
         android:layout_width="match_parent"

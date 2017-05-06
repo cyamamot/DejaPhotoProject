@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DejaPhoto</string>
+    <string name="default_album">Camera Roll</string>
+    <string name="custom_album">DejaPhoto Album</string>
 </resources>
