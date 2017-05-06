@@ -24,11 +24,8 @@ public class SettingsActivity extends AppCompatActivity {
         settingsEditor = settings.edit();
         useCustomAlbum = settings.getBoolean("useCustomAlbum", false);
 
+        // creates our wallpaper handler and sets initial wallpaper
         wallpaperChanger = new WallpaperChanger(this);
-    }
-
-    // http://stackoverflow.com/questions/6855399/how-to-implement-image-gallery-in-gridview-in-android
-    public void cursorStuff(View view){
         wallpaperChanger.cursorStuff();
     }
 

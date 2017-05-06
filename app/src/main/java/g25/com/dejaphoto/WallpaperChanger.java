@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -21,6 +22,7 @@ public class WallpaperChanger {
     private int cursorPointer;
     private Uri[] mUrls;
     private Activity activity;
+    private int albumSize;
 
     // constructor passes in activity to get context and stuff
     public WallpaperChanger(Activity activity){
@@ -41,6 +43,7 @@ public class WallpaperChanger {
     }
 
     // http://stackoverflow.com/questions/6855399/how-to-implement-image-gallery-in-gridview-in-android
+    // cursor gets the photos from media store and we use it to point to each photo in album
     public void cursorStuff(){
 
         cc = activity.getContentResolver().query(
@@ -51,6 +54,8 @@ public class WallpaperChanger {
         mUrls = new Uri[cc.getCount()];
         String[] strUrls = new String[cc.getCount()];
         String[] mNames = new String[cc.getCount()];
+        albumSize = cc.getCount();
+
         for (int i = 0; i < cc.getCount(); i++) {
             // cc.getString(1) is the path to image file
             cc.moveToPosition(i);
@@ -63,10 +68,23 @@ public class WallpaperChanger {
 
         cursorPointer = 0;
         setWallpaper(mUrls[cursorPointer]);
+
+        Toast.makeText(activity, "set initial wallpaper",
+                Toast.LENGTH_LONG).show();
     }
 
+    // sets wallpaper to next photo in album; if we reach the end, we go back to the first photo
     public void next(){
         cursorPointer++;
+
+        if(cursorPointer >= albumSize) {
+            cursorPointer = 0;
+            Toast.makeText(activity, "last photo in album reached, restart to first photo",
+                    Toast.LENGTH_LONG).show();
+        }
+
         setWallpaper(mUrls[cursorPointer]);
+        Toast.makeText(activity, "set next photo as wallpaper",
+                Toast.LENGTH_LONG).show();
     }
 }
