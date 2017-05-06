@@ -22,6 +22,11 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        //initialize fields
+        settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        settingsEditor = settings.edit();
+        useCustomAlbum = settings.getBoolean("useCustomAlbum", false);
+
         wallpaperChanger = new WallpaperChanger(this);
     }
 
@@ -32,11 +37,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void next(View view){
         wallpaperChanger.next();
-
-        //initialize fields
-        settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        settingsEditor = settings.edit();
-        useCustomAlbum = settings.getBoolean("useCustomAlbum", false);
     }
 
     public void selectDefaultAlbum(View view){
