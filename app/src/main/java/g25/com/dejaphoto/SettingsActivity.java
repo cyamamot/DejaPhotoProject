@@ -14,7 +14,6 @@ public class SettingsActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private SharedPreferences.Editor settingsEditor;
 
-
     // handles all wallpaper changes
     private WallpaperChanger wallpaperChanger;
 
