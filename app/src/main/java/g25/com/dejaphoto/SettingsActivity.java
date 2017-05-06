@@ -12,3 +12,4 @@ public class SettingsActivity extends AppCompatActivity {
         int v = 50;
     }
 }
+
