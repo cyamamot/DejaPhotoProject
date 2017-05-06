@@ -1,6 +1,7 @@
 package g25.com.dejaphoto;
 
 import android.app.Activity;
+import android.app.Service;
 import android.app.WallpaperManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -21,20 +22,20 @@ public class WallpaperChanger {
     private Cursor cc;
     private int cursorPointer;
     private Uri[] mUrls;
-    private Activity activity;
+    private Service service;
     private int albumSize;
 
     // constructor passes in activity to get context and stuff
-    public WallpaperChanger(Activity activity){
-        this.activity = activity;
+    public WallpaperChanger(Service service){
+        this.service = service;
     }
 
     // http://stackoverflow.com/questions/25828808/issue-converting-uri-to-bitmap-2014
     // calls wallpapermanager to set wallpaper to specified image
     private void setWallpaper(Uri uri){
         try {
-            myWallpaperManager = WallpaperManager.getInstance(activity.getApplicationContext());
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri);
+            myWallpaperManager = WallpaperManager.getInstance(service.getApplicationContext());
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(service.getContentResolver(), uri);
             myWallpaperManager.setBitmap(bitmap);
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -44,9 +45,9 @@ public class WallpaperChanger {
 
     // http://stackoverflow.com/questions/6855399/how-to-implement-image-gallery-in-gridview-in-android
     // cursor gets the photos from media store and we use it to point to each photo in album
-    public void cursorStuff(){
+    public void initialGalleryAccess(){
 
-        cc = activity.getContentResolver().query(
+        cc = service.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null,
                 null);
 
@@ -69,7 +70,7 @@ public class WallpaperChanger {
         cursorPointer = 0;
         setWallpaper(mUrls[cursorPointer]);
 
-        Toast.makeText(activity, "set initial wallpaper",
+        Toast.makeText(service, "set initial wallpaper",
                 Toast.LENGTH_LONG).show();
     }
 
@@ -79,12 +80,12 @@ public class WallpaperChanger {
 
         if(cursorPointer >= albumSize) {
             cursorPointer = 0;
-            Toast.makeText(activity, "last photo in album reached, restart to first photo",
+            Toast.makeText(service, "last photo in album reached, restart to first photo",
                     Toast.LENGTH_LONG).show();
         }
 
         setWallpaper(mUrls[cursorPointer]);
-        Toast.makeText(activity, "set next photo as wallpaper",
+        Toast.makeText(service, "set next photo as wallpaper",
                 Toast.LENGTH_LONG).show();
     }
 }

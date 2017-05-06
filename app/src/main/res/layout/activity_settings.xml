@@ -8,16 +8,11 @@
     tools:context="g25.com.dejaphoto.SettingsActivity">
 
     <TextView
+        android:id="@+id/label_gallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Use Gallery:"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.055"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.032" />
+        android:textSize="18sp" />
 
     <RadioGroup
         android:layout_width="173dp"
@@ -32,7 +27,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.018">
+        app:layout_constraintVertical_bias="0.01">
 
         <RadioButton
             android:id="@+id/radioBtn_cameraRoll"
@@ -52,10 +47,34 @@
             android:onClick="selectCustomAlbum"/>
     </RadioGroup>
 
+    <TextView
+        android:id="@+id/label_transitionDelay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Transition Delay:"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/editText_transitionDelay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="in seconds"
+        android:inputType="number"
+        android:text="5" />
+
     <Button
+        android:id="@+id/btn_setDelay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="setDelay"
+        android:text="Set Transition Delay" />
+
+    <Button
+        android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="next"
-        android:text="nextPhoto"/>
+        android:text="nextPhoto" />
 
 </LinearLayout>
