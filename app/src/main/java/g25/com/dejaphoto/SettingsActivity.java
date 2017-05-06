@@ -5,13 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 public class SettingsActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "DejaPhotoPreferences";
@@ -34,14 +27,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         // creates our wallpaper handler and sets initial wallpaper
         wallpaperChanger = new WallpaperChanger(this);
+        wallpaperChanger.cursorStuff();
 
         Intent intent = new Intent(SettingsActivity.this, DejaPhotoBackgroundService.class);
         startService(intent);
-    }
-
-    // http://stackoverflow.com/questions/6855399/how-to-implement-image-gallery-in-gridview-in-android
-    public void cursorStuff(View view){
-        wallpaperChanger.cursorStuff();
     }
 
     public void next(View view){
