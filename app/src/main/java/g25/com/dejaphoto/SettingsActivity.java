@@ -11,6 +11,7 @@ public class SettingsActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private SharedPreferences.Editor settingsEditor;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
