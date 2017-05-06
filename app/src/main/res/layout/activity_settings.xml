@@ -25,26 +25,30 @@
         android:layout_marginLeft="105dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
+        android:checkedButton="@+id/radioBtn_cameraRoll"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.214"
+        app:layout_constraintHorizontal_bias="0.204"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.018">
 
         <RadioButton
-            android:id="@+id/radioBtn_defaultGallery"
+            android:id="@+id/radioBtn_cameraRoll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.02"
-            android:text="Camera Roll" />
+            android:text="@string/default_album"
+            android:onClick="selectDefaultAlbum"/>
+
 
         <RadioButton
-            android:id="@+id/radioBtn_customGallery"
+            android:id="@+id/radioBtn_dejaPhotoAlbum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.02"
-            android:text="DejaPhoto Album" />
+            android:text="@string/custom_album"
+            android:onClick="selectCustomAlbum"/>
     </RadioGroup>
 
 </android.support.constraint.ConstraintLayout>
