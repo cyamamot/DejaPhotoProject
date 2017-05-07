@@ -3,6 +3,7 @@ package g25.com.dejaphoto;
 import android.app.Activity;
 import android.app.Service;
 import android.app.WallpaperManager;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -22,20 +23,20 @@ public class WallpaperChanger {
     private Cursor cc;
     private int cursorPointer;
     private Uri[] mUrls;
-    private Service service;
+    private Context context;
     private int albumSize;
 
     // constructor passes in activity to get context and stuff
-    public WallpaperChanger(Service service){
-        this.service = service;
+    public WallpaperChanger(Context context){
+        this.context = context;
     }
 
     // http://stackoverflow.com/questions/25828808/issue-converting-uri-to-bitmap-2014
     // calls wallpapermanager to set wallpaper to specified image
     private void setWallpaper(Uri uri){
         try {
-            myWallpaperManager = WallpaperManager.getInstance(service.getApplicationContext());
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(service.getContentResolver(), uri);
+            myWallpaperManager = WallpaperManager.getInstance(context);
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
             myWallpaperManager.setBitmap(bitmap);
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -52,7 +53,7 @@ public class WallpaperChanger {
             return;
         }
 
-        cc = service.getContentResolver().query(
+        cc = context.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null,
                 MediaStore.Images.ImageColumns.DATE_TAKEN);
 
@@ -75,7 +76,7 @@ public class WallpaperChanger {
         cursorPointer = 0;
         setWallpaper(mUrls[cursorPointer]);
 
-        Toast.makeText(service, "set initial wallpaper",
+        Toast.makeText(context, "set initial wallpaper",
                 Toast.LENGTH_LONG).show();
     }
 

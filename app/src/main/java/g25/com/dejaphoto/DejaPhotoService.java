@@ -1,18 +1,24 @@
 package g25.com.dejaphoto;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
 public class DejaPhotoService extends Service {
     static int transitionDelay;
     private static WallpaperChanger wallpaperChanger;
-    private static int delaySeconds;
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
 
     final class WorkerThread implements Runnable{
         int startId;
@@ -44,10 +50,11 @@ public class DejaPhotoService extends Service {
 
         Log.e("onStartCommand Executed", "!!!!!!!!!!!!!!!!!!");
 
-        //get delayseconds from SharedPrefs
+        //get transitionDelay from SharedPrefs
         SharedPreferences settings = getSharedPreferences("DejaPhotoPreferences", MODE_PRIVATE);
         SharedPreferences.Editor settingsEditor = settings.edit();
         transitionDelay = settings.getInt("transitionDelay", 5);
+
 
         //TODO REMOVE DEBUG MESSAGES
         Log.e("ServiceLog", "Service Started");
@@ -57,9 +64,16 @@ public class DejaPhotoService extends Service {
         wallpaperChanger = new WallpaperChanger(this);
         wallpaperChanger.initialize();
         Thread thread = new Thread(new WorkerThread(startId));
-        thread.start();
-        return START_STICKY;
-       // return super.onStartCommand(intent, flags, startId);
+        //thread.start();
+
+        Intent intentReceiver = new Intent(this, AlarmReceiver.class);
+        alarmMgr = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarmIntent = PendingIntent.getBroadcast(this, 0, intentReceiver, 0);
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                1000 * transitionDelay, alarmIntent);
+
+       // return START_STICKY;
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
