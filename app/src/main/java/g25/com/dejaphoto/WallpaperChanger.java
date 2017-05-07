@@ -45,11 +45,16 @@ public class WallpaperChanger {
 
     // http://stackoverflow.com/questions/6855399/how-to-implement-image-gallery-in-gridview-in-android
     // cursor gets the photos from media store and we use it to point to each photo in album
-    public void initialGalleryAccess(){
+    public void initialize(){
+
+
+        if(cc != null){
+            return;
+        }
 
         cc = service.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null,
-                null);
+                MediaStore.Images.ImageColumns.DATE_TAKEN);
 
         cc.moveToFirst();
         mUrls = new Uri[cc.getCount()];
@@ -80,12 +85,9 @@ public class WallpaperChanger {
 
         if(cursorPointer >= albumSize) {
             cursorPointer = 0;
-            Toast.makeText(service, "last photo in album reached, restart to first photo",
-                    Toast.LENGTH_LONG).show();
+
         }
 
         setWallpaper(mUrls[cursorPointer]);
-        Toast.makeText(service, "set next photo as wallpaper",
-                Toast.LENGTH_LONG).show();
     }
 }

@@ -14,10 +14,10 @@ public class SettingsActivity extends AppCompatActivity {
     private boolean useCustomAlbum;
     private EditText delaySeconds;
     private TextView delayLabel;
-    private int transitionDelay[];
+    private int transitionDelay;
     private SharedPreferences settings;
     private SharedPreferences.Editor settingsEditor;
-    private Intent intent;
+    //private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,39 +28,31 @@ public class SettingsActivity extends AppCompatActivity {
         settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         settingsEditor = settings.edit();
         useCustomAlbum = settings.getBoolean("useCustomAlbum", false);
-        transitionDelay = new int[1];
-        transitionDelay[0] = settings.getInt("transitionDelay", 5);
+        transitionDelay = settings.getInt("transitionDelay", 5);
         delayLabel = (TextView)findViewById(R.id.label_transitionDelay);
-        delayLabel.setText("Transition Delay: " + transitionDelay[0]);
-
+        delayLabel.setText("Transition Delay: " + transitionDelay);
 
 
         //create intent with extras
-        intent = new Intent(SettingsActivity.this, DejaPhotoBackgroundService.class);
-        intent.setAction(DejaPhotoBackgroundService.START_AUTO_SWITCH);
-        intent.putExtra("delaySeconds", transitionDelay);
+        Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
         startService(intent);
     }
-
-   // public void next(View view){
-     //   wallpaperChanger.next();
-    //}
 
     public void setDelay(View view){
 
         //change settings
         delaySeconds = (EditText)findViewById(R.id.editText_transitionDelay);
-        transitionDelay[0] = Integer.parseInt(delaySeconds.getText().toString());
-        settingsEditor.putInt("transitionDelay", transitionDelay[0]);
+        transitionDelay = Integer.parseInt(delaySeconds.getText().toString());
+        settingsEditor.putInt("transitionDelay", transitionDelay);
         settingsEditor.commit();
 
         //change label
-        delayLabel.setText("Transition Delay: " + transitionDelay[0]);
+        delayLabel.setText("Transition Delay: " + transitionDelay);
 
-        //restart service
-        intent.putExtra("delaySeconds", transitionDelay);
+        //service will restart itself when stopped
+        Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
         stopService(intent);
-        startService(intent);
+
     }
     public void selectDefaultAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", false);
