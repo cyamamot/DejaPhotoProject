@@ -66,9 +66,9 @@ public class DejaPhotoService extends Service {
         Thread thread = new Thread(new WorkerThread(startId));
         //thread.start();
 
-        Intent intentReceiver = new Intent(this, AlarmReceiver.class);
-        alarmMgr = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarmIntent = PendingIntent.getBroadcast(this, 0, intentReceiver, 0);
+        Intent intentReceiver = new Intent(getApplicationContext(), AlarmReceiver.class);
+        alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intentReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
                 1000 * transitionDelay, alarmIntent);
 
