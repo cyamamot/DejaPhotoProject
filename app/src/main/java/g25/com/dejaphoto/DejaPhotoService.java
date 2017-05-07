@@ -13,14 +13,6 @@ public class DejaPhotoService extends Service {
     static int transitionDelay;
     private static WallpaperChanger wallpaperChanger;
     private static int delaySeconds;
-    private static Handler handler = new Handler();
-    private static Runnable runnable = new Runnable(){
-        @Override
-        public void run(){
-            wallpaperChanger.next();
-            handler.postDelayed(this, delaySeconds * 1000);
-        }
-    };
 
     final class WorkerThread implements Runnable{
         int startId;
@@ -42,6 +34,7 @@ public class DejaPhotoService extends Service {
            }
        }
     }
+
     public DejaPhotoService() {
     }
 
@@ -52,17 +45,17 @@ public class DejaPhotoService extends Service {
         Log.e("onStartCommand Executed", "!!!!!!!!!!!!!!!!!!");
 
         //get delayseconds from SharedPrefs
-
         SharedPreferences settings = getSharedPreferences("DejaPhotoPreferences", MODE_PRIVATE);
         SharedPreferences.Editor settingsEditor = settings.edit();
         transitionDelay = settings.getInt("transitionDelay", 5);
 
+        //TODO REMOVE DEBUG MESSAGES
         Log.e("ServiceLog", "Service Started");
         Toast.makeText(DejaPhotoService.this, "Service Started", Toast.LENGTH_LONG).show();
+
         // creates our wallpaper handler and sets initial wallpaper
         wallpaperChanger = new WallpaperChanger(this);
         wallpaperChanger.initialize();
-        //runnable.run();
         Thread thread = new Thread(new WorkerThread(startId));
         thread.start();
         return START_STICKY;
