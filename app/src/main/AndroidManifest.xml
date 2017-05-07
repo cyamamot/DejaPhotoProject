@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="g25.com.dejaphoto">
+          package="g25.com.dejaphoto">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.SET_WALLPAPER" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -15,9 +15,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".SettingsActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
@@ -25,7 +25,6 @@
             android:name=".DejaPhotoService"
             android:enabled="true"
             android:exported="true">
-
         </service>
 
         <receiver
@@ -45,9 +44,22 @@
             android:label="RestartServiceWhenStopped"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
-                <action android:name="RestartService" />
+                <action android:name="RestartService"/>
             </intent-filter>
         </receiver>
+
+        <uses-permission android:name="android.permission.PARTIAL_WAKE_LOCK"/>
+
+        <receiver android:name=".NavWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/nav_widget_info"/>
+        </receiver>
+
         <uses-permission android:name="android.permission.PARTIAL_WAKE_LOCK" />
         <uses-permission android:name="android.permission.WAKE_LOCK" />
         <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />

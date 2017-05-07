@@ -2,4 +2,6 @@
     <string name="app_name">DejaPhoto</string>
     <string name="default_album">Camera Roll</string>
     <string name="custom_album">DejaPhoto Album</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
