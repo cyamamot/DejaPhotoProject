@@ -6,40 +6,15 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.util.Calendar;
-import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
 public class DejaPhotoService extends Service {
     static int transitionDelay;
-    private static WallpaperChanger wallpaperChanger;
+    //private static WallpaperChanger wallpaperChanger;
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
-
-    final class WorkerThread implements Runnable{
-        int startId;
-        public WorkerThread(int startId){
-           this.startId = startId;
-        }
-       @Override
-        public void run() {
-           while (true) {
-               synchronized (this){
-                   try{
-                       wait(transitionDelay * 1000);
-                       wallpaperChanger.next();
-                   }
-                   catch(InterruptedException e){
-                       e.printStackTrace();
-                   }
-               }
-           }
-       }
-    }
 
     public DejaPhotoService() {
     }
@@ -59,12 +34,6 @@ public class DejaPhotoService extends Service {
         //TODO REMOVE DEBUG MESSAGES
         Log.e("ServiceLog", "Service Started");
         Toast.makeText(DejaPhotoService.this, "Service Started", Toast.LENGTH_LONG).show();
-
-        // creates our wallpaper handler and sets initial wallpaper
-        wallpaperChanger = new WallpaperChanger(this);
-        wallpaperChanger.initialize();
-        Thread thread = new Thread(new WorkerThread(startId));
-        //thread.start();
 
         Intent intentReceiver = new Intent(getApplicationContext(), AlarmReceiver.class);
         alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
