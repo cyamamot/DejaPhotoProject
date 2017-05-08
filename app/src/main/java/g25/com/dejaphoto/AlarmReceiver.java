@@ -18,7 +18,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             wallpaperChanger = new WallpaperChanger(context);
             wallpaperChanger.initialize();
 
-            Log.e("ALARM_RECEIVER_INITIALIZE", "INITIALIZED");
+            Log.e("ALARM_RECEIVER_INIT", "INITIALIZED");
         }
         else
             wallpaperChanger.next();
