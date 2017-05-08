@@ -19,6 +19,7 @@ public class SettingsActivity extends AppCompatActivity {
     private SharedPreferences.Editor settingsEditor;
     //private Intent intent;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
