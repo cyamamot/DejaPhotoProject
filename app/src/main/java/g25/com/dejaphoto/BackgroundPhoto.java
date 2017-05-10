@@ -6,6 +6,7 @@ import java.util.Date;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
+import android.media.ExifInterface;
 import android.os.Parcelable;
 import android.net.Uri;
 
@@ -14,8 +15,11 @@ import android.net.Uri;
  * Created by angelazhang on 5/8/17.
  */
 
+//GPS calculation ideas referenced from http://stackoverflow.com/questions/9868158/get-gps-location-of-a-photo
+
 public class BackgroundPhoto {
     MediaStore.Images image;
+    ExifInterface exifData;
     double latitude;
     double longitude;
     Date date;

@@ -10,7 +10,7 @@ import android.util.Log;
  * Created by Tim on 5/6/2017.
  */
 
-public class AlarmReceiver extends BroadcastReceiver {
+public class ChangeWallpaperReceiver extends BroadcastReceiver {
     static WallpaperChanger wallpaperChanger;
     @Override
     public void onReceive(Context context, Intent intent){
@@ -18,10 +18,12 @@ public class AlarmReceiver extends BroadcastReceiver {
             wallpaperChanger = new WallpaperChanger(context);
             wallpaperChanger.initialize();
 
-            Log.e("ALARM_RECEIVER_INIT", "INITIALIZED");
+            Log.e("ChangeWallpaperReceiver", "INITIALIZED");
         }
-        else
-            wallpaperChanger.next();
-        Log.e("ALARMRECEIVER", "RECEIVED");
+
+        wallpaperChanger.next();
+
+        //debug message
+        Log.e("ChangeWallpaperReceiver", "RECEIVED");
     }
 }

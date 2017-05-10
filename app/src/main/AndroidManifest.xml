@@ -32,7 +32,7 @@
             android:exported="true"></service>
 
         <receiver
-            android:name=".RestartService"
+            android:name=".RestartServiceReceiver"
             android:enabled="true"
             android:exported="true"
             android:label="RestartServiceWhenStopped"
@@ -42,7 +42,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".AlarmReceiver"
+            android:name=".ChangeWallpaperReceiver"
             android:enabled="true"
             android:exported="true"
             android:label="RestartServiceWhenStopped"
