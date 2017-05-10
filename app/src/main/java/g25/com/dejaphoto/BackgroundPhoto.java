@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.util.Date;
 
 import android.location.Location;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.graphics.Bitmap;
 
 /**
  * Created by angelazhang on 5/8/17.
@@ -22,90 +20,48 @@ import android.graphics.Bitmap;
     //ALL THE CURSOR STUFF IN HANDLED IN WALLPAPER CHANGER SO WE REMOVED IT
 
 public class BackgroundPhoto {
+
     ExifInterface exifData;
     Uri uri;
     Date date;
     Location location;
     boolean karma;
     boolean released;
-    boolean noLocation;
+    boolean hasLocation;
+
 
     public BackgroundPhoto(Uri uriInput){
         setUri(uriInput);
         setExifData();
         parseLocationFromExif();
-        setKarma(false);
-        setReleased(false);
     }
 
-
-    private void setUri(Uri input){
-        this.uri = input;
-    }
-
-    public Uri getUri(){
-        return this.uri;
-    }
-
-    public Uri getParsedUri(){
-       return this.uri.parse("file://");
-    }
-
-    private void setExifData(){
-        try {
-            this.exifData = new ExifInterface(uri.getPath());
-        }
-        catch (IOException e){
-            e.printStackTrace();
-            Log.e("Path from Exif", "FAILED");
-            this.exifData = null;
-            this.noLocation = true;
-        }
-
-    }
 
     /**
      * Converts lat and lng from degrees and seconds into a double that can
      * be used to make a location.
      */
     private void parseLocationFromExif(){
-
         if (exifData == null){
-            this.location = null;
+            this.hasLocation = false;
             return;
         }
-
         //parse lat
-        String lat = exifData.TAG_GPS_LATITUDE;
-        String latDirection = exifData.TAG_GPS_LATITUDE_REF;
+        String lat = exifData.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
+        String latDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
         double latitude = formatLatLng(lat, latDirection);
-
-
         //parse lng
-        String lng = exifData.TAG_GPS_LONGITUDE;
-        String lngDirection = exifData.TAG_GPS_LONGITUDE_REF;
+        String lng = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
+        String lngDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
         double longitude = formatLatLng(lng, lngDirection);
-
         //set location field
         Location location = new Location("");
         location.setLatitude(latitude);
         location.setLongitude(longitude);
-        this.location = location;
-
+        setLocation(location);
+        this.hasLocation = true;
     }
 
-    public void setKarma(boolean input){
-        this.karma = input;
-    }
-
-    public void setReleased(boolean input){
-        this.released = input;
-    }
-
-
-    public Location getLocation(){
-        return this.location;
-    }
 
     /**
      * Converts the GPS lat or lng from string format to a double (minutes)
@@ -117,31 +73,93 @@ public class BackgroundPhoto {
      */
     private double formatLatLng(String coordinate, String direction){
         double converted;
+        //get degrees minutes and seconds into their own strings
         String[] DegMinSec = coordinate.split(",", 3);
 
+        //parse degree fraction from fraction string to double
         String[] deg = DegMinSec[0].split("/", 2);
-        Double deg0 = new Double(deg[0]);
-        Double deg1 = new Double(deg[1]);
+        Double deg0 = Double.valueOf(deg[0]);
+        Double deg1 = Double.valueOf(deg[1]);
         Double degFinal = deg0 / deg1;
 
+        //parse minute fraction from fraction string to double
         String[] min = DegMinSec[1].split("/", 2);
-        Double min0 = new Double(min[0]);
-        Double min1 = new Double(min[1]);
+        Double min0 = Double.valueOf(min[0]);
+        Double min1 = Double.valueOf(min[1]);
         Double minFinal = min0 / min1;
 
+        //parse second fraction from fraction string to double
         String[] sec = DegMinSec[2].split("/", 2);
-        Double sec0 = new Double(sec[0]);
-        Double sec1 = new Double(sec[1]);
+        Double sec0 = Double.valueOf(sec[0]);
+        Double sec1 = Double.valueOf(sec[1]);
         Double secFinal = sec0 / sec1;
 
-        converted = new Double(degFinal + (minFinal / 60) + (secFinal/3600));
+        //convert everything to degrees
+        converted = (degFinal + minFinal/60 + secFinal/3600);
 
+        //invert based on direction
         if(direction.equals("S") || direction.equals("W")){
             converted = 0 - converted;
         }
-
         return converted;
+    }
 
+
+    private void setUri(Uri input){
+        this.uri = input;
+    }
+
+
+    private void setExifData(){
+        try {
+            this.exifData = new ExifInterface(uri.getPath());
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            Log.e("Path from Exif", "FAILED");
+            this.exifData = null;
+            this.hasLocation = false;
+        }
+    }
+
+
+    private void setLocation(Location loc){
+        this.location = loc;
+    }
+
+
+    public void giveKarma(){
+        this.karma = true;
+    }
+
+
+    public void release(){
+        this.released = true;
+    }
+
+
+    public Location getLocation(){
+        return this.location;
+    }
+
+    public boolean hasLocation(){
+        return this.hasLocation();
+    }
+
+    public Uri getUnparsedUri(){
+        return this.uri;
+    }
+
+    public Uri getUri(){
+       return this.uri.parse("file://");
+    }
+
+    public boolean hasKarma(){
+        return this.karma;
+    }
+
+    public boolean isReleased(){
+        return this.released;
     }
 
 }
