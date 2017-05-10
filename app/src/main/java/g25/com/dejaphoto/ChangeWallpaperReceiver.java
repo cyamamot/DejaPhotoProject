@@ -20,8 +20,10 @@ public class ChangeWallpaperReceiver extends BroadcastReceiver {
 
             Log.e("ChangeWallpaperReceiver", "INITIALIZED");
         }
-        else
-            wallpaperChanger.next();
+
+        wallpaperChanger.next();
+
+        //debug message
         Log.e("ChangeWallpaperReceiver", "RECEIVED");
     }
 }

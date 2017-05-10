@@ -72,10 +72,9 @@ public class WallpaperChanger {
             //Log.e("uri", mUrls[i].toString());
         }
 
-        cursorLocation = 0;
-        setWallpaper(mUrls[cursorLocation]);
+        cursorLocation = -1;
 
-        Toast.makeText(context, "set initial wallpaper",
+        Toast.makeText(context, "Initialized",
                 Toast.LENGTH_LONG).show();
     }
 
