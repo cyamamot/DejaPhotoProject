@@ -15,8 +15,10 @@ public class DejaPhotoService extends Service {
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
 
+
     public DejaPhotoService() {
     }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
@@ -26,7 +28,6 @@ public class DejaPhotoService extends Service {
         //DEBUG MESSAGES
         Log.e("ServiceLog", "Service Started");
         Toast.makeText(DejaPhotoService.this, "Service Started", Toast.LENGTH_LONG).show();
-
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -65,6 +66,8 @@ public class DejaPhotoService extends Service {
     @Override
     public void onDestroy(){
         super.onDestroy();
+
+        //Send broadcast to listener to restart the service when app closes
         Intent restartService = new Intent("RestartService");
         sendBroadcast(restartService);
     }
