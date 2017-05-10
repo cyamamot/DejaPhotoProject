@@ -1,7 +1,5 @@
 package g25.com.dejaphoto;
 
-import android.app.Activity;
-import android.app.Service;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.database.Cursor;
@@ -18,10 +16,11 @@ import java.io.IOException;
  */
 
 public class WallpaperChanger {
-    private WallpaperManager myWallpaperManager;
 
-    private Cursor cc;
-    private int cursorPointer;
+    private WallpaperManager myWallpaperManager;
+    private Cursor cursor;
+    private int cursorLocation;
+    private BackgroundPhoto[] photos; //TODO use the wrapper
     private Uri[] mUrls;
     private Context context;
     private int albumSize;
@@ -32,6 +31,7 @@ public class WallpaperChanger {
     }
 
     // http://stackoverflow.com/questions/25828808/issue-converting-uri-to-bitmap-2014
+
     // calls wallpapermanager to set wallpaper to specified image
     private void setWallpaper(Uri uri){
         try {
@@ -39,7 +39,6 @@ public class WallpaperChanger {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
             myWallpaperManager.setBitmap(bitmap);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -48,47 +47,46 @@ public class WallpaperChanger {
     // cursor gets the photos from media store and we use it to point to each photo in album
     public void initialize(){
 
-
-        if(cc != null){
+        //prevents re-initialization when service restarts
+        if(cursor != null){
             return;
         }
 
-        cc = context.getContentResolver().query(
+        cursor = context.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null,
                 MediaStore.Images.ImageColumns.DATE_TAKEN);
 
-        cc.moveToFirst();
-        mUrls = new Uri[cc.getCount()];
-        String[] strUrls = new String[cc.getCount()];
-        String[] mNames = new String[cc.getCount()];
-        albumSize = cc.getCount();
+        cursor.moveToFirst();
+        albumSize = cursor.getCount();
+        mUrls = new Uri[albumSize];
+        String[] strUrls = new String[albumSize];
+        String[] mNames = new String[albumSize];
 
-        for (int i = 0; i < cc.getCount(); i++) {
-            // cc.getString(1) is the path to image file
-            cc.moveToPosition(i);
-            mUrls[i] = Uri.parse("file://" + cc.getString(1));
-            strUrls[i] = cc.getString(1);
-            mNames[i] = cc.getString(3);
-            Log.e("mNames[i]",mNames[i]+":"+cc.getColumnCount()+ " : " +cc.getString(1));
+        for (int i = 0; i < albumSize; i++) {
+            // cursor.getString(1) is the path to image file
+            cursor.moveToPosition(i);
+            mUrls[i] = Uri.parse("file://" + cursor.getString(1));
+            strUrls[i] = cursor.getString(1);
+            mNames[i] = cursor.getString(3);
+            Log.e("mNames[i]",mNames[i]+":"+ cursor.getColumnCount()+ " : " + cursor.getString(1));
             //Log.e("uri", mUrls[i].toString());
         }
 
-        cursorPointer = 0;
-        setWallpaper(mUrls[cursorPointer]);
+        cursorLocation = 0;
+        setWallpaper(mUrls[cursorLocation]);
 
         Toast.makeText(context, "set initial wallpaper",
                 Toast.LENGTH_LONG).show();
     }
 
-    // sets wallpaper to next photo in album; if we reach the end, we go back to the first photo
+    /**
+     * Sets wallpaper to next photo in album; if we reach the end, we go back to the first photo
+     */
     public void next(){
-        cursorPointer++;
-
-        if(cursorPointer >= albumSize) {
-            cursorPointer = 0;
-
+        cursorLocation++;
+        if(cursorLocation >= albumSize) {
+            cursorLocation = 0;
         }
-
-        setWallpaper(mUrls[cursorPointer]);
+        setWallpaper(mUrls[cursorLocation]);
     }
 }
