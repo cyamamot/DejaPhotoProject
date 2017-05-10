@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 public class DejaPhotoService extends Service {
     static int transitionDelay;
-    //private static WallpaperChanger wallpaperChanger;
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
 
@@ -21,29 +20,47 @@ public class DejaPhotoService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        //initialize fields
+        getSharedPrefs();
+        initializeAlarm();
 
-        Log.e("onStartCommand Executed", "!!!!!!!!!!!!!!!!!!");
-
-        //get transitionDelay from SharedPrefs
-        SharedPreferences settings = getSharedPreferences("DejaPhotoPreferences", MODE_PRIVATE);
-        SharedPreferences.Editor settingsEditor = settings.edit();
-        transitionDelay = settings.getInt("transitionDelay", 5);
-
-
-        //TODO REMOVE DEBUG MESSAGES
+        //DEBUG MESSAGES
         Log.e("ServiceLog", "Service Started");
         Toast.makeText(DejaPhotoService.this, "Service Started", Toast.LENGTH_LONG).show();
 
-        Intent intentReceiver = new Intent(getApplicationContext(), AlarmReceiver.class);
-        alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intentReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-                1000 * transitionDelay, alarmIntent);
-
-       // return START_STICKY;
         return super.onStartCommand(intent, flags, startId);
     }
+
+
+    /**
+     * Initializes the objects and intents necessary for AlarmReceiver to repeat our tasks.
+     * Objects are private fields.
+     */
+    private void initializeAlarm() {
+        //Intent that holds the class that will receive broadcasts and perform wallpaper change.
+        Intent intentReceiver = new Intent(getApplicationContext(), AlarmReceiver.class);
+
+        //Manages the countdown and sending the intent to the receiver once the countdown is over.
+        alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        //Intent wrapper needed for technical reasons.
+        alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intentReceiver,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //configures the AlarmManager object to send the intent on a repeating countdown.
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                1000 * transitionDelay, alarmIntent);
+    }
+
+
+    /**
+     * Initializes the SharedPreferences and Editor and gets transition time.
+     */
+    private void getSharedPrefs() {
+        SharedPreferences settings = getSharedPreferences("DejaPhotoPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor settingsEditor = settings.edit();
+        transitionDelay = settings.getInt("transitionDelay", 5);
+    }
+
 
     @Override
     public void onDestroy(){
@@ -51,6 +68,7 @@ public class DejaPhotoService extends Service {
         Intent restartService = new Intent("RestartService");
         sendBroadcast(restartService);
     }
+
 
     @Override
     public IBinder onBind(Intent intent) {
