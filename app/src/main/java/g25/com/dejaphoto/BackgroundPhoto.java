@@ -1,9 +1,8 @@
 package g25.com.dejaphoto;
 
-
 import java.io.IOException;
 import java.util.Date;
-
+import java.util.GregorianCalendar;
 import android.location.Location;
 import android.util.Log;
 import android.media.ExifInterface;
@@ -23,7 +22,7 @@ public class BackgroundPhoto {
 
     ExifInterface exifData;
     Uri uri;
-    Date date;
+    GregorianCalendar dateCalendar;
     Location location;
     boolean karma;
     boolean released;
@@ -35,6 +34,7 @@ public class BackgroundPhoto {
         setUri(uriInput);
         setExifData();
         parseLocationFromExif();
+        parseDateFromExif();
     }
 
 
@@ -43,6 +43,7 @@ public class BackgroundPhoto {
         setUri(uriInput);
         setExifData();
         parseLocationFromExif();
+        parseDateFromExif();
     }
 
 
@@ -53,16 +54,28 @@ public class BackgroundPhoto {
     private void parseLocationFromExif(){
         if (exifData == null){
             this.hasLocation = false;
+            this.hasDate = false;
             return;
         }
-        //parse lat
+        //get lat
         String lat = exifData.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
         String latDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
-        double latitude = formatLatLng(lat, latDirection);
-        //parse lng
+        //get lng
         String lng = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
         String lngDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
-        double longitude = formatLatLng(lng, lngDirection);
+
+        //parse by calling helper method
+        double latitude, longitude;
+        try{
+            latitude = formatLatLng(lat, latDirection);
+            longitude = formatLatLng(lng, lngDirection);
+        }//coordinates were null, indicate no geotag for photo
+        catch(NullPointerException e){
+            e.printStackTrace();
+            this.hasLocation = false;
+            return;
+        }
+
         //set location field
         Location location = new Location("");
         location.setLatitude(latitude);
@@ -72,8 +85,47 @@ public class BackgroundPhoto {
     }
 
 
+    private void parseDateFromExif(){
+        if(exifData == null){
+            this.hasDate = false;
+            return;
+        }
+
+        //get the dateCalendar
+        String dateTimeStr = exifData.getAttribute(ExifInterface.TAG_DATETIME);
+
+        //null check
+        if(dateTimeStr == null) {
+            this.hasDate = false;
+            return;
+        }
+        else{
+            this.hasDate = true;
+            Log.e("EXIF DATE", "EXIF INDICATED DATE");
+        }
+
+        //parse string into ints
+        String[] dateTime = dateTimeStr.split(" ", 2);
+        String[] yearMonthDay = dateTime[0].split(":", 3);
+        String[] hourMinSec = dateTime[1].split(":", 3);
+        int year = Integer.valueOf(yearMonthDay[0]);
+        int month = Integer.valueOf(yearMonthDay[1]);
+        int date = Integer.valueOf(yearMonthDay[2]);
+        int hourOfDay = Integer.valueOf(hourMinSec[0]);
+        int minute = Integer.valueOf(hourMinSec[1]);
+        int second = Integer.valueOf(hourMinSec[2]);
+
+        //set Calendar object;
+        this.dateCalendar = new GregorianCalendar();
+        this.dateCalendar.set(year, month, date, hourOfDay, minute, second);
+
+    }
+
+
     /**
-     * Converts the GPS lat or lng from string format to a double (minutes)
+     * Converts the GPS lat or lng from string format to a double (minutes), calls on helper
+     * method formatLatLng() to format the string output (ex. 51/8 43/3 33/1) into total number of
+     * degrees.
      * method taken from:
      *  http://android-er.blogspot.in/2010/01/convert-exif-gps-info-to-degree-format.html
      * @param coordinate - String format given by ExifInterface
@@ -83,8 +135,7 @@ public class BackgroundPhoto {
     private double formatLatLng(String coordinate, String direction){
         //redundant null checks since android not specific about what happens during failure
         if(coordinate == null || direction == null){
-            this.hasLocation = false;
-            return 0;
+            throw new NullPointerException("Coordinates were NULL");
         }
 
         double converted;
@@ -162,7 +213,7 @@ public class BackgroundPhoto {
     }
 
     public boolean hasLocation(){
-        return this.hasLocation();
+        return this.hasLocation;
     }
 
     public String getPath(){
@@ -173,6 +224,16 @@ public class BackgroundPhoto {
        return this.uri;
     }
 
+    public Date getDate(){
+        if(!hasDate){
+            return null;
+        }
+        return this.dateCalendar.getTime();
+    }
+
+    public boolean hasDate(){
+        return this.hasDate;
+    }
     public boolean hasKarma(){
         return this.karma;
     }

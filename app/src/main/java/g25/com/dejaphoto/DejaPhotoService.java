@@ -28,7 +28,8 @@ public class DejaPhotoService extends Service {
         //DEBUG MESSAGES
         Log.e("ServiceLog", "Service Started");
         Toast.makeText(DejaPhotoService.this, "Service Started", Toast.LENGTH_LONG).show();
-        return super.onStartCommand(intent, flags, startId);
+        //return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
 

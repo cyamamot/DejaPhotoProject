@@ -4,12 +4,13 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
-
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by dillonliu on 5/6/17.
@@ -21,7 +22,6 @@ public class WallpaperChanger {
     private Cursor cursor;
     private int cursorLocation;
     private BackgroundPhoto[] photoWrappers; //TODO use the wrapper
-    private Uri[] mUrls;
     private Context context;
     private int albumSize;
 
@@ -60,31 +60,35 @@ public class WallpaperChanger {
                 MediaStore.Images.ImageColumns.DATE_TAKEN);
 
         //initialize cursor and stuff to track location of cursor
-        cursor.moveToFirst();
-        albumSize = cursor.getCount();
-        mUrls = new Uri[albumSize];
+        try { //in case gallery is empty
+            albumSize = cursor.getCount();
+            cursor.moveToFirst();
+        }
+        catch(NullPointerException e){
+            e.printStackTrace();
+            albumSize = 0;
+        }
+
         photoWrappers = new BackgroundPhoto[albumSize];
+
+        //DEBUG log messages
         String[] strUrls = new String[albumSize];
         String[] mNames = new String[albumSize];
 
         for (int i = 0; i < albumSize; i++) {
             // cursor.getString(1) is the path to image file
             cursor.moveToPosition(i);
-
             String path = cursor.getString(1);
-
-            //functionality moved to wrapper class, call getUri()
-            mUrls[i] = Uri.parse("file://" + path);
-
             photoWrappers[i] = new BackgroundPhoto(path);
 
+            //DEBUG log messages
             strUrls[i] = path;
             mNames[i] = cursor.getString(3);
             Log.e("mNames[i]",mNames[i]+":"+ cursor.getColumnCount()+ " : " + cursor.getString(1));
             //Log.e("uri", mUrls[i].toString());
         }
 
-        cursorLocation = -1;
+        cursorLocation = 0;
 
         Toast.makeText(context, "Initialized",
                 Toast.LENGTH_LONG).show();
@@ -95,10 +99,30 @@ public class WallpaperChanger {
      * Sets wallpaper to next photo in album; if we reach the end, we go back to the first photo
      */
     public void next(){
-        cursorLocation++;
         if(cursorLocation >= albumSize) {
             cursorLocation = 0;
         }
         setWallpaper(photoWrappers[cursorLocation]);
+        cursorLocation++;
+
+        //DEBUG CHECK LOCATION
+        if(photoWrappers[cursorLocation].hasLocation()) {
+            Location location = photoWrappers[cursorLocation].getLocation();
+            Log.e("Location Latitude", Double.toString(location.getLatitude()));
+            Log.e("Location Longitude", Double.toString(location.getLongitude()));
+        }
+        else{
+            Log.e("Location", "No Location Geotag Available for this Photo");
+        }
+
+
+        //DEBUG CHECK DATE
+        if(photoWrappers[cursorLocation].hasDate()){
+            Date date = photoWrappers[cursorLocation].getDate();
+            Log.e("Date", date.toString());
+        }
+        else{
+            Log.e("Location", "No Date Stamp Available for this Photo");
+        }
     }
 }
