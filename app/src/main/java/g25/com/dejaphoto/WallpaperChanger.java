@@ -63,6 +63,7 @@ public class WallpaperChanger {
         cursor.moveToFirst();
         albumSize = cursor.getCount();
         mUrls = new Uri[albumSize];
+        photoWrappers = new BackgroundPhoto[albumSize];
         String[] strUrls = new String[albumSize];
         String[] mNames = new String[albumSize];
 
@@ -71,7 +72,7 @@ public class WallpaperChanger {
             cursor.moveToPosition(i);
 
             //functionality moved to wrapper class, call getUri()
-            //mUrls[i] = Uri.parse("file://" + cursor.getString(1));
+            mUrls[i] = Uri.parse("file://" + cursor.getString(1));
 
             photoWrappers[i] = new BackgroundPhoto(Uri.parse(cursor.getString(1)));
             strUrls[i] = cursor.getString(1);

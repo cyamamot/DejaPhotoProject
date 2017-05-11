@@ -38,6 +38,14 @@ public class BackgroundPhoto {
     }
 
 
+    public BackgroundPhoto(String path){
+        Uri uriInput = Uri.parse("file://" + path);
+        setUri(uriInput);
+        setExifData();
+        parseLocationFromExif();
+    }
+
+
     /**
      * Converts lat and lng from degrees and seconds into a double that can
      * be used to make a location.
@@ -73,6 +81,12 @@ public class BackgroundPhoto {
      * @return - Converted Double usable by Location class.
      */
     private double formatLatLng(String coordinate, String direction){
+        //redundant null checks since android not specific about what happens during failure
+        if(coordinate == null || direction == null){
+            this.hasLocation = false;
+            return 0;
+        }
+
         double converted;
         //get degrees minutes and seconds into their own strings
         String[] DegMinSec = coordinate.split(",", 3);
