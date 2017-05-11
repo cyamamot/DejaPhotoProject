@@ -33,6 +33,11 @@ import android.net.Uri;
  *
  * Get/Set Released: isReleased() will indicate with boolean if picture is released.
  *  release() will release the picture, setting the boolean to true, CANNOT BE UNDONE.
+ *
+ * Points/Sorting Algorithm: handled by SortingAlgorithm field, uses the class's sort() method,
+ *  putting in here allows us to determine points when photo are initialized, thereby not needing
+ *  a second pass through the array. Variable is declared static since only one is needed for all
+ *  photos. Any modification to the algorithm can be down in it's own class.
  */
 
 //GPS calculation ideas referenced from http://stackoverflow.com/questions/9868158/get-gps-location-of-a-photo
@@ -47,7 +52,7 @@ public class BackgroundPhoto {
     Uri uri;
     GregorianCalendar dateCalendar;
     Location location;
-    static SortingAlgorithm sorter;
+    static SortingAlgorithm sorter; //DOES THE SORTING
     boolean karma;
     boolean released;
     boolean hasLocation;
@@ -311,6 +316,10 @@ public class BackgroundPhoto {
 
     public boolean isReleased(){
         return this.released;
+    }
+
+    public int getPoints(){
+        return this.points;
     }
 
 }
