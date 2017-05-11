@@ -33,8 +33,7 @@ public class WallpaperChanger {
     // http://stackoverflow.com/questions/25828808/issue-converting-uri-to-bitmap-2014
 
     // calls wallpapermanager to set wallpaper to specified image
-    private void setWallpaper(BackgroundPhoto photo){
-        Uri uri = photo.getUri();
+    private void setWallpaper(Uri uri){
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
@@ -54,12 +53,10 @@ public class WallpaperChanger {
             return;
         }
 
-        //create cursor to traverse photos provided by content provider
         cursor = context.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null,
                 MediaStore.Images.ImageColumns.DATE_TAKEN);
 
-        //keep track of where cursor is in album
         cursor.moveToFirst();
         albumSize = cursor.getCount();
         mUrls = new Uri[albumSize];
@@ -75,9 +72,9 @@ public class WallpaperChanger {
             mUrls[i] = Uri.parse("file://" + cursor.getString(1));
 
             photoWrappers[i] = new BackgroundPhoto(Uri.parse(cursor.getString(1)));
+
             strUrls[i] = cursor.getString(1);
             mNames[i] = cursor.getString(3);
-
             Log.e("mNames[i]",mNames[i]+":"+ cursor.getColumnCount()+ " : " + cursor.getString(1));
             //Log.e("uri", mUrls[i].toString());
         }
@@ -97,6 +94,6 @@ public class WallpaperChanger {
         if(cursorLocation >= albumSize) {
             cursorLocation = 0;
         }
-        setWallpaper(photoWrappers[cursorLocation]);
+        setWallpaper(mUrls[cursorLocation]);
     }
 }
