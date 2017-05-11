@@ -76,8 +76,8 @@ public class WallpaperChanger {
         String[] mNames = new String[albumSize];
 
         for (int i = 0; i < albumSize; i++) {
-            // cursor.getString(1) is the path to image file
             cursor.moveToPosition(i);
+            // cursor.getString(1) is the path to image file
             String path = cursor.getString(1);
             photoWrappers[i] = new BackgroundPhoto(path);
 
@@ -105,6 +105,7 @@ public class WallpaperChanger {
         setWallpaper(photoWrappers[cursorLocation]);
         cursorLocation++;
 
+
         //DEBUG CHECK LOCATION
         if(photoWrappers[cursorLocation].hasLocation()) {
             Location location = photoWrappers[cursorLocation].getLocation();
@@ -114,7 +115,6 @@ public class WallpaperChanger {
         else{
             Log.e("Location", "No Location Geotag Available for this Photo");
         }
-
 
         //DEBUG CHECK DATE
         if(photoWrappers[cursorLocation].hasDate()){
