@@ -9,7 +9,30 @@ import android.media.ExifInterface;
 import android.net.Uri;
 
 /**
- * Created by angelazhang on 5/8/17.
+ * Wrapper class for Photos that encapsulate Location, Date/Time, Karma, Release Status. Also
+ * has methods that check for existence of Location and Date and return boolean indicating existence
+ * of these optional EXIF data.
+ *
+ * ***USAGE***
+ *
+ * Constructor: Call constructor, pass in path to file. Class will handle getting all relevant info.
+ *
+ * Set to Wallpaper: getUri() return the Uri of the photo, which can be used by WallpaperManager
+ *  to set the Wallpaper.
+ *
+ * Get Location Data: getLocation() returns a Location object or NULL. Location has methods to
+ *  compare to other locations and get the distance.
+ *  Use hasLocation() to determine if Location exists instead of making another null check.
+ *
+ * Get Timestamp: getDate() returns a Date object or NULL. Date has methods to compare to other
+ *  Dates.
+ *  Use hasDate() to determine if  Date exists instead of null checking.
+ *
+ * Get/Set Karma: hasKarma() will indicate with boolean if picture has karma.
+ *  giveKarma() will give the photo karma.
+ *
+ * Get/Set Released: isReleased() will indicate with boolean if picture is released.
+ *  release() will release the picture, setting the boolean to true, CANNOT BE UNDONE.
  */
 
 //GPS calculation ideas referenced from http://stackoverflow.com/questions/9868158/get-gps-location-of-a-photo
@@ -30,14 +53,6 @@ public class BackgroundPhoto {
     boolean hasDate;
 
 
-    public BackgroundPhoto(Uri uriInput){
-        setUri(uriInput);
-        setExifData();
-        parseLocationFromExif();
-        parseDateFromExif();
-    }
-
-
     public BackgroundPhoto(String path){
         Uri uriInput = Uri.parse("file://" + path);
         setUri(uriInput);
@@ -48,8 +63,8 @@ public class BackgroundPhoto {
 
 
     /**
-     * Converts lat and lng from degrees and seconds into a double that can
-     * be used to make a location.
+     * Converts lat and lng from a string indicating degrees and seconds into a double that
+     * that can be used to make location object.
      */
     private void parseLocationFromExif(){
         if (exifData == null){
@@ -85,6 +100,10 @@ public class BackgroundPhoto {
     }
 
 
+    /**
+     * Parses the string output of exif date into a Calendar object that can return a Date
+     * object.
+     */
     private void parseDateFromExif(){
         if(exifData == null){
             this.hasDate = false;
@@ -118,7 +137,6 @@ public class BackgroundPhoto {
         //set Calendar object;
         this.dateCalendar = new GregorianCalendar();
         this.dateCalendar.set(year, month, date, hourOfDay, minute, second);
-
     }
 
 
@@ -175,7 +193,10 @@ public class BackgroundPhoto {
         this.uri = input;
     }
 
-
+    /**
+     * Attempts to get ExifData object from photo and set the corresponding field, marks
+     * boolean indicating success accordingly.
+     */
     private void setExifData(){
         try {
             this.exifData = new ExifInterface(uri.getPath());
