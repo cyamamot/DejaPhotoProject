@@ -33,7 +33,8 @@ public class WallpaperChanger {
     // http://stackoverflow.com/questions/25828808/issue-converting-uri-to-bitmap-2014
 
     // calls wallpapermanager to set wallpaper to specified image
-    private void setWallpaper(Uri uri){
+    private void setWallpaper(BackgroundPhoto photoWrapper){
+        Uri uri = photoWrapper.getUri();
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
@@ -53,10 +54,12 @@ public class WallpaperChanger {
             return;
         }
 
+        //cursor to get images from content provider
         cursor = context.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null,
                 MediaStore.Images.ImageColumns.DATE_TAKEN);
 
+        //initialize cursor and stuff to track location of cursor
         cursor.moveToFirst();
         albumSize = cursor.getCount();
         mUrls = new Uri[albumSize];
@@ -68,12 +71,14 @@ public class WallpaperChanger {
             // cursor.getString(1) is the path to image file
             cursor.moveToPosition(i);
 
+            String path = cursor.getString(1);
+
             //functionality moved to wrapper class, call getUri()
-            mUrls[i] = Uri.parse("file://" + cursor.getString(1));
+            mUrls[i] = Uri.parse("file://" + path);
 
-            photoWrappers[i] = new BackgroundPhoto(Uri.parse(cursor.getString(1)));
+            photoWrappers[i] = new BackgroundPhoto(path);
 
-            strUrls[i] = cursor.getString(1);
+            strUrls[i] = path;
             mNames[i] = cursor.getString(3);
             Log.e("mNames[i]",mNames[i]+":"+ cursor.getColumnCount()+ " : " + cursor.getString(1));
             //Log.e("uri", mUrls[i].toString());
@@ -94,6 +99,6 @@ public class WallpaperChanger {
         if(cursorLocation >= albumSize) {
             cursorLocation = 0;
         }
-        setWallpaper(mUrls[cursorLocation]);
+        setWallpaper(photoWrappers[cursorLocation]);
     }
 }

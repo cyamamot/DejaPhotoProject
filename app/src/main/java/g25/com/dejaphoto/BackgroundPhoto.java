@@ -165,12 +165,12 @@ public class BackgroundPhoto {
         return this.hasLocation();
     }
 
-    public Uri getUnparsedUri(){
-        return this.uri;
+    public String getPath(){
+        return this.uri.getPath();
     }
 
     public Uri getUri(){
-       return this.uri.parse("file://");
+       return this.uri;
     }
 
     public boolean hasKarma(){
