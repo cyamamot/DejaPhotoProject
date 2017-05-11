@@ -52,6 +52,8 @@ public class BackgroundPhoto {
     boolean hasLocation;
     boolean hasDate;
 
+    static final String KARMA_INDICATOR = "DJP_KARMA";
+    static final String RELEASED_INDICATOR = "DJP_RELEASED";
 
     public BackgroundPhoto(String path){
         Uri uriInput = Uri.parse("file://" + path);
@@ -59,6 +61,7 @@ public class BackgroundPhoto {
         setExifData();
         parseLocationFromExif();
         parseDateFromExif();
+        parseKarmaAndReleased();
     }
 
 
@@ -189,6 +192,18 @@ public class BackgroundPhoto {
     }
 
 
+    private void parseKarmaAndReleased(){
+        String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
+        if(comments.contains(KARMA_INDICATOR)){
+            this.giveKarma();
+        }
+
+        if(comments.contains(RELEASED_INDICATOR)){
+            this.release();
+        }
+    }
+
+
     private void setUri(Uri input){
         this.uri = input;
     }
@@ -217,12 +232,27 @@ public class BackgroundPhoto {
 
 
     public void giveKarma(){
+        if(hasKarma() == true){
+            return;
+        }
+
         this.karma = true;
+        String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
+        if (!comments.contains(KARMA_INDICATOR)){
+            String commentsKarma = comments + " " + KARMA_INDICATOR;
+            exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, commentsKarma);
+        }
     }
 
 
     public void release(){
         this.released = true;
+
+        String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
+        if(!comments.contains(RELEASED_INDICATOR)){
+            String commentsRelease = comments + " " + RELEASED_INDICATOR;
+            exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, commentsRelease);
+        }
     }
 
 
