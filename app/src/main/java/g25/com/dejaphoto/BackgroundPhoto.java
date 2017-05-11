@@ -28,6 +28,7 @@ public class BackgroundPhoto {
     boolean karma;
     boolean released;
     boolean hasLocation;
+    boolean hasDate;
 
 
     public BackgroundPhoto(Uri uriInput){
@@ -119,6 +120,7 @@ public class BackgroundPhoto {
             Log.e("Path from Exif", "FAILED");
             this.exifData = null;
             this.hasLocation = false;
+            this.hasDate = false;
         }
     }
 
@@ -139,6 +141,9 @@ public class BackgroundPhoto {
 
 
     public Location getLocation(){
+        if(!hasLocation){
+            return null;
+        }
         return this.location;
     }
 

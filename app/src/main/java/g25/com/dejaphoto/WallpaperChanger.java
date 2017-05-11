@@ -43,6 +43,7 @@ public class WallpaperChanger {
         }
     }
 
+
     // http://stackoverflow.com/questions/6855399/how-to-implement-image-gallery-in-gridview-in-android
     // cursor gets the photos from media store and we use it to point to each photo in album
     public void initialize(){
@@ -77,6 +78,7 @@ public class WallpaperChanger {
         Toast.makeText(context, "Initialized",
                 Toast.LENGTH_LONG).show();
     }
+
 
     /**
      * Sets wallpaper to next photo in album; if we reach the end, we go back to the first photo
