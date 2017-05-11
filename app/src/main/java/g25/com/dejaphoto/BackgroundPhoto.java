@@ -194,11 +194,14 @@ public class BackgroundPhoto {
 
     private void parseKarmaAndReleased(){
         String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
-        if(comments.contains(KARMA_INDICATOR)){
+        if(comments == null){
+            this.karma = false;
+            this.released = false;
+        }
+        else if(comments.contains(KARMA_INDICATOR)){
             this.giveKarma();
         }
-
-        if(comments.contains(RELEASED_INDICATOR)){
+        else if(comments.contains(RELEASED_INDICATOR)){
             this.release();
         }
     }
@@ -238,7 +241,10 @@ public class BackgroundPhoto {
 
         this.karma = true;
         String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
-        if (!comments.contains(KARMA_INDICATOR)){
+        if(comments == null){
+            exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, KARMA_INDICATOR);
+        }
+        else if (!comments.contains(KARMA_INDICATOR)){
             String commentsKarma = comments + " " + KARMA_INDICATOR;
             exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, commentsKarma);
         }
@@ -249,6 +255,9 @@ public class BackgroundPhoto {
         this.released = true;
 
         String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
+        if(comments == null){
+            exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, RELEASED_INDICATOR);
+        }
         if(!comments.contains(RELEASED_INDICATOR)){
             String commentsRelease = comments + " " + RELEASED_INDICATOR;
             exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, commentsRelease);
