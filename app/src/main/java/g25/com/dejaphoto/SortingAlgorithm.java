@@ -11,7 +11,6 @@ import java.util.Date;
 public class SortingAlgorithm {
 
     Location userLocation;
-
     public SortingAlgorithm (){
 
     }
@@ -21,10 +20,11 @@ public class SortingAlgorithm {
         //if photo has karma
         //if released, set point value to 0
         int sort(Location location, Date date, boolean karma, boolean released){
+            int points = 0;
            if(released){
                return -1;
            }
 
-           return 0;
+           return points;
         }
 }
