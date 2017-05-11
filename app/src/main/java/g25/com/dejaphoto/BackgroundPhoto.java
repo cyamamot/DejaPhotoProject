@@ -47,10 +47,12 @@ public class BackgroundPhoto {
     Uri uri;
     GregorianCalendar dateCalendar;
     Location location;
+    static SortingAlgorithm sorter;
     boolean karma;
     boolean released;
     boolean hasLocation;
     boolean hasDate;
+    int points;
 
     static final String KARMA_INDICATOR = "DJP_KARMA";
     static final String RELEASED_INDICATOR = "DJP_RELEASED";
@@ -62,6 +64,15 @@ public class BackgroundPhoto {
         parseLocationFromExif();
         parseDateFromExif();
         parseKarmaAndReleased();
+
+        //initialize sorter only once since it is static
+        if(sorter == null){
+            sorter = new SortingAlgorithm();
+        }
+
+        points = sorter.sort(getLocation(), getDate(), hasKarma(), isReleased());
+
+
     }
 
 
