@@ -3,6 +3,7 @@ package g25.com.dejaphoto;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,14 +16,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageView;
 import android.widget.ImageButton;
+import android.widget.Button;
+import android.content.ComponentName;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class NavWidget extends AppWidgetProvider {
 
-    static WallpaperChanger wallpaperChanger;
-    ImageButton PREV, NEXT;
+    ChangeWallpaperReceiver receiver;
+    WallpaperChanger wallpaperChanger;
+    private static final String NEXT = "NEXT";
+    private static final String PREV = "PREV";
+    private static final String RELEASE = "RELEASE";
+    private static final String KARMA = "KARMA";
+
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -39,54 +47,81 @@ public class NavWidget extends AppWidgetProvider {
     }
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
+    public void onUpdate(final Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        // Enter relevant functionality for when the first widget is created
 
-        int count = appWidgetIds.length;
+        // There may be multiple widgets active, so update all of them
+        final int count = appWidgetIds.length;
+        receiver = new ChangeWallpaperReceiver();
+
+        //http://stackoverflow.com/questions/23220757/android-widget-onclick-listener-for-several-buttons
+        //Get all ids
+        ComponentName thisWidget = new ComponentName(context, NavWidget.class);
 
         //Iterate through all of our widgets
-        for(int i = 0; i < count; i++) {
+        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 
-            int widgetId = appWidgetIds[i];
+        for (int widgetId : allWidgetIds){
 
-            //Get RemoteView object, update RemoteViews text view with random number
 
+            //Get RemoteView object
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.nav_widget);
-           // remoteViews.setTextViewText(R.id.textview, number);
+
+
+
+            remoteViews.setOnClickPendingIntent(R.id.next, getPendingSelfIntent(context, NEXT));
+            remoteViews.setOnClickPendingIntent(R.id.prev, getPendingSelfIntent(context, PREV));
+            remoteViews.setOnClickPendingIntent(R.id.release, getPendingSelfIntent(context, RELEASE));
+            remoteViews.setOnClickPendingIntent(R.id.karma, getPendingSelfIntent(context,KARMA));
+
+
+            appWidgetManager.updateAppWidget(thisWidget, remoteViews);
 
             //specify the action that should occur when the Button is tapped
-            Intent intent = new Intent(context, NavWidget.class);
-            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_ENABLED);
+            //Intent intent = new Intent(context, NavWidget.class);
+            //intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            //intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds);
 
-            //Use PendingIntent to request manual update when the update button is clicked
-            //Then Actions for the intent is set to ACTION_APPWIDGET_UPDATE
             //This is the same action sent by the system when the widget needs to be updated automatically
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteViews.setOnClickPendingIntent(R.id.next, pendingIntent);
-            appWidgetManager.updateAppWidget(widgetId, remoteViews);
+            // PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         }
     }
 
+    //Use PendingIntent to request manual update when the update button is clicked
+    //Then Actions for the intent is set to ACTION_APPWIDGET_UPDATE
+    protected PendingIntent getPendingSelfIntent(Context context, String action) {
+        Intent intent = new Intent(context, NavWidget.class);
+        intent.setAction(action);
+        return PendingIntent.getBroadcast(context, 0, intent, 0);
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        if (NEXT.equals(intent.getAction())) {
+            // your onClick action is here
+            //wallpaperChanger.next();
+            Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
+            Log.w("Widget", "Clicked button1");
+        } else if (PREV.equals(intent.getAction())) {
+            Toast.makeText(context, "PREV", Toast.LENGTH_SHORT).show();
+            Log.w("Widget", "Clicked button2");
+        } else if (RELEASE.equals(intent.getAction())) {
+            Toast.makeText(context, "RELEASE", Toast.LENGTH_SHORT).show();
+            Log.w("Widget", "Clicked button3");
+        }
+        else if (KARMA.equals(intent.getAction())){
+         Toast.makeText(context, "KARMA", Toast.LENGTH_SHORT).show();
+            Log.w("Widget", "Clicked button4");}
+    }
+
+
+
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
-        wallpaperChanger = new WallpaperChanger(context);
 
-        PREV = (ImageButton)PREV.findViewById(R.id.prev);
-        PREV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        NEXT = (ImageButton)NEXT.findViewById(R.id.next);
-        NEXT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                wallpaperChanger.next();
-            }
-        });
 
 
     }
@@ -95,5 +130,7 @@ public class NavWidget extends AppWidgetProvider {
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
     }
+
+
 }
 
