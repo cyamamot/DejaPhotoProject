@@ -27,4 +27,6 @@ public class ChangeWallpaperReceiver extends BroadcastReceiver {
         Log.e("ChangeWallpaperReceiver", "RECEIVED");
     }
 
+
+
 }
