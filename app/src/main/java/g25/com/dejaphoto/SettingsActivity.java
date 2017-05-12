@@ -12,6 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Button;
+import android.util.Log;
+
+
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -21,6 +25,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     private boolean useCustomAlbum;
     private EditText delaySeconds;
     private TextView delayLabel;
+    private Button saveSettings;
     private int transitionDelay;
     private SharedPreferences settings;
     private SharedPreferences.Editor settingsEditor;
@@ -54,6 +59,16 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         //create intent with extras
         Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
         startService(intent);
+
+        saveSettings = (Button) findViewById(R.id.btn_saveSettings);
+        saveSettings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.e("Settings Save", "Button Clicked");
+                SortingAlgorithm alg = new SortingAlgorithm(SettingsActivity.this);
+
+            }
+        });
+
 
         //buildGoogleApiClient();
     }

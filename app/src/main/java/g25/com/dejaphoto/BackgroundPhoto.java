@@ -44,6 +44,7 @@ import android.net.Uri;
    // and http://android-er.blogspot.in/2010/01/convert-exif-gps-info-to-degree-format.html
 
 
+
 public class BackgroundPhoto {
 
     ExifInterface exifData;
@@ -69,11 +70,11 @@ public class BackgroundPhoto {
         parseKarmaAndReleased();
 
         //initialize sorter only once since it is static
-        if(sorter == null){
+        /*if(sorter == null){
             sorter = new SortingAlgorithm();
         }
 
-        points = sorter.sort(getLocation(), getDate(), hasKarma(), isReleased());
+        points = sorter.sort(getLocation(), getDate(), hasKarma(), isReleased());*/
 
 
     }
