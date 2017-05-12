@@ -24,8 +24,8 @@ import android.content.ComponentName;
  */
 public class NavWidget extends AppWidgetProvider {
 
-    ChangeWallpaperReceiver receiver;
-    WallpaperChanger wallpaperChanger;
+    static ChangeWallpaperReceiver receiver;
+    //static WallpaperChanger wallpaperChange;
     private static final String NEXT = "NEXT";
     private static final String PREV = "PREV";
     private static final String RELEASE = "RELEASE";
@@ -49,15 +49,12 @@ public class NavWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(final Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // Enter relevant functionality for when the first widget is created
-
-        // There may be multiple widgets active, so update all of them
-        final int count = appWidgetIds.length;
         receiver = new ChangeWallpaperReceiver();
 
         //http://stackoverflow.com/questions/23220757/android-widget-onclick-listener-for-several-buttons
         //Get all ids
         ComponentName thisWidget = new ComponentName(context, NavWidget.class);
-
+        // There may be multiple widgets active, so update all of them
         //Iterate through all of our widgets
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 
@@ -66,7 +63,6 @@ public class NavWidget extends AppWidgetProvider {
 
             //Get RemoteView object
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.nav_widget);
-
 
 
             remoteViews.setOnClickPendingIntent(R.id.next, getPendingSelfIntent(context, NEXT));
@@ -101,8 +97,11 @@ public class NavWidget extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         if (NEXT.equals(intent.getAction())) {
-            // your onClick action is here
-            //wallpaperChanger.next();
+            // onClick action is here
+
+            receiver.onReceive(context, intent);
+
+            //wallpaperChaner.next();
             Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked button1");
         } else if (PREV.equals(intent.getAction())) {
