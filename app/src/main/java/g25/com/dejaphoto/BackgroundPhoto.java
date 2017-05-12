@@ -43,8 +43,6 @@ import android.net.Uri;
 //GPS calculation ideas referenced from http://stackoverflow.com/questions/9868158/get-gps-location-of-a-photo
    // and http://android-er.blogspot.in/2010/01/convert-exif-gps-info-to-degree-format.html
 
-    //ANGELA IF YOU'RE READING THIS SORRY WE HAD TO MODIFY UR CODE TO MAKE IT WORK WITH THE WALLPAPER CHANGER
-    //ALL THE CURSOR STUFF IN HANDLED IN WALLPAPER CHANGER SO WE REMOVED IT
 
 public class BackgroundPhoto {
 

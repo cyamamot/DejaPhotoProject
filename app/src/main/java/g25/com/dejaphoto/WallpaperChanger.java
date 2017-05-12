@@ -100,10 +100,10 @@ public class WallpaperChanger {
      */
     public void next(){
         if(cursorLocation >= albumSize) {
+            Log.d("Debug", "I am here");
             cursorLocation = 0;
         }
         setWallpaper(photoWrappers[cursorLocation]);
-        cursorLocation++;
 
 
         //DEBUG CHECK LOCATION
@@ -124,5 +124,7 @@ public class WallpaperChanger {
         else{
             Log.e("Location", "No Date Stamp Available for this Photo");
         }
+
+        cursorLocation++;
     }
 }
