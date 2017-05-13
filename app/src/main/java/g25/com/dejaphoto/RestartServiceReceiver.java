@@ -11,6 +11,6 @@ import android.content.Intent;
 public class RestartServiceReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        context.startService(new Intent(context,DejaPhotoService.class));
+        //context.startService(new Intent(context,DejaPhotoService.class));
     }
 }

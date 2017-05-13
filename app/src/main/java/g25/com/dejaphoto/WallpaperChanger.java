@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -50,6 +51,7 @@ public class WallpaperChanger {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.e("POINTS", Integer.toString(photoWrapper.getPoints()));
     }
 
 
@@ -100,7 +102,7 @@ public class WallpaperChanger {
             cursor.moveToPosition(i);
             String path = cursor.getString(1);
 
-            BackgroundPhoto curr = new BackgroundPhoto(path);
+            BackgroundPhoto curr = new BackgroundPhoto(path, context);
             if(!curr.isReleased()) {
                 sorter.assignPoints(curr);
                 queue.add(curr);
@@ -109,8 +111,9 @@ public class WallpaperChanger {
             //strUrls[i] = path;
             mNames[i] = cursor.getString(3);
             Log.e("mNames[i]",mNames[i]+":"+ cursor.getColumnCount()+ " : " + cursor.getString(1));
-            //Log.e("uri", mUrls[i].toString());
+            Log.e("QUEUE SIZE", Integer.toString(queue.size()));
         }
+        Toast.makeText(context, "Queue Size" + queue.size(), Toast.LENGTH_LONG).show();
     }
 
 
@@ -122,6 +125,7 @@ public class WallpaperChanger {
 
         if(queue.isEmpty()){
             populateQueue();
+            Log.e("Next Test", "Queue Empty");
             Toast.makeText(context, "Restarting from Beginning, Queue Empty,", Toast.LENGTH_LONG).show();
         }
 
@@ -165,6 +169,14 @@ public class WallpaperChanger {
         }
 
         setWallpaper(nextPhoto);
+        String comments = nextPhoto.exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
+        if( comments != null){
+            Log.e("Printing Comments", comments);
+            Toast.makeText(context, comments, Toast.LENGTH_LONG);
+        }
+        else{
+            Log.e("Printing Comments", "No Comments");
+        }
     }
 
 
@@ -196,6 +208,7 @@ public class WallpaperChanger {
         //always in some position in the prevList, just set release bool and remove from list
         prevList.get(prevCursor).release();
         prevList.remove(prevCursor);
+        next();
 
     }
 

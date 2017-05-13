@@ -56,6 +56,8 @@ public class SortingAlgorithm {
                 }
             }
 
+
+            //TODO: set it to today
             Date currentDate = new Date();
             if(currentDate != null && date != null) {
                 long difference = date.getTime() - currentDate.getTime();
