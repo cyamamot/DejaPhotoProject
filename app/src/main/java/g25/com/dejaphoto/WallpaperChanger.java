@@ -106,11 +106,11 @@ public class WallpaperChanger {
             Log.d("Debug", "I am here");
             cursorLocation = 0;
         }
+
         if(photoWrappers[cursorLocation].isReleased() == true){
-            Log.d("Debug", "Skip here ");
+            Log.e("Release", "Release Boolean True");
             cursorLocation++;
         }
-        setWallpaper(photoWrappers[cursorLocation]);
 
 
         //DEBUG CHECK LOCATION
@@ -132,8 +132,11 @@ public class WallpaperChanger {
             Log.e("Location", "No Date Stamp Available for this Photo");
         }
 
+        setWallpaper(photoWrappers[cursorLocation]);
 
         cursorLocation++;
+
+
     }
 
 
@@ -142,12 +145,13 @@ public class WallpaperChanger {
      */
     public void previous(){
 
-        if(cursorLocation <= 0) {
+        if(cursorLocation < 0) {
             Log.d("Debug", "I am here");
             cursorLocation = albumSize - 1;
         }
 
         if(photoWrappers[cursorLocation].isReleased() == true){
+            Log.e("Release", "Release Boolean True");
             cursorLocation--;
         }
 
@@ -170,9 +174,9 @@ public class WallpaperChanger {
         }
 
         setWallpaper(photoWrappers[cursorLocation]);
-
-
         cursorLocation--;
+
+
     }
 
     /**

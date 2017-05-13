@@ -94,9 +94,9 @@ public class NavWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-
+// onClick action is here
         if (NEXT.equals(intent.getAction())) {
-            // onClick action is here
+
             receiver.onReceive(context, intent);
             Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked NEXT");

@@ -255,6 +255,7 @@ public class BackgroundPhoto {
         }
 
         this.karma = true;
+        Log.e("Karma", "karma Boolean was set to True");
         String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
         if(comments == null){
             exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, KARMA_INDICATOR);
@@ -267,8 +268,9 @@ public class BackgroundPhoto {
 
 
     public void release(){
-        this.released = true;
 
+        this.released = true;
+        Log.e("Release", "release Boolean was set to True");
         String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
         if(comments == null){
             exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, RELEASED_INDICATOR);
