@@ -44,10 +44,11 @@ public class WallpaperChanger {
             myWallpaperManager = WallpaperManager.getInstance(context);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
 
+            // trying to set text on the bitmap
             Paint textPaint = new Paint();
             textPaint.setColor(Color.BLUE);
             Canvas canvas = new Canvas(bitmap);
-            canvas.drawText("hi its me cse110 sucks", 100, 100, textPaint);
+            canvas.drawText("hi its me cse110 sucks", 300, 300, textPaint);
 
             myWallpaperManager.setBitmap(bitmap);
         } catch (IOException e) {
