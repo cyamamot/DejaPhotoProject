@@ -5,11 +5,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
+
 import java.io.IOException;
 import java.util.Date;
 
@@ -26,6 +30,7 @@ public class WallpaperChanger {
     private Context context;
     private int albumSize;
 
+
     // constructor passes in activity to get context and stuff
     public WallpaperChanger(Context context){
         this.context = context;
@@ -39,6 +44,13 @@ public class WallpaperChanger {
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+
+            // trying to set text on the bitmap
+            Paint textPaint = new Paint();
+            textPaint.setColor(Color.BLUE);
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawText("hi its me cse110 sucks", 300, 300, textPaint);
+
             myWallpaperManager.setBitmap(bitmap);
         } catch (IOException e) {
             e.printStackTrace();
@@ -138,5 +150,52 @@ public class WallpaperChanger {
     }
 
 
+    /**
+     * Sets wallpaper to previous photo in album.
+     * Can iterate up to 10 photos
+     */
+    public void previous(){
 
+        if(cursorLocation <= 0) {
+            Log.d("Debug", "I am here");
+            cursorLocation = albumSize - 1;
+        }
+
+        if(photoWrappers[cursorLocation].hasLocation()) {
+            Location location = photoWrappers[cursorLocation].getLocation();
+            Log.e("Location Latitude", Double.toString(location.getLatitude()));
+            Log.e("Location Longitude", Double.toString(location.getLongitude()));
+        }
+        else{
+            Log.e("Location", "No Location Geotag Available for this Photo");
+        }
+
+        //DEBUG CHECK DATE
+        if(photoWrappers[cursorLocation].hasDate()){
+            Date date = photoWrappers[cursorLocation].getDate();
+            Log.e("Date", date.toString());
+        }
+        else{
+            Log.e("Location", "No Date Stamp Available for this Photo");
+        }
+
+        setWallpaper(photoWrappers[cursorLocation]);
+
+        cursorLocation--;
+    }
+
+    /**
+     * sets current wallpaper isReleased boolean to true
+     */
+    public void release()
+    {
+        photoWrappers[cursorLocation].isReleased();
+    }
+
+    /**
+     * set current wallpaper Karma boolean to true
+     */
+    public void karma() {
+        photoWrappers[cursorLocation].giveKarma();
+    }
 }
