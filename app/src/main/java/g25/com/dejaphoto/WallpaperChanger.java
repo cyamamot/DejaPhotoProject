@@ -162,6 +162,7 @@ public class WallpaperChanger {
 
         setWallpaper(photoWrappers[cursorLocation]);
 
+
         cursorLocation--;
     }
 

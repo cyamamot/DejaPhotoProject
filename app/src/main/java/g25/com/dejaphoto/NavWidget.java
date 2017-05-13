@@ -98,7 +98,6 @@ public class NavWidget extends AppWidgetProvider {
         if (NEXT.equals(intent.getAction())) {
             // onClick action is here
             receiver.onReceive(context, intent);
-            //wallpaperChanger.next();
             Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked NEXT");
         } else if (PREV.equals(intent.getAction())) {
