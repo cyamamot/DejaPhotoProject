@@ -184,6 +184,7 @@ public class WallpaperChanger {
         }
 
         if(photoWrappers[cursorLocation].isReleased()){
+            Log.e("WallpaperChanger", "here");
             cursorLocation--;
         }
 
