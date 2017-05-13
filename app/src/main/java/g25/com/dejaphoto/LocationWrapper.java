@@ -61,7 +61,9 @@ public class LocationWrapper {
             }
         };
 
+        //get Initial User position
         currentUserLocation = locationManager.getLastKnownLocation(locationProvider);
+
         // we first check if user granted us location permission, if so we tell locationManager to request location updates
         if (ContextCompat.checkSelfPermission(activity,
                 permission.ACCESS_FINE_LOCATION)
