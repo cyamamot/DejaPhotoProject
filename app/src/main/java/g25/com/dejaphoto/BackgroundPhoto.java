@@ -264,6 +264,12 @@ public class BackgroundPhoto {
             String commentsKarma = comments + " " + KARMA_INDICATOR;
             exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, commentsKarma);
         }
+        try {
+            exifData.saveAttributes();
+        }
+        catch (IOException e){
+            Log.e("Karma", "Could not Save Karma String");
+        }
     }
 
 
@@ -275,9 +281,15 @@ public class BackgroundPhoto {
         if(comments == null){
             exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, RELEASED_INDICATOR);
         }
-        if(!comments.contains(RELEASED_INDICATOR)){
+        else if(!comments.contains(RELEASED_INDICATOR)){
             String commentsRelease = comments + " " + RELEASED_INDICATOR;
             exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, commentsRelease);
+        }
+        try {
+            exifData.saveAttributes();
+        }
+        catch (IOException e){
+            Log.e("Release", "Could not Save Karma String");
         }
     }
 
@@ -322,6 +334,8 @@ public class BackgroundPhoto {
     public int getPoints(){
         return this.points;
     }
+
+    public void setPoints(int points) {this.points = points;}
 
 }
 

@@ -41,6 +41,9 @@ public class ChangeWallpaperReceiver extends BroadcastReceiver {
         {
             wallpaperChanger.karma();
         }
+        else{
+            wallpaperChanger.next();
+        }
 
         //debug message
         Log.e("ChangeWallpaperReceiver", "RECEIVED");

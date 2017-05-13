@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 /**
  * Created by dillonliu on 5/9/17.
@@ -32,11 +33,11 @@ public class LocationWrapper {
 
     private static final int TWO_MINUTES = 1000 * 60 * 2;
 
-    // constructor takes in activity for access to context and stuff
+    // constructor takes in context for access to context and stuff
     // minTime is minimum time interval between location updates, in milliseconds
     // minDistance is minimum distance between location updates, in meter
-    public LocationWrapper(Activity activity, long minTime, float minDistance) {
-        locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+    public LocationWrapper(Context context, long minTime, float minDistance) {
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationProvider = LocationManager.NETWORK_PROVIDER;
 
         // Define a listener that responds to location updates
@@ -47,6 +48,9 @@ public class LocationWrapper {
                 // but first we have to check if newly returned location is better/more accurate than the last one
                 if(isBetterLocation(location, currentUserLocation)) {
                     setCurrentUserLocation(location);
+
+                    //DEBUG Log location
+                    Log.e("Location Test", "User Location Changed");
                 }
             }
 
@@ -65,7 +69,7 @@ public class LocationWrapper {
         currentUserLocation = locationManager.getLastKnownLocation(locationProvider);
 
         // we first check if user granted us location permission, if so we tell locationManager to request location updates
-        if (ContextCompat.checkSelfPermission(activity,
+        if (ContextCompat.checkSelfPermission(context,
                 permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             // Register the listener with the Location Manager to receive location updates with passed in minTime and minDistance
