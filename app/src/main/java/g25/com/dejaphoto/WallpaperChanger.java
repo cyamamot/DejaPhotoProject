@@ -138,9 +138,9 @@ public class WallpaperChanger {
      */
     public void previous(){
 
-        if(cursorLocation < 0) {
+        if(cursorLocation <= 0) {
             Log.d("Debug", "I am here");
-            cursorLocation = 1;
+            cursorLocation = albumSize;
         }
 
         if(photoWrappers[cursorLocation].hasLocation()) {
@@ -167,18 +167,17 @@ public class WallpaperChanger {
     }
 
     /**
-     * Sets wallpaper to previous photo in album.
-     * Can iterate up to 10 photos
+     * sets current wallpaper isReleased boolean to true
      */
-    public void release () {
-
+    public void release()
+    {
+        photoWrappers[cursorLocation].isReleased();
     }
 
     /**
-     * Sets wallpaper to previous photo in album.
-     * Can iterate up to 10 photos
+     * set current wallpaper Karma boolean to true
      */
     public void karma() {
-
+        photoWrappers[cursorLocation].giveKarma();
     }
 }

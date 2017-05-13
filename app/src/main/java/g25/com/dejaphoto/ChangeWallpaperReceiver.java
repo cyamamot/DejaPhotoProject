@@ -32,11 +32,11 @@ public class ChangeWallpaperReceiver extends BroadcastReceiver {
         }
         else if(intent.getAction() == "RELEASE")
         {
-
+            wallpaperChanger.release();
         }
         else if(intent.getAction() == "KARMA")
         {
-
+            wallpaperChanger.karma();
         }
 
         //debug message
