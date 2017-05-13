@@ -159,6 +159,7 @@ public class WallpaperChanger {
      */
     public void previous(){
         if(cursorLocation <= 0) {
+            Log.d("Debug", "I am here");
             cursorLocation = albumSize - 1;
         }
 
