@@ -1,6 +1,7 @@
 package g25.com.dejaphoto;
 
 import android.app.WallpaperManager;
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -75,13 +76,19 @@ public class WallpaperChanger {
         //String[] strUrls = new String[albumSize];
         String[] mNames = new String[albumSize];
 
+        SortingAlgorithm alg = new SortingAlgorithm();
+
         for (int i = 0; i < albumSize; i++) {
             cursor.moveToPosition(i);
             // cursor.getString(1) is the path to image file
             String path = cursor.getString(1);
 
             BackgroundPhoto curr = new BackgroundPhoto(path);
-            photoWrappers[i] = new BackgroundPhoto(path);
+            int points = alg.addPoints(context, curr);
+            curr.setPoints(points);
+            photoWrappers[i] = curr;
+
+            //photoWrappers[i] = new BackgroundPhoto(path);
 
             //DEBUG log messages
             //strUrls[i] = path;

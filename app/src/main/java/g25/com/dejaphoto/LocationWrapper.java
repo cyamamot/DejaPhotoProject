@@ -35,7 +35,7 @@ public class LocationWrapper {
     // constructor takes in activity for access to context and stuff
     // minTime is minimum time interval between location updates, in milliseconds
     // minDistance is minimum distance between location updates, in meter
-    public LocationWrapper(Activity activity, long minTime, float minDistance) {
+    public LocationWrapper(Context activity, long minTime, float minDistance) {
         locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         locationProvider = LocationManager.NETWORK_PROVIDER;
 
@@ -54,6 +54,7 @@ public class LocationWrapper {
             }
 
             public void onProviderEnabled(String provider) {
+
             }
 
             public void onProviderDisabled(String provider) {

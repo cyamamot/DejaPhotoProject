@@ -249,6 +249,7 @@ public class BackgroundPhoto {
     }
 
 
+
     public void giveKarma(){
         if(hasKarma() == true){
             return;
@@ -321,5 +322,6 @@ public class BackgroundPhoto {
         return this.points;
     }
 
+    public void setPoints(int p) {this.points = p;}
 }
 

@@ -64,7 +64,6 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         saveSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.e("Settings Save", "Button Clicked");
-                SortingAlgorithm alg = new SortingAlgorithm(SettingsActivity.this);
 
             }
         });
