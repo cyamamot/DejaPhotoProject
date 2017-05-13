@@ -94,26 +94,31 @@ public class NavWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-
-        if (NEXT.equals(intent.getAction())) {
-            // onClick action is here
+        // onClick action is here
+        if (NEXT.equals(intent.getAction()))
+        {
             receiver.onReceive(context, intent);
-            //wallpaperChanger.next();
             Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked NEXT");
-        } else if (PREV.equals(intent.getAction())) {
+        }
+        else if (PREV.equals(intent.getAction()))
+        {
             receiver.onReceive(context, intent);
             Toast.makeText(context, "PREV", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked PREV");
-        } else if (RELEASE.equals(intent.getAction())) {
+        }
+        else if (RELEASE.equals(intent.getAction()))
+        {
             receiver.onReceive(context, intent);
             Toast.makeText(context, "RELEASE", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked RELEASE");
         }
-        else if (KARMA.equals(intent.getAction())){
+        else if (KARMA.equals(intent.getAction()))
+        {
             receiver.onReceive(context, intent);
          Toast.makeText(context, "KARMA", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked KARMA");}
+            Log.w("Widget", "Clicked KARMA");
+        }
     }
 
 

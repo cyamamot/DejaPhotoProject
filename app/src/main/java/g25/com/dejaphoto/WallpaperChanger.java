@@ -146,20 +146,23 @@ public class WallpaperChanger {
             Log.e("Location", "No Date Stamp Available for this Photo");
         }
 
+        if(photoWrappers[cursorLocation].isReleased()){
+            cursorLocation++;
+        }
+
         cursorLocation++;
     }
 
 
     /**
      * Sets wallpaper to previous photo in album.
-     * Can iterate up to 10 photos
      */
     public void previous(){
-
         if(cursorLocation <= 0) {
-            Log.d("Debug", "I am here");
             cursorLocation = albumSize - 1;
         }
+
+        setWallpaper(photoWrappers[cursorLocation]);
 
         if(photoWrappers[cursorLocation].hasLocation()) {
             Location location = photoWrappers[cursorLocation].getLocation();
@@ -179,21 +182,23 @@ public class WallpaperChanger {
             Log.e("Location", "No Date Stamp Available for this Photo");
         }
 
-        setWallpaper(photoWrappers[cursorLocation]);
+        if(photoWrappers[cursorLocation].isReleased()){
+            cursorLocation--;
+        }
 
         cursorLocation--;
     }
 
     /**
-     * sets current wallpaper isReleased boolean to true
+     * sets current wallpaper released boolean to true
      */
     public void release()
     {
-        photoWrappers[cursorLocation].isReleased();
+        photoWrappers[cursorLocation].release();
     }
 
     /**
-     * set current wallpaper Karma boolean to true
+     * set current wallpaper karma boolean to true
      */
     public void karma() {
         photoWrappers[cursorLocation].giveKarma();
