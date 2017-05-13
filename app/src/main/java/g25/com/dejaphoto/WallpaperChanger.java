@@ -185,6 +185,7 @@ public class WallpaperChanger {
     public void release()
     {
         photoWrappers[cursorLocation].release();
+
     }
 
     /**

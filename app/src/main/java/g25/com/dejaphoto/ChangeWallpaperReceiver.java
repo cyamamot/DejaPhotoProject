@@ -35,6 +35,7 @@ public class ChangeWallpaperReceiver extends BroadcastReceiver {
         else if(intent.getAction() == "RELEASE")
         {
             wallpaperChanger.release();
+            wallpaperChanger.next();
         }
         else if(intent.getAction() == "KARMA")
         {
