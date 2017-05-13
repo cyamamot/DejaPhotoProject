@@ -4,11 +4,15 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
+
 import java.io.IOException;
 import java.util.Date;
 
@@ -39,6 +43,12 @@ public class WallpaperChanger {
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+
+            Paint textPaint = new Paint();
+            textPaint.setColor(Color.BLUE);
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawText("hi its me cse110 sucks", 100, 100, textPaint);
+
             myWallpaperManager.setBitmap(bitmap);
         } catch (IOException e) {
             e.printStackTrace();
