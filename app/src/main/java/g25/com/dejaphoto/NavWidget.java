@@ -25,8 +25,8 @@ import android.content.ComponentName;
  */
 public class NavWidget extends AppWidgetProvider {
 
-    static ChangeWallpaperReceiver receiver;
-    //static WallpaperChanger wallpaperChanger;
+    //static WallpaperChanger receiver;
+    static WallpaperChanger wallpaperChanger;
     private static final String NEXT = "NEXT";
     private static final String PREV = "PREV";
     private static final String RELEASE = "RELEASE";
@@ -50,7 +50,6 @@ public class NavWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(final Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // Enter relevant functionality for when the first widget is created
-        receiver = new ChangeWallpaperReceiver();
 
 
         ComponentName thisWidget = new ComponentName(context, NavWidget.class);
@@ -86,7 +85,7 @@ public class NavWidget extends AppWidgetProvider {
 
     //Use PendingIntent to request manual update when the update button is clicked
     protected PendingIntent getPendingSelfIntent(Context context, String action) {
-        Intent intent = new Intent(context, NavWidget.class);
+        Intent intent = new Intent(context, ChangeWallpaperReceiver.class);
         intent.setAction(action);
         return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
@@ -94,24 +93,23 @@ public class NavWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-
+// onClick action is here
         if (NEXT.equals(intent.getAction())) {
-            // onClick action is here
-            receiver.onReceive(context, intent);
-            //wallpaperChanger.next();
+            intent = new Intent(NEXT);
+
             Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked NEXT");
         } else if (PREV.equals(intent.getAction())) {
-            receiver.onReceive(context, intent);
+            wallpaperChanger.previous();
             Toast.makeText(context, "PREV", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked PREV");
         } else if (RELEASE.equals(intent.getAction())) {
-            receiver.onReceive(context, intent);
+            wallpaperChanger.release();
             Toast.makeText(context, "RELEASE", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked RELEASE");
         }
         else if (KARMA.equals(intent.getAction())){
-            receiver.onReceive(context, intent);
+            wallpaperChanger.karma();
          Toast.makeText(context, "KARMA", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked KARMA");}
     }

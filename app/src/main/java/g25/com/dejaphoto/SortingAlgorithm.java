@@ -1,11 +1,11 @@
 package g25.com.dejaphoto;
 
+import android.content.Context;
 import android.location.Location;
-import android.app.Activity;
 import android.util.Log;
 
 
-
+import java.util.Comparator;
 import java.util.Date;
 
 
@@ -15,40 +15,62 @@ import java.util.Date;
 
 public class SortingAlgorithm {
 
+    private static final int MIN_DISTANCE = 152; //update every 500 feet (uses meters)
+    private static final int MIN_TIME = 1 * 60 * 60 * 1000; //update every hour (uses milliseconds)
+
     public SortingAlgorithm(){}
-    Activity act;
-    public SortingAlgorithm (Activity activity){
-        act = activity;
+    Context context;
+    LocationWrapper loc;
+
+    public SortingAlgorithm (Context context){
+        this.context = context;
+        loc = new LocationWrapper(context, MIN_TIME, MIN_DISTANCE);
     }
         //if location is 1000ft from current location & location boolean is true
         //if time is 2hrs from current time & time boolean is true
         //if photo has karma
         //if released, set point value to -1
-        int addPoints (Location location, Date date, boolean karma, boolean released){
+        int assignPoints(BackgroundPhoto photo){
+
+            //get info from photo
+            Date date = photo.getDate();
+            Location location = photo.getLocation();
+            boolean released = photo.isReleased();
+            boolean karma = photo.hasKarma();
+
             int points = 0;
 
             if(released){
                 return -1;
             }
-            if (act == null){
+
+            if (context == null){
                 Log.e("fuck", "fml");
             }
-            LocationWrapper loc = new LocationWrapper(act, 1, 1);
+
             Location currentL = loc.getCurrentUserLocation();
-            float distance = location.distanceTo(currentL); //distance in meters
-            if (distance <= 304.8){
-                points += 5;
+            if(currentL != null && location != null) {
+                float distance = location.distanceTo(currentL); //distance in meters
+                if (distance <= 304.8) {
+                    points += 5;
+                }
             }
 
+
+            //TODO: set it to today
             Date currentDate = new Date();
-            long difference = date.getTime() - currentDate.getTime();
-            if (difference <= 7200000){
-                points += 5;
+            if(currentDate != null && date != null) {
+                long difference = date.getTime() - currentDate.getTime();
+                if (difference <= 7200000) {
+                    points += 5;
+                }
             }
 
             if (karma){
                 points += 5;
             }
+
+            photo.setPoints(points);
 
             return points;
         }

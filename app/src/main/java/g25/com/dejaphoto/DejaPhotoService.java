@@ -33,7 +33,7 @@ public class DejaPhotoService extends Service {
     }
 
 
-    /**
+    /**q
      * Initializes the objects and intents necessary for ChangeWallpaperReceiver to repeat our tasks.
      * Objects are private fields.
      */

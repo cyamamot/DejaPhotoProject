@@ -48,6 +48,19 @@
     </RadioGroup>
 
     <TextView
+        android:id="@+id/label_dejavu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enable DejaVu Location Mode:"
+        android:textSize="18sp" />
+
+    <CheckBox
+        android:id="@+id/checkbox_enableDejaVu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enable" />
+
+    <TextView
         android:id="@+id/label_transitionDelay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

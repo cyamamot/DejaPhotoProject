@@ -22,7 +22,9 @@ public class ChangeWallpaperReceiver extends BroadcastReceiver {
 
             Log.e("ChangeWallpaperReceiver", "INITIALIZED");
         }
-        else if(intent.getAction() == "NEXT")
+
+
+        if(intent.getAction() == "NEXT")
         {
             wallpaperChanger.next();
         }
@@ -37,6 +39,9 @@ public class ChangeWallpaperReceiver extends BroadcastReceiver {
         else if(intent.getAction() == "KARMA")
         {
             wallpaperChanger.karma();
+        }
+        else{
+            wallpaperChanger.next();
         }
 
         //debug message

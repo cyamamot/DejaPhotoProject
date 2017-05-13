@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.PARTIAL_WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -29,7 +32,10 @@
         <service
             android:name=".DejaPhotoService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"
+            android:process=":DJPServiceProcess"
+            ></service>
+
 
         <receiver
             android:name=".RestartServiceReceiver"
@@ -43,6 +49,7 @@
         </receiver>
         <receiver
             android:name=".ChangeWallpaperReceiver"
+            android:process=":DJPServiceProcess"
             android:enabled="true"
             android:exported="true"
             android:label="RestartServiceWhenStopped"
@@ -64,12 +71,6 @@
                 android:resource="@xml/nav_widget_info" />
         </receiver>
 
-
-
-
-        <uses-permission android:name="android.permission.PARTIAL_WAKE_LOCK" />
-        <uses-permission android:name="android.permission.WAKE_LOCK" />
-        <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

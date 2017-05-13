@@ -3,7 +3,12 @@ package g25.com.dejaphoto;
 import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
+import android.media.audiofx.BassBoost;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -58,15 +63,20 @@ public class BackgroundPhoto {
     boolean hasDate;
     int points;
 
+    static Context context;
     static final String KARMA_INDICATOR = "DJP_KARMA";
     static final String RELEASED_INDICATOR = "DJP_RELEASED";
+    static SharedPreferences settings;
+    static SharedPreferences.Editor settingsEditor;
 
-    public BackgroundPhoto(String path){
+    public BackgroundPhoto(String path, Context context){
+        setContext(context);
         Uri uriInput = Uri.parse("file://" + path);
         setUri(uriInput);
         setExifData();
         parseLocationFromExif();
         parseDateFromExif();
+        initializeSettings();
         parseKarmaAndReleased();
 
         //initialize sorter only once since it is static
@@ -208,7 +218,21 @@ public class BackgroundPhoto {
 
 
     private void parseKarmaAndReleased(){
-        String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
+        initializeSettings();
+        String karmaStr = uri.toString() + KARMA_INDICATOR;
+        String releaseStr = uri.toString() + RELEASED_INDICATOR;
+
+        //karma
+        if(settings.getBoolean(karmaStr, false)){
+           giveKarma();
+        }
+
+        //release
+        if(settings.getBoolean(releaseStr, false)){
+            release();
+        }
+
+        /* String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
         if(comments == null){
             this.karma = false;
             this.released = false;
@@ -218,7 +242,7 @@ public class BackgroundPhoto {
         }
         else if(comments.contains(RELEASED_INDICATOR)){
             this.release();
-        }
+        }*/
     }
 
 
@@ -244,6 +268,14 @@ public class BackgroundPhoto {
     }
 
 
+    private void initializeSettings(){
+        if(this.settings != null){
+            return;
+        }
+        settings = context.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
+        settingsEditor = settings.edit();
+    }
+
     private void setLocation(Location loc){
         this.location = loc;
     }
@@ -254,7 +286,14 @@ public class BackgroundPhoto {
             return;
         }
 
+        initializeSettings();
+        String uriStr = uri.toString() + KARMA_INDICATOR;
+        settingsEditor.putBoolean(uriStr, true);
+        settingsEditor.commit();
         this.karma = true;
+      /*
+        this.karma = true;
+        Log.e("Karma", "karma Boolean was set to True");
         String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
         if(comments == null){
             exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, KARMA_INDICATOR);
@@ -263,20 +302,40 @@ public class BackgroundPhoto {
             String commentsKarma = comments + " " + KARMA_INDICATOR;
             exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, commentsKarma);
         }
+        try {
+            exifData.saveAttributes();
+        }
+        catch (IOException e){
+            Log.e("Karma", "Could not Save Karma String");
+        }*/
     }
 
 
     public void release(){
+        initializeSettings();
+        String uriStr = uri.toString() + RELEASED_INDICATOR;
+        settingsEditor.putBoolean(uriStr, true);
+        settingsEditor.commit();
         this.released = true;
 
+      /*
+        this.released = true;
+        Log.e("Release", "release Boolean was set to True");
         String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
         if(comments == null){
             exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, RELEASED_INDICATOR);
         }
-        if(!comments.contains(RELEASED_INDICATOR)){
+        else if(!comments.contains(RELEASED_INDICATOR)){
             String commentsRelease = comments + " " + RELEASED_INDICATOR;
             exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, commentsRelease);
         }
+        try {
+            exifData.saveAttributes();
+        }
+        catch (IOException e){
+            Log.e("Release", "Could not Save Release String");
+            e.printStackTrace();
+        }*/
     }
 
 
@@ -320,6 +379,10 @@ public class BackgroundPhoto {
     public int getPoints(){
         return this.points;
     }
+
+    public void setPoints(int points) {this.points = points;}
+
+    private void setContext(Context context){this.context = context;}
 
 }
 
