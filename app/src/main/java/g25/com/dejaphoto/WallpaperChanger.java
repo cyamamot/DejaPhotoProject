@@ -124,6 +124,10 @@ public class WallpaperChanger {
             Log.d("Debug", "I am here");
             cursorLocation = 0;
         }
+        if(photoWrappers[cursorLocation].isReleased() == true){
+            Log.d("Debug", "Skip here ");
+            cursorLocation++;
+        }
         setWallpaper(photoWrappers[cursorLocation]);
 
 
@@ -146,10 +150,6 @@ public class WallpaperChanger {
             Log.e("Location", "No Date Stamp Available for this Photo");
         }
 
-        if(photoWrappers[cursorLocation].isReleased()){
-            cursorLocation++;
-        }
-
         cursorLocation++;
     }
 
@@ -164,6 +164,10 @@ public class WallpaperChanger {
         }
 
         setWallpaper(photoWrappers[cursorLocation]);
+
+        if(photoWrappers[cursorLocation].isReleased() == true){
+            cursorLocation--;
+        }
 
         if(photoWrappers[cursorLocation].hasLocation()) {
             Location location = photoWrappers[cursorLocation].getLocation();
@@ -181,11 +185,6 @@ public class WallpaperChanger {
         }
         else{
             Log.e("Location", "No Date Stamp Available for this Photo");
-        }
-
-        if(photoWrappers[cursorLocation].isReleased()){
-            Log.e("WallpaperChanger", "here");
-            cursorLocation--;
         }
 
 
