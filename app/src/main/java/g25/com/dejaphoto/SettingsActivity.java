@@ -12,6 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Button;
+import android.util.Log;
+
+
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -21,6 +25,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     private boolean useCustomAlbum;
     private EditText delaySeconds;
     private TextView delayLabel;
+    private Button saveSettings;
     private int transitionDelay;
     private SharedPreferences settings;
     private SharedPreferences.Editor settingsEditor;
@@ -55,66 +60,18 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
         startService(intent);
 
-        //buildGoogleApiClient();
+        saveSettings = (Button) findViewById(R.id.btn_saveSettings);
+        saveSettings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.e("Settings Save", "Button Clicked");
+                SortingAlgorithm alg = new SortingAlgorithm(SettingsActivity.this);
+
+            }
+        });
+
+
     }
 
-    /*protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
-    }*/
-
-    /**
-     * Runs when a GoogleApiClient object successfully connects.
-     */
-    /*@Override
-    public void onConnected(Bundle connectionHint) {
-        // Provides a simple way of getting a device's location and is well suited for
-        // applications that do not require a fine-grained location and that do not need location
-        // updates. Gets the best and most recent location currently available, which may be null
-        // in rare cases when a location is not available.
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            mLatitudeText.setText(String.format("%s: %f", mLatitudeLabel,
-                    mLastLocation.getLatitude()));
-            mLongitudeText.setText(String.format("%s: %f", mLongitudeLabel,
-                    mLastLocation.getLongitude()));
-        } else {
-            Toast.makeText(this, "f this", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
-        // onConnectionFailed.
-        //Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
-    }
-
-
-    @Override
-    public void onConnectionSuspended(int cause) {
-        // The connection to Google Play services was lost for some reason. We call connect() to
-        // attempt to re-establish the connection.
-        //Log.i(TAG, "Connection suspended");
-        mGoogleApiClient.connect();
-    }*/
 
     public void setDelay(View view){
 

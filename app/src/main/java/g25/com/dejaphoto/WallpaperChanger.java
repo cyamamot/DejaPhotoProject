@@ -73,17 +73,19 @@ public class WallpaperChanger {
         photoWrappers = new BackgroundPhoto[albumSize];
 
         //DEBUG log messages
-        String[] strUrls = new String[albumSize];
+        //String[] strUrls = new String[albumSize];
         String[] mNames = new String[albumSize];
 
         for (int i = 0; i < albumSize; i++) {
             cursor.moveToPosition(i);
             // cursor.getString(1) is the path to image file
             String path = cursor.getString(1);
+
+            BackgroundPhoto curr = new BackgroundPhoto(path);
             photoWrappers[i] = new BackgroundPhoto(path);
 
             //DEBUG log messages
-            strUrls[i] = path;
+            //strUrls[i] = path;
             mNames[i] = cursor.getString(3);
             Log.e("mNames[i]",mNames[i]+":"+ cursor.getColumnCount()+ " : " + cursor.getString(1));
             //Log.e("uri", mUrls[i].toString());
