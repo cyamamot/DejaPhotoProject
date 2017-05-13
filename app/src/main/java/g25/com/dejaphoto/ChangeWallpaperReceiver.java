@@ -11,6 +11,8 @@ import android.util.Log;
  */
 
 public class ChangeWallpaperReceiver extends BroadcastReceiver {
+
+
     static WallpaperChanger wallpaperChanger;
     @Override
     public void onReceive(Context context, Intent intent){
@@ -20,8 +22,22 @@ public class ChangeWallpaperReceiver extends BroadcastReceiver {
 
             Log.e("ChangeWallpaperReceiver", "INITIALIZED");
         }
+        else if(intent.getAction() == "NEXT")
+        {
+            wallpaperChanger.next();
+        }
+        else if(intent.getAction() == "PREV")
+        {
+            wallpaperChanger.previous();
+        }
+        else if(intent.getAction() == "RELEASE")
+        {
 
-        wallpaperChanger.next();
+        }
+        else if(intent.getAction() == "KARMA")
+        {
+
+        }
 
         //debug message
         Log.e("ChangeWallpaperReceiver", "RECEIVED");

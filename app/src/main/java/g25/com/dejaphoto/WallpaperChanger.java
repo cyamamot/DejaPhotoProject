@@ -25,6 +25,7 @@ public class WallpaperChanger {
     private Context context;
     private int albumSize;
 
+
     // constructor passes in activity to get context and stuff
     public WallpaperChanger(Context context){
         this.context = context;
@@ -129,5 +130,53 @@ public class WallpaperChanger {
     }
 
 
+    /**
+     * Sets wallpaper to previous photo in album.
+     * Can iterate up to 10 photos
+     */
+    public void previous(){
 
+        if(cursorLocation < 0) {
+            Log.d("Debug", "I am here");
+            cursorLocation = 1;
+        }
+
+        if(photoWrappers[cursorLocation].hasLocation()) {
+            Location location = photoWrappers[cursorLocation].getLocation();
+            Log.e("Location Latitude", Double.toString(location.getLatitude()));
+            Log.e("Location Longitude", Double.toString(location.getLongitude()));
+        }
+        else{
+            Log.e("Location", "No Location Geotag Available for this Photo");
+        }
+
+        //DEBUG CHECK DATE
+        if(photoWrappers[cursorLocation].hasDate()){
+            Date date = photoWrappers[cursorLocation].getDate();
+            Log.e("Date", date.toString());
+        }
+        else{
+            Log.e("Location", "No Date Stamp Available for this Photo");
+        }
+
+        setWallpaper(photoWrappers[cursorLocation]);
+
+        cursorLocation--;
+    }
+
+    /**
+     * Sets wallpaper to previous photo in album.
+     * Can iterate up to 10 photos
+     */
+    public void release () {
+
+    }
+
+    /**
+     * Sets wallpaper to previous photo in album.
+     * Can iterate up to 10 photos
+     */
+    public void karma() {
+
+    }
 }

@@ -21,11 +21,12 @@ import android.content.ComponentName;
 
 /**
  * Implementation of App Widget functionality.
+ * Source: //http://stackoverflow.com/questions/23220757/android-widget-onclick-listener-for-several-buttons
  */
 public class NavWidget extends AppWidgetProvider {
 
     static ChangeWallpaperReceiver receiver;
-    //static WallpaperChanger wallpaperChange;
+    //static WallpaperChanger wallpaperChanger;
     private static final String NEXT = "NEXT";
     private static final String PREV = "PREV";
     private static final String RELEASE = "RELEASE";
@@ -51,8 +52,7 @@ public class NavWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the first widget is created
         receiver = new ChangeWallpaperReceiver();
 
-        //http://stackoverflow.com/questions/23220757/android-widget-onclick-listener-for-several-buttons
-        //Get all ids
+
         ComponentName thisWidget = new ComponentName(context, NavWidget.class);
         // There may be multiple widgets active, so update all of them
         //Iterate through all of our widgets
@@ -85,7 +85,6 @@ public class NavWidget extends AppWidgetProvider {
     }
 
     //Use PendingIntent to request manual update when the update button is clicked
-    //Then Actions for the intent is set to ACTION_APPWIDGET_UPDATE
     protected PendingIntent getPendingSelfIntent(Context context, String action) {
         Intent intent = new Intent(context, NavWidget.class);
         intent.setAction(action);
@@ -98,37 +97,26 @@ public class NavWidget extends AppWidgetProvider {
 
         if (NEXT.equals(intent.getAction())) {
             // onClick action is here
-
             receiver.onReceive(context, intent);
-
-            //wallpaperChaner.next();
+            //wallpaperChanger.next();
             Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked button1");
+            Log.w("Widget", "Clicked NEXT");
         } else if (PREV.equals(intent.getAction())) {
+            receiver.onReceive(context, intent);
             Toast.makeText(context, "PREV", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked button2");
+            Log.w("Widget", "Clicked PREV");
         } else if (RELEASE.equals(intent.getAction())) {
+            receiver.onReceive(context, intent);
             Toast.makeText(context, "RELEASE", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked button3");
+            Log.w("Widget", "Clicked RELEASE");
         }
         else if (KARMA.equals(intent.getAction())){
+            receiver.onReceive(context, intent);
          Toast.makeText(context, "KARMA", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked button4");}
+            Log.w("Widget", "Clicked KARMA");}
     }
 
 
-
-    @Override
-    public void onEnabled(Context context) {
-
-
-
-    }
-
-    @Override
-    public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
-    }
 
 
 }
