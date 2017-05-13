@@ -140,7 +140,7 @@ public class WallpaperChanger {
 
         if(cursorLocation <= 0) {
             Log.d("Debug", "I am here");
-            cursorLocation = albumSize;
+            cursorLocation = albumSize - 1;
         }
 
         if(photoWrappers[cursorLocation].hasLocation()) {
