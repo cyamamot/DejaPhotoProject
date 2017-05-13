@@ -46,10 +46,10 @@ public class WallpaperChanger {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
 
             // trying to set text on the bitmap
-            Paint textPaint = new Paint();
+            /*Paint textPaint = new Paint();
             textPaint.setColor(Color.BLUE);
             Canvas canvas = new Canvas(bitmap);
-            canvas.drawText("hi its me cse110 sucks", 300, 300, textPaint);
+            canvas.drawText("hi its me cse110 sucks", 300, 300, textPaint);*/
 
             myWallpaperManager.setBitmap(bitmap);
         } catch (IOException e) {
@@ -95,12 +95,12 @@ public class WallpaperChanger {
             // cursor.getString(1) is the path to image file
             String path = cursor.getString(1);
 
-            BackgroundPhoto curr = new BackgroundPhoto(path);
+            /*BackgroundPhoto curr = new BackgroundPhoto(path);
             int points = alg.addPoints(context, curr);
             curr.setPoints(points);
-            photoWrappers[i] = curr;
+            photoWrappers[i] = curr;*/
 
-            //photoWrappers[i] = new BackgroundPhoto(path);
+            photoWrappers[i] = new BackgroundPhoto(path);
 
             //DEBUG log messages
             //strUrls[i] = path;
