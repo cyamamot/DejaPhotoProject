@@ -79,6 +79,8 @@ public class WallpaperChanger {
             cursor.moveToPosition(i);
             // cursor.getString(1) is the path to image file
             String path = cursor.getString(1);
+
+            BackgroundPhoto curr = new BackgroundPhoto(path);
             photoWrappers[i] = new BackgroundPhoto(path);
 
             //DEBUG log messages
