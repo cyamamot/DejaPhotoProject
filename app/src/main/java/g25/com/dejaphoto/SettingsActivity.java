@@ -69,6 +69,15 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
             }
         });
 
+        LocationWrapper testLocation = new LocationWrapper(this, 1, 1);
+        Location location = testLocation.getCurrentUserLocation();
+        if(location == null){
+            Log.e("Location Test", "Null Location returned");
+        }
+        else{
+            Log.e("Location Test", location.toString());
+        }
+
 
     }
 

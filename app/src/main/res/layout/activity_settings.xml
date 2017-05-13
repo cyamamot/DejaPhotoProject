@@ -48,6 +48,12 @@
     </RadioGroup>
 
     <TextView
+        android:id="@+id/label_dejavu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enable DejaVu Location Mode" />
+
+    <TextView
         android:id="@+id/label_transitionDelay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

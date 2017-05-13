@@ -54,16 +54,18 @@ public class LocationWrapper {
             }
 
             public void onProviderEnabled(String provider) {
+
             }
 
             public void onProviderDisabled(String provider) {
             }
         };
 
+        currentUserLocation = locationManager.getLastKnownLocation(locationProvider);
         // we first check if user granted us location permission, if so we tell locationManager to request location updates
         if (ContextCompat.checkSelfPermission(activity,
                 permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+                == PackageManager.PERMISSION_GRANTED) {
             // Register the listener with the Location Manager to receive location updates with passed in minTime and minDistance
             locationManager.requestLocationUpdates(locationProvider, minTime, minDistance, locationListener);
             locationPermissionGiven = true;
