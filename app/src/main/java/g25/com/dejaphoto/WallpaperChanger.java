@@ -187,6 +187,7 @@ public class WallpaperChanger {
             cursorLocation--;
         }
 
+
         cursorLocation--;
     }
 
