@@ -64,9 +64,22 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         saveSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.e("Settings Save", "Button Clicked");
+<<<<<<< HEAD
+=======
+                //SortingAlgorithm alg = new SortingAlgorithm(SettingsActivity.this);
+>>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
 
             }
         });
+
+        LocationWrapper testLocation = new LocationWrapper(this, 1, 1);
+        Location location = testLocation.getCurrentUserLocation();
+        if(location == null){
+            Log.e("Location Test", "Null Location returned");
+        }
+        else{
+            Log.e("Location Test", location.toString());
+        }
 
 
     }

@@ -1,11 +1,11 @@
 package g25.com.dejaphoto;
 
-import android.location.Location;
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 
 
-
+import java.util.Comparator;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SortingAlgorithm {
 
+<<<<<<< HEAD
     Context act;
     Location location;
     Date date;
@@ -24,10 +25,24 @@ public class SortingAlgorithm {
     boolean released;
     public SortingAlgorithm (){}
 
+=======
+    private static final int MIN_DISTANCE = 152; //update every 500 feet (uses meters)
+    private static final int MIN_TIME = 1 * 60 * 60 * 1000; //update every hour (uses milliseconds)
+
+    public SortingAlgorithm(){}
+    Context context;
+    LocationWrapper loc;
+
+    public SortingAlgorithm (Context context){
+        this.context = context;
+        loc = new LocationWrapper(context, MIN_TIME, MIN_DISTANCE);
+    }
+>>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
         //if location is 1000ft from current location & location boolean is true
         //if time is 2hrs from current time & time boolean is true
         //if photo has karma
         //if released, set point value to -1
+<<<<<<< HEAD
         int addPoints (BackgroundPhoto photo){
 
             //act = activity;
@@ -35,6 +50,15 @@ public class SortingAlgorithm {
             date = photo.getDate();
             karma = photo.hasKarma();
             released = photo.isReleased();
+=======
+        int assignPoints(BackgroundPhoto photo){
+
+            //get info from photo
+            Date date = photo.getDate();
+            Location location = photo.getLocation();
+            boolean released = photo.isReleased();
+            boolean karma = photo.hasKarma();
+>>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
 
             int points = 0;
 
@@ -42,6 +66,7 @@ public class SortingAlgorithm {
                 return -1;
             }
 
+<<<<<<< HEAD
             /*LocationWrapper loc = new LocationWrapper(act, 1, 1);
             try {
                 TimeUnit.SECONDS.sleep(10);
@@ -63,8 +88,24 @@ public class SortingAlgorithm {
             if (distance <= 304.8){
                 points += 5;
             }*/
+=======
+            if (context == null){
+                Log.e("fuck", "fml");
+            }
 
+            Location currentL = loc.getCurrentUserLocation();
+            if(currentL != null && location != null) {
+                float distance = location.distanceTo(currentL); //distance in meters
+                if (distance <= 304.8) {
+                    points += 5;
+                }
+            }
+>>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
+
+
+            //TODO: set it to today
             Date currentDate = new Date();
+<<<<<<< HEAD
             SimpleDateFormat simpleDateformat = new SimpleDateFormat("E");
             if (simpleDateformat.format(currentDate).equals(simpleDateformat.format(date))) {
                 Log.d("SortingAlg", "Same Day of Week");
@@ -74,14 +115,26 @@ public class SortingAlgorithm {
                     points += 5;
                 }
 
+=======
+            if(currentDate != null && date != null) {
+                long difference = date.getTime() - currentDate.getTime();
+                if (difference <= 7200000) {
+                    points += 5;
+                }
+>>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
             }
 
             if (karma){
                 points += 5;
             }
 
+<<<<<<< HEAD
             String p = ((Integer)points).toString();
             Log.d("SortingAlg", p);
+=======
+            photo.setPoints(points);
+
+>>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
             return points;
         }
 }
