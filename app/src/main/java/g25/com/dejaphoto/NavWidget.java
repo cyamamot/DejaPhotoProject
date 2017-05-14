@@ -28,10 +28,10 @@ public class NavWidget extends AppWidgetProvider {
 
     //static WallpaperChanger receiver;
     //static WallpaperChanger wallpaperChanger;
-    private static final String NEXT = "NEXT";
-    private static final String PREV = "PREV";
-    private static final String RELEASE = "RELEASE";
-    private static final String KARMA = "KARMA";
+    static final String NEXT = "NEXT";
+    static final String PREV = "PREV";
+    static final String RELEASE = "RELEASE";
+    static final String KARMA = "KARMA";
 
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
