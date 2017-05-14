@@ -89,6 +89,7 @@ public class DejaPhotoService extends Service {
 
         //Change Pictures Every Interval
         Intent changeWallpaperIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
+        changeWallpaperIntent.setAction(NavWidget.NEXT);
         //Manages the countdown and sending the intent to the receiver once the countdown is over.
         alarmChangeWallpaper = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Intent wrapper needed for technical reasons.
@@ -101,6 +102,7 @@ public class DejaPhotoService extends Service {
 
         //Recalculate Points every Hour
         Intent calcIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
+        calcIntent.setAction(INIT);
         alarmRecalculatePoints = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         pendingCalcIntent = PendingIntent.getService(getApplicationContext(), 1,
                 calcIntent, PendingIntent.FLAG_CANCEL_CURRENT);

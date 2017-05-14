@@ -6,10 +6,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -27,8 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.PriorityQueue;
-
-import static android.graphics.Paint.Align.CENTER;
 
 /**
  * Created by dillonliu on 5/6/17.
@@ -60,15 +54,15 @@ public class WallpaperChanger {
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-            Bitmap b = addLocationtoBitmap(bitmap);
+            //Bitmap b = addLocationtoBitmap(bitmap);
 
-            myWallpaperManager.setBitmap(b);
+            myWallpaperManager.setBitmap(bitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
         Log.e("POINTS", Integer.toString(photoWrapper.getPoints()));
     }
-
+    /*
     // Method to add location to wallpaper
     private Bitmap addLocationtoBitmap(Bitmap bitmap) {
 
@@ -104,6 +98,7 @@ public class WallpaperChanger {
 
         return bitmap;
     }
+    */
 
 
     // http://stackoverflow.com/questions/6855399/how-to-implement-image-gallery-in-gridview-in-android

@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -26,6 +27,10 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     static final String PREFS_NAME = "DejaPhotoPreferences";
     static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
     static final int MY_PERMISSIONS_REQUEST_READ_STORAGE = 2;
+
+    // used for testing
+    private Button mapsButton;
+    private boolean debug = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,11 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         EditText etTransitionDelay = (EditText)findViewById(R.id.editText_transitionDelay);
         etTransitionDelay.setText(String.valueOf(transitionDelay));
         etTransitionDelay.setSelection(String.valueOf(transitionDelay).length());
+
+        if(!debug){
+            mapsButton = (Button) findViewById(R.id.btn_testMap);
+            mapsButton.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -162,6 +172,14 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
                 // app-defined int constant. The callback method gets the
                 // result of the request.
             }
+        }
+    }
+
+    // this function is our onClick to the MapsActivity used only for testing LocationWrapper
+    public void testMap(View view){
+        if(debug) {
+            Intent intent = new Intent(this, MapsActivity.class);
+            startActivity(intent);
         }
     }
 }
