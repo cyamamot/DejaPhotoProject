@@ -288,6 +288,7 @@ public class WallpaperChanger {
         }
     }
 
+    //
     public void setLocation() {
         //String path = cursor.getString(1);
         BackgroundPhoto curr = prevList.get(prevCursor);
