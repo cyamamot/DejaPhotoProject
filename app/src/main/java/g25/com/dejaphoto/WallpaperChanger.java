@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.PriorityQueue;
 
+import static android.graphics.Paint.Align.CENTER;
+
 /**
  * Created by dillonliu on 5/6/17.
  */
@@ -75,7 +77,7 @@ public class WallpaperChanger {
         if(bitmapConfig == null) {
             bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
         }
-        // resource bitmaps are imutable,
+        // resource bitmaps are immutable,
         // so we need to convert it to mutable one
         bitmap = bitmap.copy(bitmapConfig, true);
 
@@ -88,10 +90,14 @@ public class WallpaperChanger {
         textPaint.setTextSize(14);
 
         Canvas canvas = new Canvas(bitmap);
-        String location = "hi its me cse110 sucks";
+        String location = "hi its me";
 
-        int x = 100;
-        int y = 100;
+        // draw text to the Canvas center
+        textPaint.setTextAlign(CENTER);
+
+        float x = (canvas.getWidth()/2);
+        //int y = (canvas.getHeight()/2);
+        float y = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2)) ;
 
         canvas.drawText(location, x, y, textPaint);
 
