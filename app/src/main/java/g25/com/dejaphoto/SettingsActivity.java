@@ -89,17 +89,21 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         //change settings
         delaySeconds = (EditText)findViewById(R.id.editText_transitionDelay);
         transitionDelay = Integer.parseInt(delaySeconds.getText().toString());
-        settingsEditor.putInt("transitionDelay", transitionDelay);
-        settingsEditor.commit();
 
-        //change label
-        delayLabel.setText("Transition Delay: " + transitionDelay);
+        // check for a time greater than 0
+        if(transitionDelay > 0) {
+            settingsEditor.putInt("transitionDelay", transitionDelay);
+            settingsEditor.commit();
 
-        //service will restart itself when stopped
-        Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
-        stopService(intent);
+            //change label
+            delayLabel.setText("Transition Delay: " + transitionDelay);
 
-        Log.e("Settings Save", "Button Clicked");
+            //service will restart itself when stopped
+            Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
+            stopService(intent);
+
+            Log.e("Settings Save", "Button Clicked");
+        }
     }
 
 
