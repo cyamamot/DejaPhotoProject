@@ -8,6 +8,8 @@ import android.util.Log;
 import java.util.Comparator;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import static java.lang.Math.abs;
+import java.lang.*;
 import java.util.concurrent.TimeUnit;
 
 
@@ -21,7 +23,6 @@ public class SortingAlgorithm {
     private static final int MIN_DISTANCE = 152; //update every 500 feet (uses meters)
     private static final int MIN_TIME = 1 * 60 * 60 * 1000; //update every hour (uses milliseconds)
 
-    public SortingAlgorithm(){}
     Context context;
     LocationWrapper loc;
 
@@ -45,32 +46,29 @@ public class SortingAlgorithm {
             int points = 0;
 
             if(released){
+                photo.setPoints(-1);
                 return -1;
-            }
-
-            if (context == null){
-                Log.e("fuck", "fml");
             }
 
             Location currentL = loc.getCurrentUserLocation();
             if(currentL != null && location != null) {
                 float distance = location.distanceTo(currentL); //distance in meters
-                if (distance <= 304.8) {
+                if (abs(distance) <= 304.8) {
                     points += 5;
                 }
             }
 
 
-            //TODO: set it to today
             Date currentDate = new Date();
             if(currentDate != null && date != null) {
-                SimpleDateFormat simpleDateformat = new SimpleDateFormat("E");
-                if (simpleDateformat.format(currentDate).equals(simpleDateformat.format(date))) {
+                SimpleDateFormat week = new SimpleDateFormat("E");
+                if (week.format(currentDate).equals(week.format(date))) {
                     Log.d("SortingAlg", "Same Day of Week");
-
-                    long difference = date.getTime() - currentDate.getTime();
-                    if (difference <= 7200000) {
-
+                    SimpleDateFormat hour = new SimpleDateFormat("HH:mm");
+                    int currentTime = toMins(hour.format(currentDate));
+                    int photoTime = toMins(hour.format(date));
+                    long difference = photoTime - currentTime;
+                    if (abs(difference) <= 120) {
                         points += 5;
                     }
                 }
@@ -80,10 +78,17 @@ public class SortingAlgorithm {
                 points += 5;
             }
 
-            String p = ((Integer)points).toString();
-            Log.d("SortingAlg", p);
             photo.setPoints(points);
+            Log.d("SortingAlg", ((Integer)photo.getPoints()).toString());
 
             return points;
         }
+
+    private static int toMins(String s) {
+        String[] hourMin = s.split(":");
+        int hour = Integer.parseInt(hourMin[0]);
+        int mins = Integer.parseInt(hourMin[1]);
+        int hoursInMins = hour * 60;
+        return hoursInMins + mins;
+    }
 }
