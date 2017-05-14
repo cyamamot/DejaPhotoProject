@@ -24,7 +24,6 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     private boolean useCustomAlbum;
     private EditText delaySeconds;
     private TextView delayLabel;
-    private Button saveSettings;
     private int transitionDelay;
     private SharedPreferences settings;
     private SharedPreferences.Editor settingsEditor;
@@ -63,11 +62,13 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         else{
             Log.e("Location Test", location.toString());
         }
-
-
     }
 
 
+    /**
+     * Saves all settings to sharedPreferences.
+     * @param view - Current View
+     */
     public void saveSettings(View view){
         //change settings
         delaySeconds = (EditText)findViewById(R.id.editText_transitionDelay);
@@ -84,24 +85,31 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
         Log.e("Settings Save", "Button Clicked");
     }
+
+
     public void selectDefaultAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", false);
         settingsEditor.commit();
     }
+
 
     public void selectCustomAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", true);
         settingsEditor.commit();
     }
 
-    // we call this to ask user for all permissions
+
+    /**
+     * Creates the pop up dialogues to ask user to permission.
+     */
     public void requestPermissions(){
+
         // request read_external_storage
         if (ContextCompat.checkSelfPermission(this,
                 permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
+            //pop up dialogue
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     permission.READ_EXTERNAL_STORAGE)) {
 
