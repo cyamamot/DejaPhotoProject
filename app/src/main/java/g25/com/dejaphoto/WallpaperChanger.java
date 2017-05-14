@@ -1,6 +1,5 @@
 package g25.com.dejaphoto;
 
-import android.app.Activity;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -15,13 +14,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.RemoteViews;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -63,19 +58,43 @@ public class WallpaperChanger {
             myWallpaperManager = WallpaperManager.getInstance(context);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
 
-            // trying to set text on the bitmap
-            Paint textPaint = new Paint();
-            textPaint.setColor(Color.BLUE);
+            Bitmap b = addLocationtoBitmap(bitmap);
 
-            //Causing crashing issues
-            //Canvas canvas = new Canvas(bitmap);
-            //canvas.drawText("hi its me cse110 sucks", 300, 300, textPaint);
-
-            myWallpaperManager.setBitmap(bitmap);
+            myWallpaperManager.setBitmap(b);
         } catch (IOException e) {
             e.printStackTrace();
         }
         Log.e("POINTS", Integer.toString(photoWrapper.getPoints()));
+    }
+
+    private Bitmap addLocationtoBitmap(Bitmap bitmap) {
+
+        android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
+        // set default bitmap config if none
+        if(bitmapConfig == null) {
+            bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
+        }
+        // resource bitmaps are imutable,
+        // so we need to convert it to mutable one
+        bitmap = bitmap.copy(bitmapConfig, true);
+
+        // trying to set text on the bitmap
+        Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        // text color
+        textPaint.setColor(Color.BLUE);
+        // text shadow
+        textPaint.setShadowLayer(1f, 0f, 1f, Color.WHITE);
+        textPaint.setTextSize(14);
+
+        Canvas canvas = new Canvas(bitmap);
+        String location = "hi its me cse110 sucks";
+
+        int x = 100;
+        int y = 100;
+
+        canvas.drawText(location, x, y, textPaint);
+
+        return bitmap;
     }
 
 
