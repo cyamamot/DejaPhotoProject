@@ -295,7 +295,7 @@ public class WallpaperChanger {
         //////////////////////////////////this just shows the picture's point values where the address should be
         //remoteViews.setTextViewText(R.id.location_textview, Double.toString(curr.latitude) + ", " + Double.toString(curr.longitude));
         //remoteViews.setTextViewText(R.id.location_textview, String.valueOf(curr.hasEXIF));
-        remoteViews.setTextViewText(R.id.location_textview, curr.checker);
+        remoteViews.setTextViewText(R.id.location_textview, "");
         appWidgetManager.updateAppWidget(thisWidget, remoteViews);
 
 
