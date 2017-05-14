@@ -61,7 +61,10 @@ public class BackgroundPhoto {
     boolean released;
     boolean hasLocation;
     boolean hasDate;
+    boolean hasEXIF;
     int points;
+
+    String checker;
 
     Context context;
     static final String KARMA_INDICATOR = "DJP_KARMA";
@@ -78,7 +81,6 @@ public class BackgroundPhoto {
         parseDateFromExif();
         initializeSettings();
         parseKarmaAndReleased();
-
     }
 
 
@@ -90,14 +92,20 @@ public class BackgroundPhoto {
         if (exifData == null){
             this.hasLocation = false;
             this.hasDate = false;
+            this.hasEXIF = false;
             return;
         }
+        this.hasEXIF = true;
         //get lat
         String lat = exifData.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
         String latDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
         //get lng
         String lng = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
         String lngDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
+
+
+        //checker = lat + ", " + lng + " : " + latDirection + ", " + lngDirection;
+
 
         //parse by calling helper method
         //double latitude, longitude;
@@ -250,6 +258,7 @@ public class BackgroundPhoto {
     private void setExifData(){
         try {
             this.exifData = new ExifInterface(uri.getPath());
+            Log.v("Path from Exif", "success");
         }
         catch (IOException e){
             e.printStackTrace();
@@ -257,6 +266,7 @@ public class BackgroundPhoto {
             this.exifData = null;
             this.hasLocation = false;
             this.hasDate = false;
+            this.hasEXIF = false;
         }
     }
 

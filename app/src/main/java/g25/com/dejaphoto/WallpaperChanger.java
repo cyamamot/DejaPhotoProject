@@ -272,8 +272,12 @@ public class WallpaperChanger {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.nav_widget);
         ComponentName thisWidget = new ComponentName(context, NavWidget.class);
 
-        remoteViews.setTextViewText(R.id.location_textview, Double.toString(curr.getPoints()));
+        //////////////////////////////////this just shows the picture's point values where the address should be
+        //remoteViews.setTextViewText(R.id.location_textview, Double.toString(curr.latitude) + ", " + Double.toString(curr.longitude));
+        //remoteViews.setTextViewText(R.id.location_textview, String.valueOf(curr.hasEXIF));
+        remoteViews.setTextViewText(R.id.location_textview, curr.checker);
         appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+
 
         geocoder = new Geocoder(context, Locale.getDefault());
         if (curr.hasLocation) {
