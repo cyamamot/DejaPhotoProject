@@ -39,21 +39,26 @@ public class DejaPhotoService extends Service {
         if(intent.getAction() == NavWidget.NEXT)
         {
             wallpaperChanger.next();
+            Log.e("ChangeWallpaperReceiver", "NEXT");
         }
         else if(intent.getAction() == NavWidget.PREV)
         {
             wallpaperChanger.previous();
+            Log.e("ChangeWallpaperReceiver", "PREV");
         }
         else if(intent.getAction() == NavWidget.RELEASE)
         {
             wallpaperChanger.release();
+            Log.e("ChangeWallpaperReceiver", "RELEASE");
         }
         else if(intent.getAction() == NavWidget.KARMA)
         {
             wallpaperChanger.karma();
+            Log.e("ChangeWallpaperReceiver", "KARMA");
         }
         else{
             wallpaperChanger.next();
+            Log.e("ChangeWallpaperReceiver", "NEXT");
         }
 
 

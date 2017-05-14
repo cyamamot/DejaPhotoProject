@@ -3,12 +3,14 @@ package g25.com.dejaphoto;
 import android.Manifest.permission;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 /**
@@ -27,6 +29,7 @@ public class LocationWrapper {
     //whether user has location permission turned on; if not this class can't do a whole lot
     boolean locationPermissionGiven = false;
     static final int TWO_MINUTES = 1000 * 60 * 2;
+    Context context;
 
     // constructor takes in context for access to context and stuff
     // minTime is minimum time interval between location updates, in milliseconds
@@ -35,6 +38,7 @@ public class LocationWrapper {
     public LocationWrapper(Context context, long minTime, float minDistance) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationProvider = LocationManager.NETWORK_PROVIDER;
+        this.context = context;
 
         // Define a listener that responds to location updates
         locationListener = new LocationListener() {
@@ -44,7 +48,7 @@ public class LocationWrapper {
                 // but first we have to check if newly returned location is better/more accurate than the last one
                 if(isBetterLocation(location, currentUserLocation)) {
                     setCurrentUserLocation(location);
-
+                    sendResetIntent();
                     //DEBUG Log location
                     Log.e("Location Test", "User Location Changed");
                 }
@@ -102,6 +106,11 @@ public class LocationWrapper {
         locationManager.removeUpdates(locationListener);
     }
 
+    public void sendResetIntent(){
+        Intent intent = new Intent(context, DejaPhotoService.class);
+        intent.setAction(DejaPhotoService.INIT);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
 
     /** Determines whether one Location reading is better than the current Location fix
      * @param location  The new Location that you want to evaluate
