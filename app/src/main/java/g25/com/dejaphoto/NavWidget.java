@@ -1,5 +1,6 @@
 package g25.com.dejaphoto;
 
+import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -27,10 +28,10 @@ public class NavWidget extends AppWidgetProvider {
 
     //static WallpaperChanger receiver;
     //static WallpaperChanger wallpaperChanger;
-    private static final String NEXT = "NEXT";
-    private static final String PREV = "PREV";
-    private static final String RELEASE = "RELEASE";
-    private static final String KARMA = "KARMA";
+    static final String NEXT = "NEXT";
+    static final String PREV = "PREV";
+    static final String RELEASE = "RELEASE";
+    static final String KARMA = "KARMA";
 
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
@@ -98,20 +99,20 @@ public class NavWidget extends AppWidgetProvider {
         if (NEXT.equals(intent.getAction())) {
             sendToService.setAction(NEXT);
             Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked NEXT");
+            Log.v("Widget", "Clicked NEXT");
         } else if (PREV.equals(intent.getAction())) {
             sendToService.setAction(PREV);
             Toast.makeText(context, "PREV", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked PREV");
+            Log.v("Widget", "Clicked PREV");
         } else if (RELEASE.equals(intent.getAction())) {
             sendToService.setAction(RELEASE);
             Toast.makeText(context, "RELEASE", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked RELEASE");
+            Log.v("Widget", "Clicked RELEASE");
         }
         else if (KARMA.equals(intent.getAction())){
             sendToService.setAction(KARMA);
             Toast.makeText(context, "KARMA", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked KARMA");}
+            Log.v("Widget", "Clicked KARMA");}
     }
 
 

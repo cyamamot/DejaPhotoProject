@@ -11,9 +11,9 @@ import android.util.Log;
 
 public class DejaPhotoService extends Service {
     static int transitionDelay;
-    private AlarmManager alarmMgr;
-    private PendingIntent pendingIntent;
-    private static WallpaperChanger wallpaperChanger;
+    AlarmManager alarmMgr;
+    PendingIntent pendingIntent;
+    static WallpaperChanger wallpaperChanger;
 
     public DejaPhotoService() {
     }
@@ -52,6 +52,10 @@ public class DejaPhotoService extends Service {
         else{
             wallpaperChanger.next();
         }
+
+
+        wallpaperChanger.setLocation();
+
 
         //DEBUG MESSAGES
         Log.e("ServiceLog", "Service Called");

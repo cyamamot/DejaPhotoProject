@@ -10,6 +10,7 @@ import android.location.Location;
 import android.util.Log;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.widget.Toast;
 
 /**
  * Wrapper class for Photos that encapsulate Location, Date/Time, Karma, Release Status. Also
@@ -54,12 +55,16 @@ public class BackgroundPhoto {
     Uri uri;
     GregorianCalendar dateCalendar;
     Location location;
+    double latitude, longitude;
     static SortingAlgorithm sorter; //DOES THE SORTING
     boolean karma;
     boolean released;
     boolean hasLocation;
     boolean hasDate;
+    boolean hasEXIF;
     int points;
+
+    String checker;
 
     Context context;
     static final String KARMA_INDICATOR = "DJP_KARMA";
@@ -76,7 +81,6 @@ public class BackgroundPhoto {
         parseDateFromExif();
         initializeSettings();
         parseKarmaAndReleased();
-
     }
 
 
@@ -88,8 +92,10 @@ public class BackgroundPhoto {
         if (exifData == null){
             this.hasLocation = false;
             this.hasDate = false;
+            this.hasEXIF = false;
             return;
         }
+        this.hasEXIF = true;
         //get lat
         String lat = exifData.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
         String latDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
@@ -97,8 +103,12 @@ public class BackgroundPhoto {
         String lng = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
         String lngDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
 
+
+        //checker = lat + ", " + lng + " : " + latDirection + ", " + lngDirection;
+
+
         //parse by calling helper method
-        double latitude, longitude;
+        //double latitude, longitude;
         try{
             latitude = formatLatLng(lat, latDirection);
             longitude = formatLatLng(lng, lngDirection);
@@ -248,6 +258,7 @@ public class BackgroundPhoto {
     private void setExifData(){
         try {
             this.exifData = new ExifInterface(uri.getPath());
+            Log.v("Path from Exif", "success");
         }
         catch (IOException e){
             e.printStackTrace();
@@ -255,6 +266,7 @@ public class BackgroundPhoto {
             this.exifData = null;
             this.hasLocation = false;
             this.hasDate = false;
+            this.hasEXIF = false;
         }
     }
 

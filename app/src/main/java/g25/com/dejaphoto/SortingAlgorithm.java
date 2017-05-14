@@ -63,19 +63,16 @@ public class SortingAlgorithm {
 
             //TODO: set it to today
             Date currentDate = new Date();
-            SimpleDateFormat simpleDateformat = new SimpleDateFormat("E");
-            if (simpleDateformat.format(currentDate).equals(simpleDateformat.format(date))) {
-                Log.d("SortingAlg", "Same Day of Week");
-                long difference = date.getTime() - currentDate.getTime();
-                if (difference <= 7200000) {
-
-                    points += 5;
-                }
-            }
             if(currentDate != null && date != null) {
-                long difference = date.getTime() - currentDate.getTime();
-                if (difference <= 7200000) {
-                    points += 5;
+                SimpleDateFormat simpleDateformat = new SimpleDateFormat("E");
+                if (simpleDateformat.format(currentDate).equals(simpleDateformat.format(date))) {
+                    Log.d("SortingAlg", "Same Day of Week");
+
+                    long difference = date.getTime() - currentDate.getTime();
+                    if (difference <= 7200000) {
+
+                        points += 5;
+                    }
                 }
             }
 

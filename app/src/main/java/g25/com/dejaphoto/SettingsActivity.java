@@ -9,28 +9,23 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Button;
-import android.util.Log;
-
-
-
-import com.google.android.gms.common.api.GoogleApiClient;
 
 
 public class SettingsActivity extends AppCompatActivity /*implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener*/{
-    private boolean useCustomAlbum;
-    private EditText delaySeconds;
-    private TextView delayLabel;
-    private int transitionDelay;
-    private SharedPreferences settings;
-    private SharedPreferences.Editor settingsEditor;
+    boolean useCustomAlbum;
+    EditText delaySeconds;
+    TextView delayLabel;
+    int transitionDelay;
+    SharedPreferences settings;
+    SharedPreferences.Editor settingsEditor;
 
-    public static final String PREFS_NAME = "DejaPhotoPreferences";
-    private static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
-    private static final int MY_PERMISSIONS_REQUEST_READ_STORAGE = 2;
+    static final String PREFS_NAME = "DejaPhotoPreferences";
+    static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
+    static final int MY_PERMISSIONS_REQUEST_READ_STORAGE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +43,11 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         delayLabel = (TextView)findViewById(R.id.label_transitionDelay);
         delayLabel.setText("Transition Delay: " + transitionDelay);
 
+        // set the edit text transition delay
+        EditText etTransitionDelay = (EditText)findViewById(R.id.editText_transitionDelay);
+        etTransitionDelay.setText(String.valueOf(transitionDelay));
+        etTransitionDelay.setSelection(String.valueOf(transitionDelay).length());
     }
-
 
     /**
      * Method only executes if User grants permission to use location.
