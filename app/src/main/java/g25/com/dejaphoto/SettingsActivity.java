@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -48,8 +49,8 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         delayLabel = (TextView)findViewById(R.id.label_transitionDelay);
         delayLabel.setText("Transition Delay: " + transitionDelay);
 
-    }
 
+    }
 
     /**
      * Method only executes if User grants permission to use location.

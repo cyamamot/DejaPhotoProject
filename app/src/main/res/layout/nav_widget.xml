@@ -1,9 +1,19 @@
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:padding="@dimen/widget_margin"
+    android:orientation="horizontal">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#55000000"
+                android:layout_height="75dp"
+                android:background="@android:color/transparent"
     android:padding="@dimen/widget_margin"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentStart="true"
+    android:id="@+id/linearLayout">
 
 
     <ImageButton
@@ -12,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="center"
-        android:background="#FFFFFF"
+        android:background="@android:color/transparent"
         android:src="@drawable/prev" />
 
 <!-- https://www.iconfinder.com/icons/393260/arrow_arrows_rotate_icon#size=128-->
@@ -23,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:background="#FFFFFF"
+        android:background="@android:color/transparent"
         android:src="@drawable/cycle" />
 
     <ImageButton
@@ -32,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="center"
-        android:background="#FFFFFF"
+        android:background="@android:color/transparent"
         android:src="@drawable/trash" />
 
     <ImageButton
@@ -41,8 +51,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:background="#FFFFFF"
+        android:background="@android:color/transparent"
         android:src="@drawable/next"/>
 
 
 </LinearLayout>
+
+    <TextView
+        android:id="@+id/location_textview"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:gravity="center"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentStart="true"
+        android:text="" />
+
+</RelativeLayout>

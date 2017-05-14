@@ -53,6 +53,10 @@ public class DejaPhotoService extends Service {
             wallpaperChanger.next();
         }
 
+
+        wallpaperChanger.setLocation();
+
+
         //DEBUG MESSAGES
         Log.e("ServiceLog", "Service Called");
 

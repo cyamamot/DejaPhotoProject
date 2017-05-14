@@ -10,6 +10,7 @@ import android.location.Location;
 import android.util.Log;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.widget.Toast;
 
 /**
  * Wrapper class for Photos that encapsulate Location, Date/Time, Karma, Release Status. Also
@@ -54,6 +55,7 @@ public class BackgroundPhoto {
     Uri uri;
     GregorianCalendar dateCalendar;
     Location location;
+    double latitude, longitude;
     static SortingAlgorithm sorter; //DOES THE SORTING
     boolean karma;
     boolean released;
@@ -98,7 +100,7 @@ public class BackgroundPhoto {
         String lngDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
 
         //parse by calling helper method
-        double latitude, longitude;
+        //double latitude, longitude;
         try{
             latitude = formatLatLng(lat, latDirection);
             longitude = formatLatLng(lng, lngDirection);
