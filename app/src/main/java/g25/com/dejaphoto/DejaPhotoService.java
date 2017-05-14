@@ -22,15 +22,18 @@ public class DejaPhotoService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+
+        //initial initialization
         if (intent.getAction() == "INITIALIZE") {
             getSharedPrefs();
             initializeAlarm();
-
-            initializeWallpaperChanger();
             Log.e("ChangeWallpaperReceiver", "INITIALIZED");
         }
 
+        //make sure wallpaper changer is not null
         initializeWallpaperChanger();
+
+        //see what action is requested
         if(intent.getAction() == "NEXT")
         {
             wallpaperChanger.next();
@@ -52,8 +55,8 @@ public class DejaPhotoService extends Service {
         }
 
         //DEBUG MESSAGES
-        Log.e("ServiceLog", "Service Started");
-        Toast.makeText(DejaPhotoService.this, "Service Started", Toast.LENGTH_LONG).show();
+        Log.e("ServiceLog", "Service Called");
+        Toast.makeText(DejaPhotoService.this, "Service Called", Toast.LENGTH_LONG).show();
         //return super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }

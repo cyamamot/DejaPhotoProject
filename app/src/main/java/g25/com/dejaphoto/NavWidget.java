@@ -26,7 +26,7 @@ import android.content.ComponentName;
 public class NavWidget extends AppWidgetProvider {
 
     //static WallpaperChanger receiver;
-    static WallpaperChanger wallpaperChanger;
+    //static WallpaperChanger wallpaperChanger;
     private static final String NEXT = "NEXT";
     private static final String PREV = "PREV";
     private static final String RELEASE = "RELEASE";
@@ -94,22 +94,23 @@ public class NavWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 // onClick action is here
+        Intent sendToService = new Intent(context, DejaPhotoService.class);
         if (NEXT.equals(intent.getAction())) {
-            intent = new Intent(NEXT);
+            sendToService.setAction(NEXT);
             Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked NEXT");
         } else if (PREV.equals(intent.getAction())) {
-            wallpaperChanger.previous();
+            sendToService.setAction(PREV);
             Toast.makeText(context, "PREV", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked PREV");
         } else if (RELEASE.equals(intent.getAction())) {
-            wallpaperChanger.release();
+            sendToService.setAction(RELEASE);
             Toast.makeText(context, "RELEASE", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked RELEASE");
         }
         else if (KARMA.equals(intent.getAction())){
-            wallpaperChanger.karma();
-         Toast.makeText(context, "KARMA", Toast.LENGTH_SHORT).show();
+            sendToService.setAction(KARMA);
+            Toast.makeText(context, "KARMA", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked KARMA");}
     }
 
