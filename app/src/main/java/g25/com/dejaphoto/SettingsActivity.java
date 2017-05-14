@@ -48,6 +48,14 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         delayLabel = (TextView)findViewById(R.id.label_transitionDelay);
         delayLabel.setText("Transition Delay: " + transitionDelay);
 
+    }
+
+
+    /**
+     * Method only executes if User grants permission to use location.
+     */
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+
         //Launch Service
         Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
         intent.setAction("INITIALIZE");
