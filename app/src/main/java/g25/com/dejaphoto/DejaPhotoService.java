@@ -10,9 +10,12 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class DejaPhotoService extends Service {
+    static final String INIT = "INITIALIZE";
     static int transitionDelay;
-    AlarmManager alarmMgr;
-    PendingIntent pendingIntent;
+    AlarmManager alarmChangeWallpaper;
+    AlarmManager alarmRecalculatePoints;
+    PendingIntent pendingChangingWallpaperIntent;
+    PendingIntent pendingCalcIntent;
     static WallpaperChanger wallpaperChanger;
 
     public DejaPhotoService() {
@@ -23,7 +26,7 @@ public class DejaPhotoService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId){
 
         //initial initialization
-        if (intent.getAction() == "INITIALIZE") {
+        if (intent.getAction() == INIT) {
             getSharedPrefs();
             initializeAlarm();
             Log.e("ChangeWallpaperReceiver", "INITIALIZED");
@@ -33,19 +36,19 @@ public class DejaPhotoService extends Service {
         initializeWallpaperChanger();
 
         //see what action is requested
-        if(intent.getAction() == "NEXT")
+        if(intent.getAction() == NavWidget.NEXT)
         {
             wallpaperChanger.next();
         }
-        else if(intent.getAction() == "PREV")
+        else if(intent.getAction() == NavWidget.PREV)
         {
             wallpaperChanger.previous();
         }
-        else if(intent.getAction() == "RELEASE")
+        else if(intent.getAction() == NavWidget.RELEASE)
         {
             wallpaperChanger.release();
         }
-        else if(intent.getAction() == "KARMA")
+        else if(intent.getAction() == NavWidget.KARMA)
         {
             wallpaperChanger.karma();
         }
@@ -83,19 +86,27 @@ public class DejaPhotoService extends Service {
      * service back with a intent indicating the action to take.
      */
     private void initializeAlarm() {
-        //Intent that holds the class that will receive broadcasts and perform wallpaper change.
-        Intent serviceIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
 
+        //Change Pictures Every Interval
+        Intent changeWallpaperIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
         //Manages the countdown and sending the intent to the receiver once the countdown is over.
-        alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
+        alarmChangeWallpaper = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Intent wrapper needed for technical reasons.
-        pendingIntent = PendingIntent.getService(getApplicationContext(), 1, serviceIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-
+        pendingChangingWallpaperIntent = PendingIntent.getService(getApplicationContext(), 1,
+                changeWallpaperIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         //configures the AlarmManager object to send the intent on a repeating countdown.
-        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-                1000 * transitionDelay, pendingIntent);
+        alarmChangeWallpaper.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                1000 * transitionDelay, pendingChangingWallpaperIntent);
+
+
+        //Recalculate Points every Hour
+        Intent calcIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
+        alarmRecalculatePoints = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        pendingCalcIntent = PendingIntent.getService(getApplicationContext(), 1,
+                calcIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmRecalculatePoints.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                3600000, pendingCalcIntent);
+
     }
 
 
