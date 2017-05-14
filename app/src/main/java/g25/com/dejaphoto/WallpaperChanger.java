@@ -4,12 +4,16 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.location.Location;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -47,6 +51,13 @@ public class WallpaperChanger {
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+
+            // trying to set text on the bitmap
+            Paint textPaint = new Paint();
+            textPaint.setColor(Color.BLUE);
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawText("hi its me cse110 sucks", 300, 300, textPaint);
+
             myWallpaperManager.setBitmap(bitmap);
         } catch (IOException e) {
             e.printStackTrace();
@@ -185,10 +196,17 @@ public class WallpaperChanger {
      */
     public void previous(){
 
+<<<<<<< HEAD
+        if(cursorLocation <= 0) {
+            Log.d("Debug", "I am here");
+            cursorLocation = albumSize - 1;
+        }
+=======
         //not at end
         if(prevCursor < 10 && prevList.size() > prevCursor + 1) {
             prevCursor++;
             setWallpaper(prevList.get(prevCursor));
+>>>>>>> 3ebc5fdba4fb3c3b6bc263e51c63a3a94be3eb51
 
             //DEBUG log
             Log.e("Previous Test", "Showing Previous Photo at" + prevCursor + "position");
