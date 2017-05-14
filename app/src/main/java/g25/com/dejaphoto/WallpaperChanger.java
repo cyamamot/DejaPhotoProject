@@ -195,19 +195,10 @@ public class WallpaperChanger {
      * Sets wallpaper to previous photo in album.
      */
     public void previous(){
-
-<<<<<<< HEAD
-        if(cursorLocation <= 0) {
-            Log.d("Debug", "I am here");
-            cursorLocation = albumSize - 1;
-        }
-=======
         //not at end
         if(prevCursor < 10 && prevList.size() > prevCursor + 1) {
             prevCursor++;
             setWallpaper(prevList.get(prevCursor));
->>>>>>> 3ebc5fdba4fb3c3b6bc263e51c63a3a94be3eb51
-
             //DEBUG log
             Log.e("Previous Test", "Showing Previous Photo at" + prevCursor + "position");
         }
