@@ -18,24 +18,20 @@ import android.util.Log;
 public class LocationWrapper {
 
     // Acquire a reference to the system Location Manager
-    private LocationManager locationManager;
-
+    LocationManager locationManager;
     // this field will store the last location that locationManager returned
-    private Location currentUserLocation;
-
+    Location currentUserLocation;
     // our location listener that our location manager uses
-    private LocationListener locationListener;
-
-    private String locationProvider;
-
+    LocationListener locationListener;
+    String locationProvider;
     //whether user has location permission turned on; if not this class can't do a whole lot
-    private boolean locationPermissionGiven = false;
-
-    private static final int TWO_MINUTES = 1000 * 60 * 2;
+    boolean locationPermissionGiven = false;
+    static final int TWO_MINUTES = 1000 * 60 * 2;
 
     // constructor takes in context for access to context and stuff
     // minTime is minimum time interval between location updates, in milliseconds
     // minDistance is minimum distance between location updates, in meter
+
     public LocationWrapper(Context context, long minTime, float minDistance) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationProvider = LocationManager.NETWORK_PROVIDER;
