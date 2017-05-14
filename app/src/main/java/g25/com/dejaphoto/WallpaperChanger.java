@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -26,6 +27,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.PriorityQueue;
+
+import static android.graphics.Paint.Align.CENTER;
 
 /**
  * Created by dillonliu on 5/6/17.
@@ -57,7 +60,6 @@ public class WallpaperChanger {
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-
             Bitmap b = addLocationtoBitmap(bitmap);
 
             myWallpaperManager.setBitmap(b);
@@ -75,7 +77,7 @@ public class WallpaperChanger {
         if(bitmapConfig == null) {
             bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
         }
-        // resource bitmaps are imutable,
+        // resource bitmaps are immutable,
         // so we need to convert it to mutable one
         bitmap = bitmap.copy(bitmapConfig, true);
 
@@ -88,10 +90,15 @@ public class WallpaperChanger {
         textPaint.setTextSize(14);
 
         Canvas canvas = new Canvas(bitmap);
-        String location = "hi its me cse110 sucks";
+        String location = "cse 110 is so much fun";
 
-        int x = 100;
-        int y = 100;
+        // draw text to the Canvas center
+        textPaint.setTextAlign(CENTER);
+
+        Rect bounds = new Rect();
+        textPaint.getTextBounds(location, 0, location.length(), bounds);
+        int x = (canvas.getWidth()/2) - (bounds.width()/2);
+        int y = (canvas.getHeight()/2);
 
         canvas.drawText(location, x, y, textPaint);
 
@@ -143,6 +150,7 @@ public class WallpaperChanger {
         for (int i = 0; i < albumSize; i++) {
             cursor.moveToPosition(i);
             String path = cursor.getString(1);
+
 
             BackgroundPhoto curr = new BackgroundPhoto(path, context);
             if (!curr.isReleased()) {
@@ -210,7 +218,6 @@ public class WallpaperChanger {
             Log.e("Location", "No Date Stamp Available for this Photo");
         }
 
-        //DEBUG CHECK COMMENTS
         String comments = nextPhoto.exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
         if (comments != null) {
             Log.e("Printing Comments", comments);
@@ -281,6 +288,7 @@ public class WallpaperChanger {
         }
     }
 
+    //
     public void setLocation() {
         //String path = cursor.getString(1);
         BackgroundPhoto curr = prevList.get(prevCursor);
@@ -295,7 +303,7 @@ public class WallpaperChanger {
         //////////////////////////////////this just shows the picture's point values where the address should be
         //remoteViews.setTextViewText(R.id.location_textview, Double.toString(curr.latitude) + ", " + Double.toString(curr.longitude));
         //remoteViews.setTextViewText(R.id.location_textview, String.valueOf(curr.hasEXIF));
-        remoteViews.setTextViewText(R.id.location_textview, "");
+        //remoteViews.setTextViewText(R.id.location_textview, curr.checker);
         appWidgetManager.updateAppWidget(thisWidget, remoteViews);
 
 

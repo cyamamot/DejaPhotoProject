@@ -38,6 +38,7 @@ public class LocationWrapper {
     // constructor takes in context for access to context and stuff
     // minTime is minimum time interval between location updates, in milliseconds
     // minDistance is minimum distance between location updates, in meter
+
     public LocationWrapper(Context context, long minTime, float minDistance) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationProvider = LocationManager.NETWORK_PROVIDER;
