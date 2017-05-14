@@ -67,6 +67,7 @@ public class WallpaperChanger {
         Log.e("POINTS", Integer.toString(photoWrapper.getPoints()));
     }
 
+    // Method to add location to wallpaper
     private Bitmap addLocationtoBitmap(Bitmap bitmap) {
 
         android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
