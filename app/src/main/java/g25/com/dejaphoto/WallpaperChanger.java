@@ -295,7 +295,6 @@ public class WallpaperChanger {
         Location currPhotoLocation = curr.getLocation();
         Geocoder geocoder;
         List<Address> addresses;
-
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.nav_widget);
         ComponentName thisWidget = new ComponentName(context, NavWidget.class);
@@ -303,7 +302,7 @@ public class WallpaperChanger {
         //////////////////////////////////this just shows the picture's point values where the address should be
         //remoteViews.setTextViewText(R.id.location_textview, Double.toString(curr.latitude) + ", " + Double.toString(curr.longitude));
         //remoteViews.setTextViewText(R.id.location_textview, String.valueOf(curr.hasEXIF));
-        //remoteViews.setTextViewText(R.id.location_textview, curr.checker);
+        remoteViews.setTextViewText(R.id.location_textview, " ");
         appWidgetManager.updateAppWidget(thisWidget, remoteViews);
 
 
@@ -313,13 +312,14 @@ public class WallpaperChanger {
                 Log.e("Setting Location", "finding location");
                 addresses = geocoder.getFromLocation(currPhotoLocation.getLatitude(), currPhotoLocation.getLongitude(), 1);
                 String address = addresses.get(0).getAddressLine(0);
-                //String city = addresses.get(0).getLocality();
-                //String state = addresses.get(0).getAdminArea();
-                //String country = addresses.get(0).getCountryName();
+                String city = addresses.get(0).getLocality();
+                String state = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
                 //String postalCode = addresses.get(0).getPostalCode();
-                //String knownName = addresses.get(0).getFeatureName();
-
-                remoteViews.setTextViewText(R.id.location_textview, address);
+                String knownName = addresses.get(0).getFeatureName();
+                String output = "address : " + address + ", city : " + city + ", state : " + state
+                        + ", country : " + country;
+                remoteViews.setTextViewText(R.id.location_textview, output);
                 appWidgetManager.updateAppWidget(thisWidget, remoteViews);
             }
             catch (IOException e) {
