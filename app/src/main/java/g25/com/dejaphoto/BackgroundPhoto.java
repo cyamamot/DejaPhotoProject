@@ -42,6 +42,8 @@ import android.widget.Toast;
  *  putting in here allows us to determine points when photo are initialized, thereby not needing
  *  a second pass through the array. Variable is declared static since only one is needed for all
  *  photos. Any modification to the algorithm can be down in it's own class.
+ *
+ *  Created by tim on 5/8/2017
  */
 
 //GPS calculation ideas referenced from http://stackoverflow.com/questions/9868158/get-gps-location-of-a-photo
@@ -55,7 +57,6 @@ public class BackgroundPhoto {
     Uri uri;
     GregorianCalendar dateCalendar;
     Location location;
-    double latitude, longitude;
     boolean karma;
     boolean released;
     boolean hasLocation;
@@ -91,7 +92,9 @@ public class BackgroundPhoto {
             this.hasEXIF = false;
             return;
         }
+
         this.hasEXIF = true;
+
         //get lat
         String lat = exifData.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
         String latDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
@@ -100,7 +103,7 @@ public class BackgroundPhoto {
         String lngDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
 
         //parse by calling helper method
-        //double latitude, longitude;
+        double latitude, longitude;
         try{
             latitude = formatLatLng(lat, latDirection);
             longitude = formatLatLng(lng, lngDirection);
@@ -110,6 +113,10 @@ public class BackgroundPhoto {
             this.hasLocation = false;
             return;
         }
+
+        //Debug Log
+        Log.i("EXIF Coords", lat + latDirection + " " + lng + lngDirection);
+        Log.i("EXIF Coords Parsed", Double.toString(latitude) + Double.toString(longitude));
 
         //set location field
         Location location = new Location("");
@@ -136,12 +143,12 @@ public class BackgroundPhoto {
         //null check
         if(dateTimeStr == null) {
             this.hasDate = false;
-            Log.e("EXIF DATE", "NO DATE EXISTS");
+            Log.i("EXIF DATE", "NO DATE EXISTS");
             return;
         }
         else{
             this.hasDate = true;
-            Log.e("EXIF DATE", "EXIF INDICATED DATE");
+            Log.i("EXIF DATE", dateTimeStr);
         }
 
         //parse string into ints
@@ -158,6 +165,12 @@ public class BackgroundPhoto {
         //set Calendar object;
         this.dateCalendar = new GregorianCalendar();
         this.dateCalendar.set(year, month, date, hourOfDay, minute, second);
+
+         Log.i("EXIF DATE Parsed", Integer.toString(year) + " " + Integer.toString(month) + " "
+                 + Integer.toString(date));
+         Log.i("EXIF DATE Parsed", Integer.toString(hourOfDay) + " " + Integer.toString(minute) +
+                 " " + Integer.toString(second));
+
     }
 
 
@@ -215,13 +228,16 @@ public class BackgroundPhoto {
         String karmaStr = uri.toString() + KARMA_INDICATOR;
         String releaseStr = uri.toString() + RELEASED_INDICATOR;
 
+
         //karma
         if(settings.getBoolean(karmaStr, false)){
+            Log.i("Parse Karma", "Karma Detected");
            giveKarma();
         }
 
         //release
         if(settings.getBoolean(releaseStr, false)){
+            Log.i("Parse Released", "Release Detected");
             release();
         }
 
@@ -235,11 +251,11 @@ public class BackgroundPhoto {
     private void setExifData(){
         try {
             this.exifData = new ExifInterface(uri.getPath());
-            Log.e("EXIF from Path", "SUCCESS");
+            Log.i("EXIF from Path", "SUCCESS");
         }
         catch (IOException e){
             e.printStackTrace();
-            Log.e("EXIF from Path", "FAILED");
+            Log.i("EXIF from Path", "FAILED");
             this.exifData = null;
             this.hasLocation = false;
             this.hasDate = false;
@@ -268,6 +284,8 @@ public class BackgroundPhoto {
         settingsEditor.commit();
         this.karma = true;
 
+        Log.i("Give Karma", "Karma Given");
+
     }
 
 
@@ -277,6 +295,8 @@ public class BackgroundPhoto {
         settingsEditor.putBoolean(uriStr, true);
         settingsEditor.commit();
         this.released = true;
+
+        Log.i("Release Photo", "Photo Released");
 
     }
 
