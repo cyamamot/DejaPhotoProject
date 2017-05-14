@@ -58,6 +58,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
         //create intent with extras
         Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
+        intent.setAction("INITIALIZE");
         startService(intent);
 
         saveSettings = (Button) findViewById(R.id.btn_saveSettings);

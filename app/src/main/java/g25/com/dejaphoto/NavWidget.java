@@ -85,9 +85,9 @@ public class NavWidget extends AppWidgetProvider {
 
     //Use PendingIntent to request manual update when the update button is clicked
     protected PendingIntent getPendingSelfIntent(Context context, String action) {
-        Intent intent = new Intent(context, ChangeWallpaperReceiver.class);
+        Intent intent = new Intent(context, DejaPhotoService.class);
         intent.setAction(action);
-        return PendingIntent.getBroadcast(context, 0, intent, 0);
+        return PendingIntent.getService(context, 0, intent, 0);
     }
 
     @Override
@@ -96,7 +96,6 @@ public class NavWidget extends AppWidgetProvider {
 // onClick action is here
         if (NEXT.equals(intent.getAction())) {
             intent = new Intent(NEXT);
-
             Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked NEXT");
         } else if (PREV.equals(intent.getAction())) {
