@@ -1,5 +1,6 @@
 package g25.com.dejaphoto;
 
+import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;

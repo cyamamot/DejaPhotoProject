@@ -91,7 +91,7 @@ public class WallpaperChanger {
         //fill queue
         populateQueue();
 
-        Toast.makeText(context, "Initialized", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Initialized", Toast.LENGTH_SHORT).show();
     }
 
     private void populateQueue() {
@@ -135,7 +135,7 @@ public class WallpaperChanger {
             Log.e("mNames[i]", mNames[i] + ":" + cursor.getColumnCount() + " : " + cursor.getString(1));
             Log.e("QUEUE SIZE", Integer.toString(queue.size()));
         }
-        Toast.makeText(context, "Queue Size" + queue.size(), Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Queue Size : " + queue.size(), Toast.LENGTH_LONG).show();
     }
 
 
@@ -143,6 +143,8 @@ public class WallpaperChanger {
      * Sets wallpaper to next photo in album; if we reach the end, we go back to the first photo
      */
     public void next() {
+
+        Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
         BackgroundPhoto nextPhoto = null;
 
         if (queue.isEmpty()) {
@@ -205,6 +207,8 @@ public class WallpaperChanger {
      * Sets wallpaper to previous photo in album.
      */
     public void previous() {
+
+        Toast.makeText(context, "PREV", Toast.LENGTH_SHORT).show();
         //not at end
         if (prevCursor < 10 && prevList.size() > prevCursor + 1) {
             prevCursor++;
@@ -224,6 +228,8 @@ public class WallpaperChanger {
      * sets current wallpaper released boolean to true
      */
     public void release() {
+
+        Toast.makeText(context, "RELEASED", Toast.LENGTH_SHORT).show();
         //always in some position in the prevList, just set release bool and remove from list
         prevList.get(prevCursor).release();
         prevList.remove(prevCursor);
@@ -236,6 +242,7 @@ public class WallpaperChanger {
      * set current wallpaper karma boolean to true
      */
     public void karma() {
+        Toast.makeText(context, "KARMA SET <3", Toast.LENGTH_SHORT).show();
         prevList.get(prevCursor).giveKarma();
     }
 
@@ -265,8 +272,8 @@ public class WallpaperChanger {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.nav_widget);
         ComponentName thisWidget = new ComponentName(context, NavWidget.class);
 
-        //remoteViews.setTextViewText(R.id.location_textview, String.valueOf(curr.hasDate));
-        //appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+        remoteViews.setTextViewText(R.id.location_textview, Double.toString(curr.getPoints()));
+        appWidgetManager.updateAppWidget(thisWidget, remoteViews);
 
         geocoder = new Geocoder(context, Locale.getDefault());
         if (curr.hasLocation) {
