@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -89,14 +90,15 @@ public class WallpaperChanger {
         textPaint.setTextSize(14);
 
         Canvas canvas = new Canvas(bitmap);
-        String location = "hi its me";
+        String location = "cse 110 is so much fun";
 
         // draw text to the Canvas center
         textPaint.setTextAlign(CENTER);
 
-        float x = (canvas.getWidth()/2);
-        //int y = (canvas.getHeight()/2);
-        float y = (int) ((canvas.getHeight() / 2) - ((textPaint.descent() + textPaint.ascent()) / 2)) ;
+        Rect bounds = new Rect();
+        textPaint.getTextBounds(location, 0, location.length(), bounds);
+        int x = (canvas.getWidth()/2) - (bounds.width()/2);
+        int y = (canvas.getHeight()/2);
 
         canvas.drawText(location, x, y, textPaint);
 
