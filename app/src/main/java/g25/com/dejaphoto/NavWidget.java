@@ -79,7 +79,7 @@ public class NavWidget extends AppWidgetProvider {
             //intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds);
 
             //This is the same action sent by the system when the widget needs to be updated automatically
-            // PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            // PendingIntent pendingChangingWallpaperIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         }
     }

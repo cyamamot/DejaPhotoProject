@@ -56,7 +56,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
         //Launch Service
         Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
-        intent.setAction("INITIALIZE");
+        intent.setAction(DejaPhotoService.INIT);
         startService(intent);
 
         //DEBUG
