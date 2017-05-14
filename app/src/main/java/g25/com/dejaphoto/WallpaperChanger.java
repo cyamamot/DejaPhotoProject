@@ -1,12 +1,8 @@
 package g25.com.dejaphoto;
 
 import android.app.WallpaperManager;
-<<<<<<< HEAD
-import android.app.Activity;
-=======
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
->>>>>>> 18f786e48c063332e7907801a54aa24dfdf2ca1b
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -222,11 +218,7 @@ public class WallpaperChanger {
         }
 
         setWallpaper(nextPhoto);
-<<<<<<< HEAD
-
-=======
         setLocation();
->>>>>>> 18f786e48c063332e7907801a54aa24dfdf2ca1b
     }
 
 
