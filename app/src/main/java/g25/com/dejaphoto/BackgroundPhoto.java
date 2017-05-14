@@ -56,16 +56,12 @@ public class BackgroundPhoto {
     GregorianCalendar dateCalendar;
     Location location;
     double latitude, longitude;
-    static SortingAlgorithm sorter; //DOES THE SORTING
     boolean karma;
     boolean released;
     boolean hasLocation;
     boolean hasDate;
     boolean hasEXIF;
     int points;
-
-    String checker;
-
     Context context;
     static final String KARMA_INDICATOR = "DJP_KARMA";
     static final String RELEASED_INDICATOR = "DJP_RELEASED";
@@ -103,10 +99,6 @@ public class BackgroundPhoto {
         String lng = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
         String lngDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
 
-
-        //checker = lat + ", " + lng + " : " + latDirection + ", " + lngDirection;
-
-
         //parse by calling helper method
         //double latitude, longitude;
         try{
@@ -132,7 +124,7 @@ public class BackgroundPhoto {
      * Parses the string output of exif date into a Calendar object that can return a Date
      * object.
      */
-    private void parseDateFromExif(){
+     void parseDateFromExif(){
         if(exifData == null){
             this.hasDate = false;
             return;
@@ -144,6 +136,7 @@ public class BackgroundPhoto {
         //null check
         if(dateTimeStr == null) {
             this.hasDate = false;
+            Log.e("EXIF DATE", "NO DATE EXISTS");
             return;
         }
         else{
@@ -178,7 +171,7 @@ public class BackgroundPhoto {
      * @param direction - Direction given by ExifInterface
      * @return - Converted Double usable by Location class.
      */
-    private double formatLatLng(String coordinate, String direction){
+    public double formatLatLng(String coordinate, String direction){
         //redundant null checks since android not specific about what happens during failure
         if(coordinate == null || direction == null){
             throw new NullPointerException("Coordinates were NULL");
@@ -232,24 +225,8 @@ public class BackgroundPhoto {
             release();
         }
 
-        //DEPRECATED METHOD USING EXIF DATA, DID NOT FUNCTION 100%
-        /* String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
-        if(comments == null){
-            this.karma = false;
-            this.released = false;
-        }
-        else if(comments.contains(KARMA_INDICATOR)){
-            this.giveKarma();
-        }
-        else if(comments.contains(RELEASED_INDICATOR)){
-            this.release();
-        }*/
     }
 
-
-    private void setUri(Uri input){
-        this.uri = input;
-    }
 
     /**
      * Attempts to get ExifData object from photo and set the corresponding field, marks
@@ -258,11 +235,11 @@ public class BackgroundPhoto {
     private void setExifData(){
         try {
             this.exifData = new ExifInterface(uri.getPath());
-            Log.v("Path from Exif", "success");
+            Log.e("EXIF from Path", "SUCCESS");
         }
         catch (IOException e){
             e.printStackTrace();
-            Log.e("Path from Exif", "FAILED");
+            Log.e("EXIF from Path", "FAILED");
             this.exifData = null;
             this.hasLocation = false;
             this.hasDate = false;
@@ -279,10 +256,6 @@ public class BackgroundPhoto {
         settingsEditor = settings.edit();
     }
 
-    private void setLocation(Location loc){
-        this.location = loc;
-    }
-
 
 
     public void giveKarma(){
@@ -296,24 +269,6 @@ public class BackgroundPhoto {
         settingsEditor.commit();
         this.karma = true;
 
-        //DEPRECATED METHOD USING EXIF DATA
-      /*
-        this.karma = true;
-        Log.e("Karma", "karma Boolean was set to True");
-        String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
-        if(comments == null){
-            exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, KARMA_INDICATOR);
-        }
-        else if (!comments.contains(KARMA_INDICATOR)){
-            String commentsKarma = comments + " " + KARMA_INDICATOR;
-            exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, commentsKarma);
-        }
-        try {
-            exifData.saveAttributes();
-        }
-        catch (IOException e){
-            Log.e("Karma", "Could not Save Karma String");
-        }*/
     }
 
 
@@ -324,33 +279,22 @@ public class BackgroundPhoto {
         settingsEditor.commit();
         this.released = true;
 
-        //DEPRECATED METHOD USING EXIF DATA
-      /*
-        this.released = true;
-        Log.e("Release", "release Boolean was set to True");
-        String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
-        if(comments == null){
-            exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, RELEASED_INDICATOR);
-        }
-        else if(!comments.contains(RELEASED_INDICATOR)){
-            String commentsRelease = comments + " " + RELEASED_INDICATOR;
-            exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, commentsRelease);
-        }
-        try {
-            exifData.saveAttributes();
-        }
-        catch (IOException e){
-            Log.e("Release", "Could not Save Release String");
-            e.printStackTrace();
-        }*/
     }
 
 
+    //getters and setters
     public Location getLocation(){
         if(!hasLocation){
             return null;
         }
         return this.location;
+    }
+
+    private void setLocation(Location loc){
+        if(loc == null){
+            return;
+        }
+        this.location = loc;
     }
 
     public boolean hasLocation(){
@@ -391,7 +335,17 @@ public class BackgroundPhoto {
 
     public void setPoints(int points) {this.points = points;}
 
-    private void setContext(Context context){this.context = context;}
+    private void setContext(Context context){
+        if(context == null){
+            return;
+        }
+        this.context = context;
+
+    }
+
+    private void setUri(Uri input){
+        this.uri = input;
+    }
 
 }
 
