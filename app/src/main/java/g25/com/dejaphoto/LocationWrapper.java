@@ -28,7 +28,7 @@ public class LocationWrapper {
 
     private String locationProvider;
 
-    // keeps track of whether user has location permission turned on; if not this class can't do a whole lot
+    //whether user has location permission turned on; if not this class can't do a whole lot
     private boolean locationPermissionGiven = false;
 
     private static final int TWO_MINUTES = 1000 * 60 * 2;
@@ -58,7 +58,6 @@ public class LocationWrapper {
             }
 
             public void onProviderEnabled(String provider) {
-
             }
 
             public void onProviderDisabled(String provider) {
@@ -68,12 +67,14 @@ public class LocationWrapper {
         //get Initial User position
         currentUserLocation = locationManager.getLastKnownLocation(locationProvider);
 
-        // we first check if user granted us location permission, if so we tell locationManager to request location updates
-        if (ContextCompat.checkSelfPermission(context,
-                permission.ACCESS_FINE_LOCATION)
+        //check if user granted us location permission, if yes locationManager to get updates
+        if (ContextCompat.checkSelfPermission(context, permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            // Register the listener with the Location Manager to receive location updates with passed in minTime and minDistance
-            locationManager.requestLocationUpdates(locationProvider, minTime, minDistance, locationListener);
+
+            // Register the listener with the Location Manager,
+            // receive location updates with passed in minTime and minDistance
+            locationManager.requestLocationUpdates(locationProvider, minTime, minDistance,
+                    locationListener);
             locationPermissionGiven = true;
         }
     }
@@ -84,9 +85,8 @@ public class LocationWrapper {
             return currentUserLocation;
         }
         else {
-            // maybe if we need to, this can return null to indicate location permission is not on
-            return currentUserLocation;
-            // return null;
+            //null  to indicate no location
+            return null;
         }
     }
 
@@ -105,6 +105,7 @@ public class LocationWrapper {
         // Remove the listener you previously added
         locationManager.removeUpdates(locationListener);
     }
+
 
     /** Determines whether one Location reading is better than the current Location fix
      * @param location  The new Location that you want to evaluate

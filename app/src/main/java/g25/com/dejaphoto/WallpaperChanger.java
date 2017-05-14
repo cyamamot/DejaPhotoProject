@@ -55,8 +55,10 @@ public class WallpaperChanger {
             // trying to set text on the bitmap
             Paint textPaint = new Paint();
             textPaint.setColor(Color.BLUE);
-            Canvas canvas = new Canvas(bitmap);
-            canvas.drawText("hi its me cse110 sucks", 300, 300, textPaint);
+
+            //Causing crashing issues
+            //Canvas canvas = new Canvas(bitmap);
+            //canvas.drawText("hi its me cse110 sucks", 300, 300, textPaint);
 
             myWallpaperManager.setBitmap(bitmap);
         } catch (IOException e) {
@@ -78,8 +80,7 @@ public class WallpaperChanger {
         //fill queue
         populateQueue();
 
-        Toast.makeText(context, "Initialized",
-                Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Initialized", Toast.LENGTH_LONG).show();
     }
 
     private void populateQueue() {
@@ -118,8 +119,8 @@ public class WallpaperChanger {
                 sorter.assignPoints(curr);
                 queue.add(curr);
             }
+
             //DEBUG log messages
-            //strUrls[i] = path;
             mNames[i] = cursor.getString(3);
             Log.e("mNames[i]",mNames[i]+":"+ cursor.getColumnCount()+ " : " + cursor.getString(1));
             Log.e("QUEUE SIZE", Integer.toString(queue.size()));
@@ -179,15 +180,16 @@ public class WallpaperChanger {
             Log.e("Location", "No Date Stamp Available for this Photo");
         }
 
-        setWallpaper(nextPhoto);
+        //DEBUG CHECK COMMENTS
         String comments = nextPhoto.exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
         if( comments != null){
             Log.e("Printing Comments", comments);
-            Toast.makeText(context, comments, Toast.LENGTH_LONG);
         }
         else{
             Log.e("Printing Comments", "No Comments");
         }
+
+        setWallpaper(nextPhoto);
     }
 
 
@@ -209,6 +211,7 @@ public class WallpaperChanger {
 
     }
 
+
     /**
      * sets current wallpaper released boolean to true
      */
@@ -220,6 +223,7 @@ public class WallpaperChanger {
         next();
 
     }
+
 
     /**
      * set current wallpaper karma boolean to true
