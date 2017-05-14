@@ -57,7 +57,6 @@ public class WallpaperChanger {
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-
             Bitmap b = addLocationtoBitmap(bitmap);
 
             myWallpaperManager.setBitmap(b);
@@ -144,6 +143,7 @@ public class WallpaperChanger {
             cursor.moveToPosition(i);
             String path = cursor.getString(1);
 
+
             BackgroundPhoto curr = new BackgroundPhoto(path, context);
             if (!curr.isReleased()) {
                 sorter.assignPoints(curr);
@@ -210,7 +210,6 @@ public class WallpaperChanger {
             Log.e("Location", "No Date Stamp Available for this Photo");
         }
 
-        //DEBUG CHECK COMMENTS
         String comments = nextPhoto.exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
         if (comments != null) {
             Log.e("Printing Comments", comments);
@@ -295,7 +294,7 @@ public class WallpaperChanger {
         //////////////////////////////////this just shows the picture's point values where the address should be
         //remoteViews.setTextViewText(R.id.location_textview, Double.toString(curr.latitude) + ", " + Double.toString(curr.longitude));
         //remoteViews.setTextViewText(R.id.location_textview, String.valueOf(curr.hasEXIF));
-        remoteViews.setTextViewText(R.id.location_textview, curr.checker);
+        //remoteViews.setTextViewText(R.id.location_textview, curr.checker);
         appWidgetManager.updateAppWidget(thisWidget, remoteViews);
 
 
