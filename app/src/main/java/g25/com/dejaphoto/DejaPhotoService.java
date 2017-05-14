@@ -56,11 +56,15 @@ public class DejaPhotoService extends Service {
 
         //DEBUG MESSAGES
         Log.e("ServiceLog", "Service Called");
-        Toast.makeText(DejaPhotoService.this, "Service Called", Toast.LENGTH_LONG).show();
-        //return super.onStartCommand(intent, flags, startId);
+
+        //START_STICKY tells android to restart service if killed somehow
         return START_STICKY;
     }
 
+
+    /**
+     * Since wallpaperChanger field is static, this ensures it is only initialized if it is null.
+     */
     private void initializeWallpaperChanger() {
         if(wallpaperChanger == null) {
             wallpaperChanger = new WallpaperChanger(this);
@@ -69,9 +73,11 @@ public class DejaPhotoService extends Service {
     }
 
 
-    /**q
+    /**
      * Initializes the objects and intents necessary for this service to repeat our tasks.
-     * Objects are private fields.
+     * Objects are private fields. AlarmManager is set to repeat the intent we give it by
+     * transition delay times a constant (Milliseconds). Currently AlarmManager calls this
+     * service back with a intent indicating the action to take.
      */
     private void initializeAlarm() {
         //Intent that holds the class that will receive broadcasts and perform wallpaper change.
@@ -103,16 +109,11 @@ public class DejaPhotoService extends Service {
     @Override
     public void onDestroy(){
         super.onDestroy();
-
-        //Send broadcast to listener to restart the service when app closes
-        Intent restartService = new Intent("RestartServiceReceiver");
-        sendBroadcast(restartService);
     }
 
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 }
