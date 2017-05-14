@@ -83,4 +83,11 @@
         android:onClick="saveSettings"
         android:text="Save Settings" />
 
+    <Button
+        android:id="@+id/btn_testMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="testMap"
+        android:text="Test Map"/>
+
 </LinearLayout>

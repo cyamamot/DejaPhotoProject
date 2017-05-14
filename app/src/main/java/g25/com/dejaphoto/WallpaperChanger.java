@@ -6,10 +6,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -27,8 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.PriorityQueue;
-
-import static android.graphics.Paint.Align.CENTER;
 
 /**
  * Created by dillonliu on 5/6/17.
@@ -60,15 +54,15 @@ public class WallpaperChanger {
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-            Bitmap b = addLocationtoBitmap(bitmap);
+            //Bitmap b = addLocationtoBitmap(bitmap);
 
-            myWallpaperManager.setBitmap(b);
+            myWallpaperManager.setBitmap(bitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
         Log.e("POINTS", Integer.toString(photoWrapper.getPoints()));
     }
-
+    /*
     // Method to add location to wallpaper
     private Bitmap addLocationtoBitmap(Bitmap bitmap) {
 
@@ -104,6 +98,7 @@ public class WallpaperChanger {
 
         return bitmap;
     }
+    */
 
 
     // http://stackoverflow.com/questions/6855399/how-to-implement-image-gallery-in-gridview-in-android
@@ -295,7 +290,6 @@ public class WallpaperChanger {
         Location currPhotoLocation = curr.getLocation();
         Geocoder geocoder;
         List<Address> addresses;
-
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.nav_widget);
         ComponentName thisWidget = new ComponentName(context, NavWidget.class);
@@ -303,7 +297,7 @@ public class WallpaperChanger {
         //////////////////////////////////this just shows the picture's point values where the address should be
         //remoteViews.setTextViewText(R.id.location_textview, Double.toString(curr.latitude) + ", " + Double.toString(curr.longitude));
         //remoteViews.setTextViewText(R.id.location_textview, String.valueOf(curr.hasEXIF));
-        //remoteViews.setTextViewText(R.id.location_textview, curr.checker);
+        remoteViews.setTextViewText(R.id.location_textview, " ");
         appWidgetManager.updateAppWidget(thisWidget, remoteViews);
 
 
@@ -313,13 +307,14 @@ public class WallpaperChanger {
                 Log.e("Setting Location", "finding location");
                 addresses = geocoder.getFromLocation(currPhotoLocation.getLatitude(), currPhotoLocation.getLongitude(), 1);
                 String address = addresses.get(0).getAddressLine(0);
-                //String city = addresses.get(0).getLocality();
-                //String state = addresses.get(0).getAdminArea();
-                //String country = addresses.get(0).getCountryName();
+                String city = addresses.get(0).getLocality();
+                String state = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
                 //String postalCode = addresses.get(0).getPostalCode();
-                //String knownName = addresses.get(0).getFeatureName();
-
-                remoteViews.setTextViewText(R.id.location_textview, address);
+                String knownName = addresses.get(0).getFeatureName();
+                String output = "address : " + address + ", city : " + city + ", state : " + state
+                        + ", country : " + country;
+                remoteViews.setTextViewText(R.id.location_textview, output);
                 appWidgetManager.updateAppWidget(thisWidget, remoteViews);
             }
             catch (IOException e) {

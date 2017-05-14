@@ -47,7 +47,7 @@ import android.widget.Toast;
  */
 
 //GPS calculation ideas referenced from http://stackoverflow.com/questions/9868158/get-gps-location-of-a-photo
-   // and http://android-er.blogspot.in/2010/01/convert-exif-gps-info-to-degree-format.html
+// and http://android-er.blogspot.in/2010/01/convert-exif-gps-info-to-degree-format.html
 
 
 
@@ -131,7 +131,7 @@ public class BackgroundPhoto {
      * Parses the string output of exif date into a Calendar object that can return a Date
      * object.
      */
-     void parseDateFromExif(){
+    void parseDateFromExif(){
         if(exifData == null){
             this.hasDate = false;
             return;
@@ -166,10 +166,10 @@ public class BackgroundPhoto {
         this.dateCalendar = new GregorianCalendar();
         this.dateCalendar.set(year, month, date, hourOfDay, minute, second);
 
-         Log.i("EXIF DATE Parsed", Integer.toString(year) + " " + Integer.toString(month) + " "
-                 + Integer.toString(date));
-         Log.i("EXIF DATE Parsed", Integer.toString(hourOfDay) + " " + Integer.toString(minute) +
-                 " " + Integer.toString(second));
+        Log.i("EXIF DATE Parsed", Integer.toString(year) + " " + Integer.toString(month) + " "
+                + Integer.toString(date));
+        Log.i("EXIF DATE Parsed", Integer.toString(hourOfDay) + " " + Integer.toString(minute) +
+                " " + Integer.toString(second));
 
     }
 
@@ -232,7 +232,7 @@ public class BackgroundPhoto {
         //karma
         if(settings.getBoolean(karmaStr, false)){
             Log.i("Parse Karma", "Karma Detected");
-           giveKarma();
+            giveKarma();
         }
 
         //release
@@ -326,7 +326,7 @@ public class BackgroundPhoto {
     }
 
     public Uri getUri(){
-       return this.uri;
+        return this.uri;
     }
 
     public Date getDate(){
@@ -368,4 +368,5 @@ public class BackgroundPhoto {
     }
 
 }
+
 
