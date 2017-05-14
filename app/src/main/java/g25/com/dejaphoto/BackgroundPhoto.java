@@ -62,9 +62,6 @@ public class BackgroundPhoto {
     boolean hasDate;
     boolean hasEXIF;
     int points;
-
-    String checker;
-
     Context context;
     static final String KARMA_INDICATOR = "DJP_KARMA";
     static final String RELEASED_INDICATOR = "DJP_RELEASED";
@@ -102,10 +99,6 @@ public class BackgroundPhoto {
         String lng = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
         String lngDirection = exifData.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
 
-
-        //checker = lat + ", " + lng + " : " + latDirection + ", " + lngDirection;
-
-
         //parse by calling helper method
         //double latitude, longitude;
         try{
@@ -131,7 +124,7 @@ public class BackgroundPhoto {
      * Parses the string output of exif date into a Calendar object that can return a Date
      * object.
      */
-    private void parseDateFromExif(){
+     void parseDateFromExif(){
         if(exifData == null){
             this.hasDate = false;
             return;
@@ -143,6 +136,7 @@ public class BackgroundPhoto {
         //null check
         if(dateTimeStr == null) {
             this.hasDate = false;
+            Log.e("EXIF DATE", "NO DATE EXISTS");
             return;
         }
         else{
@@ -177,7 +171,7 @@ public class BackgroundPhoto {
      * @param direction - Direction given by ExifInterface
      * @return - Converted Double usable by Location class.
      */
-    private double formatLatLng(String coordinate, String direction){
+    public double formatLatLng(String coordinate, String direction){
         //redundant null checks since android not specific about what happens during failure
         if(coordinate == null || direction == null){
             throw new NullPointerException("Coordinates were NULL");
@@ -234,10 +228,6 @@ public class BackgroundPhoto {
     }
 
 
-    private void setUri(Uri input){
-        this.uri = input;
-    }
-
     /**
      * Attempts to get ExifData object from photo and set the corresponding field, marks
      * boolean indicating success accordingly.
@@ -245,11 +235,11 @@ public class BackgroundPhoto {
     private void setExifData(){
         try {
             this.exifData = new ExifInterface(uri.getPath());
-            Log.v("Path from Exif", "success");
+            Log.e("EXIF from Path", "SUCCESS");
         }
         catch (IOException e){
             e.printStackTrace();
-            Log.e("Path from Exif", "FAILED");
+            Log.e("EXIF from Path", "FAILED");
             this.exifData = null;
             this.hasLocation = false;
             this.hasDate = false;
@@ -349,6 +339,10 @@ public class BackgroundPhoto {
         }
         this.context = context;
 
+    }
+
+    private void setUri(Uri input){
+        this.uri = input;
     }
 
 }
