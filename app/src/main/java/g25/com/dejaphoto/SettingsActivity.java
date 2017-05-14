@@ -21,21 +21,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 
 public class SettingsActivity extends AppCompatActivity /*implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener*/{
-    public static final String PREFS_NAME = "DejaPhotoPreferences";
     private boolean useCustomAlbum;
     private EditText delaySeconds;
     private TextView delayLabel;
-    private Button saveSettings;
     private int transitionDelay;
     private SharedPreferences settings;
     private SharedPreferences.Editor settingsEditor;
-    private GoogleApiClient mGoogleApiClient;
-    protected Location mLastLocation;
-    protected String mLatitudeLabel;
-    protected String mLongitudeLabel;
-    protected TextView mLatitudeText;
-    protected TextView mLongitudeText;
-    //private Intent intent;
+
+    public static final String PREFS_NAME = "DejaPhotoPreferences";
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_STORAGE = 2;
 
@@ -51,27 +44,24 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         settingsEditor = settings.edit();
         useCustomAlbum = settings.getBoolean("useCustomAlbum", false);
-        transitionDelay = settings.getInt("transitionDelay", 5);
+        transitionDelay = settings.getInt("transitionDelay", -1);
         delayLabel = (TextView)findViewById(R.id.label_transitionDelay);
         delayLabel.setText("Transition Delay: " + transitionDelay);
 
+    }
 
-        //create intent with extras
+
+    /**
+     * Method only executes if User grants permission to use location.
+     */
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+
+        //Launch Service
         Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
+        intent.setAction("INITIALIZE");
         startService(intent);
 
-        saveSettings = (Button) findViewById(R.id.btn_saveSettings);
-        saveSettings.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.e("Settings Save", "Button Clicked");
-<<<<<<< HEAD
-=======
-                //SortingAlgorithm alg = new SortingAlgorithm(SettingsActivity.this);
->>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
-
-            }
-        });
-
+        //DEBUG
         LocationWrapper testLocation = new LocationWrapper(this, 1, 1);
         Location location = testLocation.getCurrentUserLocation();
         if(location == null){
@@ -80,13 +70,14 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         else{
             Log.e("Location Test", location.toString());
         }
-
-
     }
 
 
-    public void setDelay(View view){
-
+    /**
+     * Saves all settings to sharedPreferences.
+     * @param view - Current View
+     */
+    public void saveSettings(View view){
         //change settings
         delaySeconds = (EditText)findViewById(R.id.editText_transitionDelay);
         transitionDelay = Integer.parseInt(delaySeconds.getText().toString());
@@ -100,25 +91,33 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
         stopService(intent);
 
+        Log.e("Settings Save", "Button Clicked");
     }
+
+
     public void selectDefaultAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", false);
         settingsEditor.commit();
     }
+
 
     public void selectCustomAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", true);
         settingsEditor.commit();
     }
 
-    // we call this to ask user for all permissions
+
+    /**
+     * Creates the pop up dialogues to ask user to permission.
+     */
     public void requestPermissions(){
+
         // request read_external_storage
         if (ContextCompat.checkSelfPermission(this,
                 permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
+            //pop up dialogue
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     permission.READ_EXTERNAL_STORAGE)) {
 

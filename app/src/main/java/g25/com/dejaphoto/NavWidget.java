@@ -26,7 +26,7 @@ import android.content.ComponentName;
 public class NavWidget extends AppWidgetProvider {
 
     //static WallpaperChanger receiver;
-    static WallpaperChanger wallpaperChanger;
+    //static WallpaperChanger wallpaperChanger;
     private static final String NEXT = "NEXT";
     private static final String PREV = "PREV";
     private static final String RELEASE = "RELEASE";
@@ -85,59 +85,33 @@ public class NavWidget extends AppWidgetProvider {
 
     //Use PendingIntent to request manual update when the update button is clicked
     protected PendingIntent getPendingSelfIntent(Context context, String action) {
-        Intent intent = new Intent(context, ChangeWallpaperReceiver.class);
+        Intent intent = new Intent(context, DejaPhotoService.class);
         intent.setAction(action);
-        return PendingIntent.getBroadcast(context, 0, intent, 0);
+        return PendingIntent.getService(context, 0, intent, 0);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-<<<<<<< HEAD
-        // onClick action is here
-        if (NEXT.equals(intent.getAction()))
-        {
-            receiver.onReceive(context, intent);
-            Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked NEXT");
-        }
-        else if (PREV.equals(intent.getAction()))
-        {
-            receiver.onReceive(context, intent);
-            Toast.makeText(context, "PREV", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked PREV");
-        }
-        else if (RELEASE.equals(intent.getAction()))
-        {
-            receiver.onReceive(context, intent);
-            Toast.makeText(context, "RELEASE", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked RELEASE");
-        }
-        else if (KARMA.equals(intent.getAction()))
-        {
-            receiver.onReceive(context, intent);
-=======
 // onClick action is here
+        Intent sendToService = new Intent(context, DejaPhotoService.class);
         if (NEXT.equals(intent.getAction())) {
-            intent = new Intent(NEXT);
-
+            sendToService.setAction(NEXT);
             Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked NEXT");
         } else if (PREV.equals(intent.getAction())) {
-            wallpaperChanger.previous();
+            sendToService.setAction(PREV);
             Toast.makeText(context, "PREV", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked PREV");
         } else if (RELEASE.equals(intent.getAction())) {
-            wallpaperChanger.release();
+            sendToService.setAction(RELEASE);
             Toast.makeText(context, "RELEASE", Toast.LENGTH_SHORT).show();
             Log.w("Widget", "Clicked RELEASE");
         }
         else if (KARMA.equals(intent.getAction())){
-            wallpaperChanger.karma();
->>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
-         Toast.makeText(context, "KARMA", Toast.LENGTH_SHORT).show();
-            Log.w("Widget", "Clicked KARMA");
-        }
+            sendToService.setAction(KARMA);
+            Toast.makeText(context, "KARMA", Toast.LENGTH_SHORT).show();
+            Log.w("Widget", "Clicked KARMA");}
     }
 
 

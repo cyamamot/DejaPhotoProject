@@ -54,10 +54,13 @@ public class WallpaperChanger {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
 
             // trying to set text on the bitmap
-            /*Paint textPaint = new Paint();
+            Paint textPaint = new Paint();
             textPaint.setColor(Color.BLUE);
-            Canvas canvas = new Canvas(bitmap);
-            canvas.drawText("hi its me cse110 sucks", 300, 300, textPaint);*/
+
+
+            //Causing crashing issues
+            //Canvas canvas = new Canvas(bitmap);
+            //canvas.drawText("hi its me cse110 sucks", 300, 300, textPaint);
 
             myWallpaperManager.setBitmap(bitmap);
         } catch (IOException e) {
@@ -79,8 +82,7 @@ public class WallpaperChanger {
         //fill queue
         populateQueue();
 
-        Toast.makeText(context, "Initialized",
-                Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Initialized", Toast.LENGTH_LONG).show();
     }
 
     private void populateQueue() {
@@ -107,35 +109,21 @@ public class WallpaperChanger {
         //String[] strUrls = new String[albumSize];
         String[] mNames = new String[albumSize];
 
-<<<<<<< HEAD
-        SortingAlgorithm alg = new SortingAlgorithm();
-
-=======
         //loop through all images and assign points, put into queue
         PhotoCompare comparator = new PhotoCompare();
         queue = new PriorityQueue<BackgroundPhoto>(albumSize, comparator);
->>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
         for (int i = 0; i < albumSize; i++) {
             cursor.moveToPosition(i);
             String path = cursor.getString(1);
 
-<<<<<<< HEAD
-            BackgroundPhoto curr = new BackgroundPhoto(path);
-            int points = alg.addPoints(curr);
-            curr.setPoints(points);
-            photoWrappers[i] = curr;
 
-            //photoWrappers[i] = new BackgroundPhoto(path);
-
-=======
             BackgroundPhoto curr = new BackgroundPhoto(path, context);
             if(!curr.isReleased()) {
                 sorter.assignPoints(curr);
                 queue.add(curr);
             }
->>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
+
             //DEBUG log messages
-            //strUrls[i] = path;
             mNames[i] = cursor.getString(3);
             Log.e("mNames[i]",mNames[i]+":"+ cursor.getColumnCount()+ " : " + cursor.getString(1));
             Log.e("QUEUE SIZE", Integer.toString(queue.size()));
@@ -195,19 +183,16 @@ public class WallpaperChanger {
             Log.e("Location", "No Date Stamp Available for this Photo");
         }
 
-<<<<<<< HEAD
-        cursorLocation++;
-=======
-        setWallpaper(nextPhoto);
         String comments = nextPhoto.exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
         if( comments != null){
             Log.e("Printing Comments", comments);
-            Toast.makeText(context, comments, Toast.LENGTH_LONG);
         }
         else{
             Log.e("Printing Comments", "No Comments");
         }
->>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
+
+        setWallpaper(nextPhoto);
+
     }
 
 
@@ -215,31 +200,10 @@ public class WallpaperChanger {
      * Sets wallpaper to previous photo in album.
      */
     public void previous(){
-<<<<<<< HEAD
-        if(cursorLocation <= 0) {
-            Log.d("Debug", "I am here");
-            cursorLocation = albumSize - 1;
-        }
-
-        setWallpaper(photoWrappers[cursorLocation]);
-
-        if(photoWrappers[cursorLocation].isReleased() == true){
-            cursorLocation--;
-=======
-
-<<<<<<< HEAD
-        if(cursorLocation <= 0) {
-            Log.d("Debug", "I am here");
-            cursorLocation = albumSize - 1;
->>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
-        }
-=======
         //not at end
         if(prevCursor < 10 && prevList.size() > prevCursor + 1) {
             prevCursor++;
             setWallpaper(prevList.get(prevCursor));
->>>>>>> 3ebc5fdba4fb3c3b6bc263e51c63a3a94be3eb51
-
             //DEBUG log
             Log.e("Previous Test", "Showing Previous Photo at" + prevCursor + "position");
         }
@@ -248,12 +212,8 @@ public class WallpaperChanger {
             Toast.makeText(context, "No More Previous Photos!", Toast.LENGTH_LONG).show();
         }
 
-<<<<<<< HEAD
-
-        cursorLocation--;
-=======
->>>>>>> bacaf465c5baca066b039e4b8991df1642968e19
     }
+
 
     /**
      * sets current wallpaper released boolean to true
@@ -266,6 +226,7 @@ public class WallpaperChanger {
         next();
 
     }
+
 
     /**
      * set current wallpaper karma boolean to true

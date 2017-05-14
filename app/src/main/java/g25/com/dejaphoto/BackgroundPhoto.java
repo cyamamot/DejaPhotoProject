@@ -7,8 +7,6 @@ import java.util.GregorianCalendar;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.media.audiofx.BassBoost;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -63,7 +61,7 @@ public class BackgroundPhoto {
     boolean hasDate;
     int points;
 
-    static Context context;
+    Context context;
     static final String KARMA_INDICATOR = "DJP_KARMA";
     static final String RELEASED_INDICATOR = "DJP_RELEASED";
     static SharedPreferences settings;
@@ -78,14 +76,6 @@ public class BackgroundPhoto {
         parseDateFromExif();
         initializeSettings();
         parseKarmaAndReleased();
-
-        //initialize sorter only once since it is static
-        /*if(sorter == null){
-            sorter = new SortingAlgorithm();
-        }
-
-        points = sorter.sort(getLocation(), getDate(), hasKarma(), isReleased());*/
-
 
     }
 
@@ -232,6 +222,7 @@ public class BackgroundPhoto {
             release();
         }
 
+        //DEPRECATED METHOD USING EXIF DATA, DID NOT FUNCTION 100%
         /* String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
         if(comments == null){
             this.karma = false;
@@ -292,6 +283,8 @@ public class BackgroundPhoto {
         settingsEditor.putBoolean(uriStr, true);
         settingsEditor.commit();
         this.karma = true;
+
+        //DEPRECATED METHOD USING EXIF DATA
       /*
         this.karma = true;
         Log.e("Karma", "karma Boolean was set to True");
@@ -319,6 +312,7 @@ public class BackgroundPhoto {
         settingsEditor.commit();
         this.released = true;
 
+        //DEPRECATED METHOD USING EXIF DATA
       /*
         this.released = true;
         Log.e("Release", "release Boolean was set to True");
@@ -369,6 +363,7 @@ public class BackgroundPhoto {
     public boolean hasDate(){
         return this.hasDate;
     }
+
     public boolean hasKarma(){
         return this.karma;
     }

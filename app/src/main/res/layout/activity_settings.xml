@@ -80,7 +80,7 @@
         android:id="@+id/btn_saveSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="setDelay"
-        android:text="Save" />
+        android:onClick="saveSettings"
+        android:text="Save Settings" />
 
 </LinearLayout>
