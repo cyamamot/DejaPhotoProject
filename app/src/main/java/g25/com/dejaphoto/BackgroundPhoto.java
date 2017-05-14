@@ -56,7 +56,6 @@ public class BackgroundPhoto {
     GregorianCalendar dateCalendar;
     Location location;
     double latitude, longitude;
-    static SortingAlgorithm sorter; //DOES THE SORTING
     boolean karma;
     boolean released;
     boolean hasLocation;
@@ -232,18 +231,6 @@ public class BackgroundPhoto {
             release();
         }
 
-        //DEPRECATED METHOD USING EXIF DATA, DID NOT FUNCTION 100%
-        /* String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
-        if(comments == null){
-            this.karma = false;
-            this.released = false;
-        }
-        else if(comments.contains(KARMA_INDICATOR)){
-            this.giveKarma();
-        }
-        else if(comments.contains(RELEASED_INDICATOR)){
-            this.release();
-        }*/
     }
 
 
@@ -279,10 +266,6 @@ public class BackgroundPhoto {
         settingsEditor = settings.edit();
     }
 
-    private void setLocation(Location loc){
-        this.location = loc;
-    }
-
 
     public void giveKarma(){
         if(hasKarma() == true){
@@ -295,24 +278,6 @@ public class BackgroundPhoto {
         settingsEditor.commit();
         this.karma = true;
 
-        //DEPRECATED METHOD USING EXIF DATA
-      /*
-        this.karma = true;
-        Log.e("Karma", "karma Boolean was set to True");
-        String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
-        if(comments == null){
-            exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, KARMA_INDICATOR);
-        }
-        else if (!comments.contains(KARMA_INDICATOR)){
-            String commentsKarma = comments + " " + KARMA_INDICATOR;
-            exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, commentsKarma);
-        }
-        try {
-            exifData.saveAttributes();
-        }
-        catch (IOException e){
-            Log.e("Karma", "Could not Save Karma String");
-        }*/
     }
 
 
@@ -323,33 +288,22 @@ public class BackgroundPhoto {
         settingsEditor.commit();
         this.released = true;
 
-        //DEPRECATED METHOD USING EXIF DATA
-      /*
-        this.released = true;
-        Log.e("Release", "release Boolean was set to True");
-        String comments = exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
-        if(comments == null){
-            exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, RELEASED_INDICATOR);
-        }
-        else if(!comments.contains(RELEASED_INDICATOR)){
-            String commentsRelease = comments + " " + RELEASED_INDICATOR;
-            exifData.setAttribute(ExifInterface.TAG_USER_COMMENT, commentsRelease);
-        }
-        try {
-            exifData.saveAttributes();
-        }
-        catch (IOException e){
-            Log.e("Release", "Could not Save Release String");
-            e.printStackTrace();
-        }*/
     }
 
 
+    //getters and setters
     public Location getLocation(){
         if(!hasLocation){
             return null;
         }
         return this.location;
+    }
+
+    private void setLocation(Location loc){
+        if(loc == null){
+            return;
+        }
+        this.location = loc;
     }
 
     public boolean hasLocation(){
