@@ -389,7 +389,13 @@ public class BackgroundPhoto {
 
     public void setPoints(int points) {this.points = points;}
 
-    private void setContext(Context context){this.context = context;}
+    private void setContext(Context context){
+        if(context == null){
+            return;
+        }
+        this.context = context;
+
+    }
 
 }
 
