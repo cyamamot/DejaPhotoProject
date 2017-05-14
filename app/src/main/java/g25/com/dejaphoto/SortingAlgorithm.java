@@ -7,6 +7,7 @@ import android.util.Log;
 
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 
@@ -27,9 +28,9 @@ public class SortingAlgorithm {
         //if time is 2hrs from current time & time boolean is true
         //if photo has karma
         //if released, set point value to -1
-        int addPoints (Context activity, BackgroundPhoto photo){
+        int addPoints (BackgroundPhoto photo){
 
-            act = activity;
+            //act = activity;
             location = photo.getLocation();
             date = photo.getDate();
             karma = photo.hasKarma();
@@ -41,7 +42,7 @@ public class SortingAlgorithm {
                 return -1;
             }
 
-            LocationWrapper loc = new LocationWrapper(act, 1, 1);
+            /*LocationWrapper loc = new LocationWrapper(act, 1, 1);
             try {
                 TimeUnit.SECONDS.sleep(10);
             }catch(Exception e){
@@ -61,12 +62,18 @@ public class SortingAlgorithm {
             }
             if (distance <= 304.8){
                 points += 5;
-            }
+            }*/
 
             Date currentDate = new Date();
-            long difference = date.getTime() - currentDate.getTime();
-            if (difference <= 7200000){
-                points += 5;
+            SimpleDateFormat simpleDateformat = new SimpleDateFormat("E");
+            if (simpleDateformat.format(currentDate).equals(simpleDateformat.format(date))) {
+                Log.d("SortingAlg", "Same Day of Week");
+                long difference = date.getTime() - currentDate.getTime();
+                if (difference <= 7200000) {
+
+                    points += 5;
+                }
+
             }
 
             if (karma){

@@ -95,12 +95,12 @@ public class WallpaperChanger {
             // cursor.getString(1) is the path to image file
             String path = cursor.getString(1);
 
-            /*BackgroundPhoto curr = new BackgroundPhoto(path);
-            int points = alg.addPoints(context, curr);
+            BackgroundPhoto curr = new BackgroundPhoto(path);
+            int points = alg.addPoints(curr);
             curr.setPoints(points);
-            photoWrappers[i] = curr;*/
+            photoWrappers[i] = curr;
 
-            photoWrappers[i] = new BackgroundPhoto(path);
+            //photoWrappers[i] = new BackgroundPhoto(path);
 
             //DEBUG log messages
             //strUrls[i] = path;
