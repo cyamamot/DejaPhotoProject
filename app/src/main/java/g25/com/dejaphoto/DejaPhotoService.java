@@ -44,17 +44,23 @@ public class DejaPhotoService extends Service {
             wallpaperChanger.next();
             Log.e("ChangeWallpaperReceiver", "NEXT");
         }
+
+        // go to the previous wallpaper
         else if(intent.getAction() == PREV)
         {
             wallpaperChanger.previous();
             Log.e("ChangeWallpaperReceiver", "PREV");
         }
+
+        // release the current photo that is set as the wallpaper
         else if(intent.getAction() == RELEASE)
         {
             wallpaperChanger.release();
             Log.e("ChangeWallpaperReceiver", "RELEASE");
         }
-        else if(intent.getAction() == NavWidget.KARMA)
+
+        // give karma to the current wallpaper photo
+        else if(intent.getAction() == KARMA)
         {
             wallpaperChanger.karma();
             Log.e("ChangeWallpaperReceiver", "KARMA");
@@ -100,6 +106,7 @@ public class DejaPhotoService extends Service {
         //Change Pictures Every Interval
         Intent changeWallpaperIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
         changeWallpaperIntent.setAction(NavWidget.NEXT);
+
         //Manages the countdown and sending the intent to the receiver once the countdown is over.
         alarmChangeWallpaper = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Intent wrapper needed for technical reasons.

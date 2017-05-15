@@ -3,9 +3,13 @@ package g25.com.dejaphoto;
 import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.util.Log;
 import android.media.ExifInterface;
@@ -68,8 +72,10 @@ public class BackgroundPhoto {
     static final String RELEASED_INDICATOR = "DJP_RELEASED";
     static SharedPreferences settings;
     static SharedPreferences.Editor settingsEditor;
+    String locationString;
 
     public BackgroundPhoto(String path, Context context){
+        if (path == null && context == null) return;
         setContext(context);
         Uri uriInput = Uri.parse("file://" + path);
         setUri(uriInput);
@@ -85,8 +91,8 @@ public class BackgroundPhoto {
      * Converts lat and lng from a string indicating degrees and seconds into a double that
      * that can be used to make location object.
      */
-    private void parseLocationFromExif(){
-        if (exifData == null){
+    private void parseLocationFromExif() {
+        if (exifData == null) {
             this.hasLocation = false;
             this.hasDate = false;
             this.hasEXIF = false;
@@ -104,11 +110,11 @@ public class BackgroundPhoto {
 
         //parse by calling helper method
         double latitude, longitude;
-        try{
+        try {
             latitude = formatLatLng(lat, latDirection);
             longitude = formatLatLng(lng, lngDirection);
         }//coordinates were null, indicate no geotag for photo
-        catch(NullPointerException e){
+        catch (NullPointerException e) {
             e.printStackTrace();
             this.hasLocation = false;
             return;
@@ -268,6 +274,7 @@ public class BackgroundPhoto {
         if(this.settings != null){
             return;
         }
+        if (context == null) return;
         settings = context.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
         settingsEditor = settings.edit();
     }
@@ -280,6 +287,10 @@ public class BackgroundPhoto {
         }
 
         initializeSettings();
+        if (uri == null) {
+            this.karma = true;
+            return;
+        }
         String uriStr = uri.toString() + KARMA_INDICATOR;
         settingsEditor.putBoolean(uriStr, true);
         settingsEditor.commit();
@@ -292,6 +303,10 @@ public class BackgroundPhoto {
 
     public void release(){
         initializeSettings();
+        if (uri == null) {
+            this.released = true;
+            return;
+        }
         String uriStr = uri.toString() + RELEASED_INDICATOR;
         settingsEditor.putBoolean(uriStr, true);
         settingsEditor.commit();
