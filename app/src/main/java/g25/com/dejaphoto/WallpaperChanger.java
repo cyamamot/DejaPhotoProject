@@ -337,6 +337,12 @@ public class WallpaperChanger {
 
                 Log.e("Setting Location", "No Location Available");
             }
+            catch(IndexOutOfBoundsException e){
+                remoteViews.setTextViewText(R.id.location_textview, "No Location");
+                appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+
+                Log.e("Settings Location", "No Location Available");
+            }
         }
     }
 }
