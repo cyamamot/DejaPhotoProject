@@ -29,20 +29,17 @@ public class DejaPhotoService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
 
+        initializeWallpaperChanger();
+
         //initial initialization
-        if (intent.getAction() == INIT) {
+        if (intent == null || intent.getAction() == INIT) {
             getSharedPrefs();
             initializeAlarm();
             Log.e("ChangeWallpaperReceiver", "INITIALIZED");
         }
 
-        //make sure wallpaper changer is not null
-        initializeWallpaperChanger();
-
         //see what action is requested
-
-        // go to the next wallpaper
-        if(intent.getAction() == NEXT)
+        else if(intent.getAction() == NEXT)
         {
             wallpaperChanger.next();
             Log.e("ChangeWallpaperReceiver", "NEXT");
@@ -103,7 +100,9 @@ public class DejaPhotoService extends Service {
      * service back with a intent indicating the action to take.
      */
     private void initializeAlarm() {
-
+        if(alarmChangeWallpaper != null || alarmRecalculatePoints != null){
+            return;
+        }
         //Change Pictures Every Interval
         Intent changeWallpaperIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
         changeWallpaperIntent.setAction(NavWidget.NEXT);
@@ -112,7 +111,7 @@ public class DejaPhotoService extends Service {
         alarmChangeWallpaper = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Intent wrapper needed for technical reasons.
         pendingChangingWallpaperIntent = PendingIntent.getService(getApplicationContext(), 1,
-                changeWallpaperIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                changeWallpaperIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         //configures the AlarmManager object to send the intent on a repeating countdown.
         alarmChangeWallpaper.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
                 1000 * transitionDelay, pendingChangingWallpaperIntent);
@@ -125,7 +124,7 @@ public class DejaPhotoService extends Service {
         pendingCalcIntent = PendingIntent.getService(getApplicationContext(), 2,
                 calcIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         alarmRecalculatePoints.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-                3600000, pendingCalcIntent);
+        3600000, pendingCalcIntent);
 
     }
 
