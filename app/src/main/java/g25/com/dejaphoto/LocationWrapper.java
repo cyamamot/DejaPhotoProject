@@ -31,7 +31,6 @@ public class LocationWrapper {
     LocationListener locationListener;
     String locationProvider;
     //whether user has location permission turned on; if not this class can't do a whole lot
-    boolean locationPermissionGiven = false;
     static final int TWO_MINUTES = 1000 * 60 * 2;
     Context context;
 
@@ -95,15 +94,8 @@ public class LocationWrapper {
      * Getter method for our background service to get the user's current location
      */
     public Location getCurrentUserLocation(){
-        if (locationPermissionGiven){
             Log.e("LocationWrapper", "Returning User Location");
             return currentUserLocation;
-        }
-        else {
-            //null  to indicate no location
-            Log.e("LocationWrapper", "NO PERMISSION!!!!");
-            return null;
-        }
     }
 
     /**
