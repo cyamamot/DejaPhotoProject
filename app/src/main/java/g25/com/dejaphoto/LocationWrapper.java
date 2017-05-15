@@ -38,10 +38,11 @@ public class LocationWrapper {
     // used for testing on map
     GoogleMap mMap;
 
-    // constructor takes in context for access to context and stuff
-    // minTime is minimum time interval between location updates, in milliseconds
-    // minDistance is minimum distance between location updates, in meter
-
+    /**
+     * Constructor takes in context for access to context, time, and distance
+     * minTime is minimum time interval between location updates, in milliseconds
+     * minDistance is minimum distance between location updates, in meter
+     */
     public LocationWrapper(Context context, long minTime, float minDistance) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationProvider = LocationManager.PASSIVE_PROVIDER;
@@ -90,7 +91,9 @@ public class LocationWrapper {
         }
     }
 
-    // call this getter method from our background service to get the user's current location
+    /**
+     * Getter method for our background service to get the user's current location
+     */
     public Location getCurrentUserLocation(){
         if (locationPermissionGiven){
             Log.e("LocationWrapper", "Returning User Location");
@@ -103,17 +106,23 @@ public class LocationWrapper {
         }
     }
 
-    // setter method that sets our user's current location
+    /**
+     * Setter method that sets our user's current location
+     */
     private void setCurrentUserLocation(Location location){
         currentUserLocation = location;
     }
 
-    // if user turned off permission, then turned it on later, this let's us tell our wrapper class
+    /**
+     * Notifies us if user turned on permission so that we can notify our wrapper class
+     */
     public void locationPermissionOn(){
         locationPermissionGiven = true;
     }
 
-    // if we need to stop our app from tracking location
+    /**
+     * Method to stop updating the location
+     */
     public void stopLocationTracking(){
         // Remove the listener you previously added
         locationManager.removeUpdates(locationListener);
@@ -127,9 +136,10 @@ public class LocationWrapper {
         Log.e("Location Moved", "Reset Service");
     }
 
-    /** Determines whether one Location reading is better than the current Location fix
-     * @param location  The new Location that you want to evaluate
-     * @param currentBestLocation  The current Location fix, to which you want to compare the new one
+    /**
+     * Determines whether one Location reading is better than the current Location fix
+     * location is the new Location that you want to evaluate
+     * currentBestLocation is the current Location fix to which you want to compare the new one
      */
     protected boolean isBetterLocation(Location location, Location currentBestLocation) {
         if (currentBestLocation == null) {
@@ -173,8 +183,11 @@ public class LocationWrapper {
         return false;
     }
 
-    /** Checks whether two providers are the same */
-    // android api included this for us to check which provider we trust more but we probably won't need to check for this
+    /**
+     * Checks whether two providers are the same
+     * NOTE: android api included this for us to check which provider we trust more but we probably
+     *       won't need to check for this
+     */
     private boolean isSameProvider(String provider1, String provider2) {
         if (provider1 == null) {
             return provider2 == null;
@@ -183,9 +196,11 @@ public class LocationWrapper {
     }
 
 
-    // this is the test constructor that we will pass into MapsActivity to display markers on map
-    // minTime is minimum time interval between location updates, in milliseconds
-    // minDistance is minimum distance between location updates, in meter
+    /**
+     * Test constructor that we will pass into MapsActivity to display markers on map
+     * minTime is minimum time interval between location updates, in milliseconds
+     * minDistance is minimum distance between location updates, in meter
+     */
     public LocationWrapper(Context context, long minTime, float minDistance, GoogleMap gMap) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationProvider = LocationManager.GPS_PROVIDER;

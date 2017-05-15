@@ -1,20 +1,15 @@
 package g25.com.dejaphoto;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.location.Location;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.util.Log;
-import android.media.ExifInterface;
-import android.net.Uri;
-import android.widget.Toast;
 
 /**
  * Wrapper class for Photos that encapsulate Location, Date/Time, Karma, Release Status. Also
@@ -74,6 +69,9 @@ public class BackgroundPhoto {
     static SharedPreferences.Editor settingsEditor;
     String locationString;
 
+    /**
+     * Constructor for the photo and passes in the path to it and the context
+     */
     public BackgroundPhoto(String path, Context context){
         if (path == null && context == null) return;
         setContext(context);
@@ -184,11 +182,13 @@ public class BackgroundPhoto {
      * Converts the GPS lat or lng from string format to a double (minutes), calls on helper
      * method formatLatLng() to format the string output (ex. 51/8 43/3 33/1) into total number of
      * degrees.
+     *
      * method taken from:
-     *  http://android-er.blogspot.in/2010/01/convert-exif-gps-info-to-degree-format.html
-     * @param coordinate - String format given by ExifInterface
-     * @param direction - Direction given by ExifInterface
-     * @return - Converted Double usable by Location class.
+     * http://android-er.blogspot.in/2010/01/convert-exif-gps-info-to-degree-format.html
+     *
+     * coordinate is the String format given by ExifInterface
+     * direction is the Direction given by ExifInterface
+     * Returns a converted Double usable by Location class.
      */
     public double formatLatLng(String coordinate, String direction){
         //redundant null checks since android not specific about what happens during failure
@@ -228,7 +228,9 @@ public class BackgroundPhoto {
         return converted;
     }
 
-
+    /**
+     * Checks if the photo has been given karma/has been released
+     */
     private void parseKarmaAndReleased(){
         initializeSettings();
         String karmaStr = uri.toString() + KARMA_INDICATOR;
@@ -269,22 +271,26 @@ public class BackgroundPhoto {
         }
     }
 
-
+    /**
+     * Initialize the settings for the photo
+     */
     private void initializeSettings(){
         if(this.settings != null){
             return;
         }
-        if (context == null) return;
+        if (context == null) { return; }
         settings = context.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
         settingsEditor = settings.edit();
     }
 
 
-
+    /**
+     * Gives karma to the photo if it doesn't have karma already
+     */
     public void giveKarma(){
-        if(hasKarma() == true){
-            return;
-        }
+
+        // if the photo already has karma, return
+        if(hasKarma()){ return; }
 
         initializeSettings();
         if (uri == null) {
@@ -300,7 +306,9 @@ public class BackgroundPhoto {
 
     }
 
-
+    /**
+     * Releases the photo from being shown as a wallpaper
+     */
     public void release(){
         initializeSettings();
         if (uri == null) {
@@ -317,67 +325,95 @@ public class BackgroundPhoto {
     }
 
 
-    //getters and setters
+    /**
+     * Getter method for the location
+     */
     public Location getLocation(){
-        if(!hasLocation){
-            return null;
-        }
+        if(!hasLocation){ return null; }
         return this.location;
     }
 
+    /**
+     * Setter method for the location
+     */
     private void setLocation(Location loc){
-        if(loc == null){
-            return;
-        }
+        if(loc == null){ return; }
         this.location = loc;
     }
 
+    /**
+     * Getter method to check if there's a location
+     */
     public boolean hasLocation(){
         return this.hasLocation;
     }
 
+    /**
+     * Getter method for the URI path
+     */
     public String getPath(){
         return this.uri.getPath();
     }
 
+    /**
+     * Getter method for the URI
+     */
     public Uri getUri(){
         return this.uri;
     }
 
+    /**
+     * Getter method for the date
+     */
     public Date getDate(){
-        if(!hasDate){
-            return null;
-        }
+        if(!hasDate) { return null; }
         return this.dateCalendar.getTime();
     }
 
+    /**
+     * Getter method for if the photo has a date
+     */
     public boolean hasDate(){
         return this.hasDate;
     }
 
+    /**
+     * Getter method for if the photo has karma
+     */
     public boolean hasKarma(){
         return this.karma;
     }
 
+    /**
+     * Getter method for if photo has been released
+     */
     public boolean isReleased(){
         return this.released;
     }
 
+    /**
+     * Getter method for the points
+     */
     public int getPoints(){
         return this.points;
     }
 
-
+    /**
+     * Setter method for the points
+     */
     public void setPoints(int points) {this.points = points;}
 
+    /**
+     * Setter method for the context
+     */
     private void setContext(Context context){
-        if(context == null){
-            return;
-        }
+        if(context == null){ return; }
         this.context = context;
-
     }
 
+    /**
+     * Setter method for the photo's URI
+     */
     private void setUri(Uri input){
         this.uri = input;
     }

@@ -74,7 +74,9 @@ public class NavWidget extends AppWidgetProvider {
         }
     }
 
-    //Use PendingIntent to request manual update when the update button is clicked
+    /**
+     * Use PendingIntent to request manual update when the update button is clicked
+     */
     protected PendingIntent getPendingSelfIntent(Context context, String action) {
         Intent intent = new Intent(context, DejaPhotoService.class);
         intent.setAction(action);
