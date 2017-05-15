@@ -52,22 +52,22 @@ import java.util.GregorianCalendar;
 
 public class BackgroundPhoto {
 
-    ExifInterface exifData;
-    Uri uri;
-    GregorianCalendar dateCalendar;
-    Location location;
-    boolean karma;
-    boolean released;
-    boolean hasLocation;
-    boolean hasDate;
-    boolean hasEXIF;
-    int points;
-    Context context;
-    static final String KARMA_INDICATOR = "DJP_KARMA";
-    static final String RELEASED_INDICATOR = "DJP_RELEASED";
-    static SharedPreferences settings;
-    static SharedPreferences.Editor settingsEditor;
-    String locationString;
+    private ExifInterface exifData;
+    private Uri uri;
+    private GregorianCalendar dateCalendar;
+    private Location location;
+    private boolean karma;
+    private boolean released;
+    private boolean hasLocation;
+    private boolean hasDate;
+    private boolean hasEXIF;
+    private int points;
+    private Context context;
+    private static final String KARMA_INDICATOR = "DJP_KARMA";
+    private static final String RELEASED_INDICATOR = "DJP_RELEASED";
+    private static SharedPreferences settings;
+    private static SharedPreferences.Editor settingsEditor;
+    private String locationString;
 
     /**
      * Constructor for the photo and passes in the path to it and the context
