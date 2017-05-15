@@ -107,6 +107,7 @@ public class DejaPhotoService extends Service {
         //Change Pictures Every Interval
         Intent changeWallpaperIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
         changeWallpaperIntent.setAction(NavWidget.NEXT);
+
         //Manages the countdown and sending the intent to the receiver once the countdown is over.
         alarmChangeWallpaper = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Intent wrapper needed for technical reasons.

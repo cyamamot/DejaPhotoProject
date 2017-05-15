@@ -21,7 +21,6 @@ public class BackgroundPhotoTests {
 
     }
 
-
     @Test
     public void testFormatLatLng(){
         String testCoord = "1/1,1/1,1/1";
@@ -41,35 +40,26 @@ public class BackgroundPhotoTests {
 
     }
 
+    @Test
+    public void doesntHaveKarma(){
+        assertTrue(photo.hasKarma());
+    }
 
     @Test
-    public void testGiveKarma(){
-        assertTrue(!photo.hasKarma());
+    public void hasKarma(){
         photo.giveKarma();
         assertTrue(photo.hasKarma());
     }
 
-
     @Test
-    public void testRelease(){
-        assertTrue(!photo.isReleased());
-        photo.release();
+    public void checkRelease(){
         assertTrue(photo.isReleased());
     }
 
-
     @Test
-    public void testGetters(){
-        assertTrue(!photo.hasLocation());
-        assertTrue(!photo.hasDate());
+    public void releaseThenCheckRelease(){
+        photo.release();
+        assertTrue(photo.isReleased());
     }
-
-
-
-
-
-
-
-
 
 }
