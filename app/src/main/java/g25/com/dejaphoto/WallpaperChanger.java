@@ -40,15 +40,18 @@ public class WallpaperChanger {
     private SortingAlgorithm sorter;
     private int albumSize;
 
-    // constructor passes in activity to get context and stuff
+    /**
+     * Constructor passes in activity to get context and stuff
+     */
     public WallpaperChanger(Context context) {
         this.context = context;
         this.sorter = new SortingAlgorithm(context);
     }
 
-    // http://stackoverflow.com/questions/25828808/issue-converting-uri-to-bitmap-2014
-
-    // calls wallpapermanager to set wallpaper to specified image
+    /**
+     * Calls WallpaperManager to set wallpaper to specified image
+     * http://stackoverflow.com/questions/25828808/issue-converting-uri-to-bitmap-2014
+     */
     private void setWallpaper(BackgroundPhoto photoWrapper) {
         Uri uri = photoWrapper.getUri();
         try {
@@ -100,9 +103,10 @@ public class WallpaperChanger {
     }
     */
 
-
-    // http://stackoverflow.com/questions/6855399/how-to-implement-image-gallery-in-gridview-in-android
-    // cursor gets the photos from media store and we use it to point to each photo in album
+    /**
+     * Cursor gets the photos from media store and we use it to point to each photo in
+     * http://stackoverflow.com/questions/6855399/how-to-implement-image-gallery-in-gridview-in-android
+     */
     public void initialize() {
 
         //prevents re-initialization when service restarts
@@ -116,6 +120,9 @@ public class WallpaperChanger {
         Toast.makeText(context, "Initialized", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Fill the queue with photos that will appear as the wallpaper
+     */
     private void populateQueue() {
 
         //cursor to get images from content provider
@@ -247,7 +254,7 @@ public class WallpaperChanger {
 
 
     /**
-     * sets current wallpaper released boolean to true
+     * Set the current wallpaper released boolean to true
      */
     public void release() {
 
@@ -261,7 +268,7 @@ public class WallpaperChanger {
 
 
     /**
-     * set current wallpaper karma boolean to true
+     * Set current wallpaper karma boolean to true
      */
     public void karma() {
         Toast.makeText(context, "KARMA SET <3", Toast.LENGTH_SHORT).show();
@@ -270,6 +277,13 @@ public class WallpaperChanger {
 
 
     class PhotoCompare implements Comparator<BackgroundPhoto> {
+
+        /**
+         * Takes in two BackgroundPhoto objects and compares them
+         * Returns 1 if the 1st photo is ranked <= the 2nd photo
+         * Returns -1 if the 2nd photo is ranked < the 1st photo
+         */
+
         @Override
         public int compare(BackgroundPhoto first, BackgroundPhoto second) {
             if (first.getPoints() < second.getPoints()) {
@@ -283,7 +297,9 @@ public class WallpaperChanger {
         }
     }
 
-    //
+    /**
+     * Display the location of the photo above the widget if the photo has a location
+     */
     public void setLocation() {
         //String path = cursor.getString(1);
         BackgroundPhoto curr = prevList.get(prevCursor);

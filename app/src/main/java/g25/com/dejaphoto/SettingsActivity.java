@@ -102,6 +102,9 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
     }
 
+    /**
+     * Starts the DejaPhoto service to change the wallpaper
+     */
     private void launchService() {
         Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
         intent.setAction(DejaPhotoService.INIT);
@@ -111,7 +114,6 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
     /**
      * Saves all settings to sharedPreferences.
-     * @param view - Current View
      */
     public void saveSettings(View view){
         //change settings
@@ -135,6 +137,9 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     }
 
 
+    /**
+     * Saves the user's preference to use the default album
+     */
     public void selectDefaultAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", false);
         settingsEditor.commit();
@@ -142,7 +147,9 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         Log.e("Album Selected", "Default Album");
     }
 
-
+    /**
+     * Saves the user's preference to use the custom album
+     */
     public void selectCustomAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", true);
         settingsEditor.commit();
@@ -213,6 +220,9 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
     }
 
+    /**
+     * Returns whether or not the user has granted permissions
+     */
     public boolean hasPermissions(){
         //If we have both permissions, we return true
         if (ContextCompat.checkSelfPermission(this, permission.READ_EXTERNAL_STORAGE)
@@ -223,7 +233,9 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         return false;
     }
 
-    // this function is our onClick to the MapsActivity used only for testing LocationWrapper
+    /**
+     * Used for testing LocationWrapper and is the onClick to the MapsActivity
+     */
     public void testMap(View view){
         if(debug) {
             Intent intent = new Intent(this, MapsActivity.class);

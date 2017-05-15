@@ -4,13 +4,10 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-
-import java.util.Comparator;
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static java.lang.Math.abs;
-import java.lang.*;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -26,6 +23,9 @@ public class SortingAlgorithm {
     Context context;
     LocationWrapper loc;
 
+    /**
+     * Constructor for the Sorting Algorithm
+     */
     public SortingAlgorithm (Context context){
         this.context = context;
         loc = new LocationWrapper(context, MIN_TIME, MIN_DISTANCE);
@@ -35,7 +35,7 @@ public class SortingAlgorithm {
         //if photo has karma
         //if released, set point value to -1
 
-        int assignPoints(BackgroundPhoto photo){
+    int assignPoints(BackgroundPhoto photo){
 
             //get info from photo
             Date date = photo.getDate();
