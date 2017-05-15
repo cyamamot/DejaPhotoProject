@@ -42,9 +42,6 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
             requestPermissionLocation();
         }
-        //requestPermissionStorage();
-          // onRequestPermissionsResult(1, null, null);
-       // }
 
         //initialize fields
         settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
