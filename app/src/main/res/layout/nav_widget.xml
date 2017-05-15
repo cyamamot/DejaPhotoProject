@@ -1,7 +1,7 @@
 <RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:layout_height="120dp"
+    android:background="#80111111"
     android:padding="@dimen/widget_margin"
     android:orientation="horizontal">
 
@@ -60,10 +60,11 @@
     <TextView
         android:id="@+id/location_textview"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="40dp"
         android:gravity="center"
         android:layout_above="@+id/linearLayout"
         android:layout_alignParentStart="true"
+        android:textColor="@android:color/white"
         android:text="" />
 
 </RelativeLayout>
