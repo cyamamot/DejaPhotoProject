@@ -231,7 +231,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
      */
     public void testMap(View view){
         if(debug) {
-            Intent intent = new Intent(this, MapsActivity.class);
+            Intent intent = new Intent(this, TestMapsActivity.class);
             startActivity(intent);
         }
     }

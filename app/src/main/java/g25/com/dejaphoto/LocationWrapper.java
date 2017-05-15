@@ -87,7 +87,7 @@ public class LocationWrapper {
             // receive location updates with passed in minTime and minDistance
             locationManager.requestLocationUpdates(locationProvider, minTime, minDistance,
                     locationListener);
-            locationPermissionGiven = true;
+            //locationPermissionGiven = true;
         }
     }
 
@@ -117,7 +117,7 @@ public class LocationWrapper {
      * Notifies us if user turned on permission so that we can notify our wrapper class
      */
     public void locationPermissionOn(){
-        locationPermissionGiven = true;
+        //locationPermissionGiven = true;
     }
 
     /**
@@ -243,7 +243,7 @@ public class LocationWrapper {
             // receive location updates with passed in minTime and minDistance
             locationManager.requestLocationUpdates(locationProvider, minTime, minDistance,
                     locationListener);
-            locationPermissionGiven = true;
+            //locationPermissionGiven = true;
         }
     }
 }
