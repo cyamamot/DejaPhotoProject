@@ -58,6 +58,21 @@
         android:id="@+id/checkbox_enableDejaVu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Enable" />
+
+    <TextView
+        android:id="@+id/label_dejavutime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enable DejaVu Time Mode:"
+        android:textSize="18sp" />
+
+    <CheckBox
+        android:id="@+id/checkbox_enableDejaVutime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
         android:text="Enable" />
 
     <TextView

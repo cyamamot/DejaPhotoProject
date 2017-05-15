@@ -19,6 +19,7 @@ public class SortingAlgorithm {
     private static final int MIN_DISTANCE = 152; //update every 500 feet (uses meters)
     private static final int MIN_TIME = 1 * 60 * 60 * 1000; //update every hour (uses milliseconds)
     private static final int POINT_INC = 5; //point value that photos are incremented by
+    private static final int KARMA_INC = 1; //point value karma increments by
     private static final int MIN_IN_ONE_HOUR = 60; //number of minutes in one hour
     private static final int MIN_IN_TWO_HOUR = 120; //number of minutes in two hours
     private static final int RELEASED_POINT = -1; //point value for a released photo
@@ -67,6 +68,7 @@ public class SortingAlgorithm {
         if (loc != null) {
             currentL = loc.getCurrentUserLocation();
         }
+
         if(currentL != null && location != null) {
             float distance = location.distanceTo(currentL); //distance in meters
             if (abs(distance) <= WITHIN_DISTANCE) {
@@ -85,6 +87,15 @@ public class SortingAlgorithm {
 
 
         Date currentDate = new Date();
+
+        if (currentDate == null){
+            Log.e("DEBUG", "currentDate is null");
+        }
+
+        if (date == null){
+            Log.e("DEBUG", "date is null");
+        }
+
         if(currentDate != null && date != null) {
             SimpleDateFormat week = new SimpleDateFormat("E");
             if (week.format(currentDate).equals(week.format(date))) {
@@ -99,11 +110,14 @@ public class SortingAlgorithm {
                 }else{
                     Log.e("SortingAlg", "Not Within 2 Hours");
                 }
+            }else{
+                Log.e("SortingAlg", "Not Same Day of Week");
             }
         }
 
         if (karma){
-            points += POINT_INC;
+            Log.d("SortingAlg", "Adding karma");
+            points += KARMA_INC;
         }
 
         photo.setPoints(points);
