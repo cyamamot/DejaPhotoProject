@@ -25,6 +25,9 @@ public class SortingAlgorithm {
 
     Context context;
     LocationWrapper loc;
+    Location currentL;
+
+    public SortingAlgorithm(){}
 
     public SortingAlgorithm (Context context){
         this.context = context;
@@ -35,7 +38,7 @@ public class SortingAlgorithm {
         //if photo has karma
         //if released, set point value to -1
 
-        int assignPoints(BackgroundPhoto photo){
+        public int assignPoints(BackgroundPhoto photo){
 
             //get info from photo
             Date date = photo.getDate();
@@ -50,11 +53,16 @@ public class SortingAlgorithm {
                 return -1;
             }
 
-            Location currentL = loc.getCurrentUserLocation();
+            if (loc != null) {
+                currentL = loc.getCurrentUserLocation();
+            }
             if(currentL != null && location != null) {
                 float distance = location.distanceTo(currentL); //distance in meters
                 if (abs(distance) <= 304.8) {
                     points += 5;
+                    Log.d("SortingAlg", "Within 1000 Feet");
+                }else{
+                    Log.d("SortingAlg", "Not Within 1000 Feet");
                 }
             }
 
@@ -69,7 +77,10 @@ public class SortingAlgorithm {
                     int photoTime = toMins(hour.format(date));
                     long difference = photoTime - currentTime;
                     if (abs(difference) <= 120) {
+                        Log.d("SortingAlg", "Within 2 Hours");
                         points += 5;
+                    }else{
+                        Log.d("SortingAlg", "Not Within 2 Hours");
                     }
                 }
             }
