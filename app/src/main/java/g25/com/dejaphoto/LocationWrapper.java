@@ -17,6 +17,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import static g25.com.dejaphoto.DejaPhotoService.wallpaperChanger;
+
 /**
  * Created by dillonliu on 5/9/17.
  */
@@ -56,7 +58,12 @@ public class LocationWrapper {
                 //sendResetIntent();
 
                 setCurrentUserLocation(location);
-                DejaPhotoService.wallpaperChanger.populateQueue();
+                if(wallpaperChanger != null) {
+                    wallpaperChanger.populateQueue();
+                }
+                else {
+                    initWallpaperChanger();
+                }
                 Log.e("Location Test", "User Location Changed: " + location.toString());
                 if(isBetterLocation(location, currentUserLocation)) {
                     //DEBUG Log location
@@ -90,6 +97,11 @@ public class LocationWrapper {
                     locationListener);
             //locationPermissionGiven = true;
         }
+    }
+
+    private void initWallpaperChanger() {
+        wallpaperChanger = new WallpaperChanger(context);
+        wallpaperChanger.initialize();
     }
 
     /**
