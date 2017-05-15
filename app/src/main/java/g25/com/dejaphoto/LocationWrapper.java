@@ -44,7 +44,7 @@ public class LocationWrapper {
 
     public LocationWrapper(Context context, long minTime, float minDistance) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        locationProvider = LocationManager.NETWORK_PROVIDER;
+        locationProvider = LocationManager.PASSIVE_PROVIDER;
         this.context = context;
 
         // Define a listener that responds to location updates
@@ -54,10 +54,10 @@ public class LocationWrapper {
                 // when location changes, we set the currentUserLocation field
                 // but first we have to check if newly returned location is better/more accurate than the last one
                 sendResetIntent();
+                Log.e("Location Test", "User Location Changed: " + location.toString());
                 if(isBetterLocation(location, currentUserLocation)) {
                     setCurrentUserLocation(location);
                     //DEBUG Log location
-                    Log.e("Location Test", "User Location Changed: " + location.toString());
                 }
             }
 
@@ -73,6 +73,10 @@ public class LocationWrapper {
 
         //get Initial User position
         currentUserLocation = locationManager.getLastKnownLocation(locationProvider);
+        Log.e("LocationWrapper", "Getting Last Known Location");
+        if(currentUserLocation == null){
+            Log.e("LocationWrapper", "Location is Null");
+        }
 
         //check if user granted us location permission, if yes locationManager to get updates
         if (ContextCompat.checkSelfPermission(context, permission.ACCESS_FINE_LOCATION)
@@ -89,10 +93,12 @@ public class LocationWrapper {
     // call this getter method from our background service to get the user's current location
     public Location getCurrentUserLocation(){
         if (locationPermissionGiven){
+            Log.e("LocationWrapper", "Returning User Location");
             return currentUserLocation;
         }
         else {
             //null  to indicate no location
+            Log.e("LocationWrapper", "NO PERMISSION!!!!");
             return null;
         }
     }
@@ -182,7 +188,7 @@ public class LocationWrapper {
     // minDistance is minimum distance between location updates, in meter
     public LocationWrapper(Context context, long minTime, float minDistance, GoogleMap gMap) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        locationProvider = LocationManager.NETWORK_PROVIDER;
+        locationProvider = LocationManager.GPS_PROVIDER;
         mMap = gMap;
 
         // Define a listener that responds to location updates
@@ -191,7 +197,7 @@ public class LocationWrapper {
                 // Called when a new location is found by the network location provider.
                 // when location changes, we set the currentUserLocation field
                 // but first we have to check if newly returned location is better/more accurate than the last one
-                if(isBetterLocation(location, currentUserLocation)) {
+                if(true) {
                     setCurrentUserLocation(location);
                     mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("updated_path"));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));

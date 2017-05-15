@@ -71,10 +71,16 @@ public class SortingAlgorithm {
             float distance = location.distanceTo(currentL); //distance in meters
             if (abs(distance) <= WITHIN_DISTANCE) {
                 points += POINT_INC;
-                Log.d("SortingAlg", "Within 1000 Feet");
+                Log.e("SortingAlg", "Within 1000 Feet");
             }else{
-                Log.d("SortingAlg", "Not Within 1000 Feet");
+                Log.e("SortingAlg", "Not Within 1000 Feet");
             }
+        }
+        else if(currentL == null){
+            Log.e("SortingAlg", "Current Location is Null");
+        }
+        else{
+            Log.e("SortingAlg", "Pic Location is Null");
         }
 
 
@@ -82,16 +88,16 @@ public class SortingAlgorithm {
         if(currentDate != null && date != null) {
             SimpleDateFormat week = new SimpleDateFormat("E");
             if (week.format(currentDate).equals(week.format(date))) {
-                Log.d("SortingAlg", "Same Day of Week");
+                Log.e("SortingAlg", "Same Day of Week");
                 SimpleDateFormat hour = new SimpleDateFormat("HH:mm");
                 int currentTime = toMins(hour.format(currentDate));
                 int photoTime = toMins(hour.format(date));
                 long difference = photoTime - currentTime;
                 if (abs(difference) <= MIN_IN_TWO_HOUR) {
-                    Log.d("SortingAlg", "Within 2 Hours");
+                    Log.e("SortingAlg", "Within 2 Hours");
                     points += POINT_INC;
                 }else{
-                    Log.d("SortingAlg", "Not Within 2 Hours");
+                    Log.e("SortingAlg", "Not Within 2 Hours");
                 }
             }
         }
@@ -101,7 +107,7 @@ public class SortingAlgorithm {
         }
 
         photo.setPoints(points);
-        Log.d("SortingAlg", ((Integer)photo.getPoints()).toString());
+        Log.e("SortingAlg", ((Integer)photo.getPoints()).toString());
 
         return points;
     }
