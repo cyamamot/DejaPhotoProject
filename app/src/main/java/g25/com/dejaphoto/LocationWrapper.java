@@ -44,7 +44,7 @@ public class LocationWrapper {
      */
     public LocationWrapper(Context context, long minTime, float minDistance) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        locationProvider = LocationManager.PASSIVE_PROVIDER;
+        locationProvider = LocationManager.GPS_PROVIDER;
         this.context = context;
 
         // Define a listener that responds to location updates
@@ -53,10 +53,12 @@ public class LocationWrapper {
                 // Called when a new location is found by the network location provider.
                 // when location changes, we set the currentUserLocation field
                 // but first we have to check if newly returned location is better/more accurate than the last one
-                sendResetIntent();
+                //sendResetIntent();
+
+                setCurrentUserLocation(location);
+                DejaPhotoService.wallpaperChanger.populateQueue();
                 Log.e("Location Test", "User Location Changed: " + location.toString());
                 if(isBetterLocation(location, currentUserLocation)) {
-                    setCurrentUserLocation(location);
                     //DEBUG Log location
                 }
             }
@@ -84,7 +86,7 @@ public class LocationWrapper {
 
             // Register the listener with the Location Manager,
             // receive location updates with passed in minTime and minDistance
-            locationManager.requestLocationUpdates(locationProvider, minTime, minDistance,
+            locationManager.requestLocationUpdates(locationProvider, 0, 0,
                     locationListener);
             //locationPermissionGiven = true;
         }

@@ -88,7 +88,7 @@ public class WallpaperChanger {
     /**
      * Fill the queue with photos that will appear as the wallpaper
      */
-    private void populateQueue() {
+     void populateQueue() {
 
         //cursor to get images from content provider
         cursor = context.getContentResolver().query(
@@ -105,8 +105,10 @@ public class WallpaperChanger {
         }
 
         //initialize previous photo list and cursor
-        prevList = new ArrayList<BackgroundPhoto>();
-        prevCursor = 0;
+        if(prevList == null){
+            prevList = new ArrayList<BackgroundPhoto>();
+        }
+         prevCursor = 0;
 
         //String[] strUrls = new String[albumSize];
         String[] mNames = new String[albumSize];
@@ -131,6 +133,7 @@ public class WallpaperChanger {
             Log.e("QUEUE SIZE", Integer.toString(queue.size()));
         }
         Toast.makeText(context, "Queue Size : " + queue.size(), Toast.LENGTH_LONG).show();
+         next();
     }
 
 
