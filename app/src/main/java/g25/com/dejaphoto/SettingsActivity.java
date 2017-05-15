@@ -38,9 +38,15 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         setContentView(R.layout.activity_settings);
 
         // requests required permissions like read_external storage
-        if(!requestPermissions()){
-           onRequestPermissionsResult(1, null, null);
+        if(hasPermissions()){
+            launchService();
         }
+        else {
+            requestPermissionLocation();
+        }
+        //requestPermissionStorage();
+          // onRequestPermissionsResult(1, null, null);
+       // }
 
         //initialize fields
         settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -64,22 +70,42 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     /**
      * Method only executes if User grants permission to use location.
      */
+    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                requestPermissionStorage();
+                break;
+            }
+            case MY_PERMISSIONS_REQUEST_READ_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-        //Launch Service
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    //Launch Service
+                    launchService();
+
+                    //DEBUG
+                    LocationWrapper testLocation = new LocationWrapper(this, 1, 1);
+                    Location location = testLocation.getCurrentUserLocation();
+                    if (location == null) {
+                        Log.e("Location Test", "Null Location returned");
+                    } else {
+                        Log.e("Location Test", location.toString());
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    private void launchService() {
         Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
         intent.setAction(DejaPhotoService.INIT);
         startService(intent);
-
-        //DEBUG
-        LocationWrapper testLocation = new LocationWrapper(this, 1, 1);
-        Location location = testLocation.getCurrentUserLocation();
-        if(location == null){
-            Log.e("Location Test", "Null Location returned");
-        }
-        else{
-            Log.e("Location Test", location.toString());
-        }
     }
 
 
@@ -112,20 +138,52 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     public void selectDefaultAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", false);
         settingsEditor.commit();
+
+        Log.e("Album Selected", "Default Album");
     }
 
 
     public void selectCustomAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", true);
         settingsEditor.commit();
+
+        Log.e("Album Selected", "Custom Album");
     }
 
 
     /**
      * Creates the pop up dialogues to ask user to permission.
      */
-    public boolean requestPermissions(){
+    public boolean requestPermissionLocation(){
+        // request location
+        if (ContextCompat.checkSelfPermission(this,
+                permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
 
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+        return true;
+    }
+    public void requestPermissionStorage(){
         // request read_external_storage
         if (ContextCompat.checkSelfPermission(this,
                 permission.READ_EXTERNAL_STORAGE)
@@ -153,37 +211,13 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
             }
         }
 
-        // request location
-        if (ContextCompat.checkSelfPermission(this,
-                permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+    }
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }
-
-        //If already have permission, start service
+    public boolean hasPermissions(){
+        //If we have both permissions, we return true
         if (ContextCompat.checkSelfPermission(this, permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
-                permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             return true;
         }
         return false;
