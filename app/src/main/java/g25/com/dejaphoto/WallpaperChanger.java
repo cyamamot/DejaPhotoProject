@@ -303,6 +303,9 @@ public class WallpaperChanger {
      */
     public void setLocation() {
         //String path = cursor.getString(1);
+        if(prevList.isEmpty()){
+            return;
+        }
         BackgroundPhoto curr = prevList.get(prevCursor);
         Location currPhotoLocation = curr.getLocation();
         Geocoder geocoder;
