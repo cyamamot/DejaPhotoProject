@@ -67,6 +67,7 @@ public class SortingAlgorithm {
         if (loc != null) {
             currentL = loc.getCurrentUserLocation();
         }
+
         if(currentL != null && location != null) {
             float distance = location.distanceTo(currentL); //distance in meters
             if (abs(distance) <= WITHIN_DISTANCE) {
@@ -97,6 +98,7 @@ public class SortingAlgorithm {
         }
 
         if (karma){
+            Log.d("SortingAlg", "Adding karma");
             points += POINT_INC;
         }
 

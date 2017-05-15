@@ -182,7 +182,7 @@ public class WallpaperChanger {
             Date date = nextPhoto.getDate();
             Log.e("Date", date.toString());
         } else {
-            Log.e("Location", "No Date Stamp Available for this Photo");
+            Log.e("Date", "No Date Stamp Available for this Photo");
         }
 
         String comments = nextPhoto.exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
