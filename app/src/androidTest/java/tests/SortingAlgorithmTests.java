@@ -37,16 +37,17 @@ public class SortingAlgorithmTests {
 
     @Test
     public void testAssignPoints(){
-        int points = sorter.assignPoints(photo);
-        assertTrue(points == 0);
+        int points;
+        assertTrue(photo.getPoints() == 0);
 
         photo.giveKarma();
         points = sorter.assignPoints(photo);
-        assertTrue(points == 5);
+        assertTrue(points ==  1);
 
         photo.release();
         points = sorter.assignPoints(photo);
-        assertTrue(points == -1);
+        assertTrue(photo.getPoints() == -1);
+        assertTrue(photo.isReleased() == true);
     }
 
     @Test

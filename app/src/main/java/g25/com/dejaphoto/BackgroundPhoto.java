@@ -61,7 +61,7 @@ public class BackgroundPhoto {
     boolean hasLocation;
     boolean hasDate;
     boolean hasEXIF;
-    int points;
+    int points = 0;
     Context context;
     static final String KARMA_INDICATOR = "DJP_KARMA";
     static final String RELEASED_INDICATOR = "DJP_RELEASED";

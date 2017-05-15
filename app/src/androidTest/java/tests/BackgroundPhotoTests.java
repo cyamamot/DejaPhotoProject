@@ -42,7 +42,7 @@ public class BackgroundPhotoTests {
 
     @Test
     public void doesntHaveKarma(){
-        assertTrue(photo.hasKarma());
+        assertTrue(!photo.hasKarma());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class BackgroundPhotoTests {
 
     @Test
     public void checkRelease(){
-        assertTrue(photo.isReleased());
+        assertTrue(!photo.isReleased());
     }
 
     @Test
