@@ -86,6 +86,15 @@ public class SortingAlgorithm {
 
 
         Date currentDate = new Date();
+
+        if (currentDate == null){
+            Log.e("DEBUG", "currentDate is null");
+        }
+
+        if (date == null){
+            Log.e("DEBUG", "date is null");
+        }
+
         if(currentDate != null && date != null) {
             SimpleDateFormat week = new SimpleDateFormat("E");
             if (week.format(currentDate).equals(week.format(date))) {
@@ -100,6 +109,8 @@ public class SortingAlgorithm {
                 }else{
                     Log.e("SortingAlg", "Not Within 2 Hours");
                 }
+            }else{
+                Log.e("SortingAlg", "Not Same Day of Week");
             }
         }
 
