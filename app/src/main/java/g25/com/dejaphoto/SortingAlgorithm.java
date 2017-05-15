@@ -26,7 +26,7 @@ public class SortingAlgorithm {
 
 
     Context context;
-    LocationWrapper loc;
+    static LocationWrapper loc;
     Location currentL;
 
     /**
