@@ -34,7 +34,7 @@ public class NavWidget extends AppWidgetProvider {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
-
+        Log.i("epdateAppWidget", "widget updated");
 
     }
 
@@ -70,7 +70,7 @@ public class NavWidget extends AppWidgetProvider {
 
             //This is the same action sent by the system when the widget needs to be updated automatically
             // PendingIntent pendingChangingWallpaperIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
+            Log.i("updating id : ", String.valueOf(widgetId));
         }
     }
 
@@ -108,9 +108,5 @@ public class NavWidget extends AppWidgetProvider {
             Toast.makeText(context, "KARMA", Toast.LENGTH_SHORT).show();
             Log.v("Widget", "Clicked KARMA");}
     }
-
-
-
-
 }
 

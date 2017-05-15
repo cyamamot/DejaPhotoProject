@@ -28,14 +28,15 @@
 <!-- https://www.iconfinder.com/icons/393260/arrow_arrows_rotate_icon#size=128-->
 
     <ImageButton
-        android:id="@+id/karma"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:background="@android:color/transparent"
+    android:id="@+id/karma"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_weight="1"
+    android:background="@android:color/transparent"
 
-        android:src="@drawable/cycle" />
+    android:src="@drawable/cycle" />
+
 
     <ImageButton
         android:id="@+id/release"
