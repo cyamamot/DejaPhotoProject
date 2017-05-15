@@ -40,6 +40,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
+     *
+     * USED FOR TESTING USER LOCATION
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -65,9 +67,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d("test2", "out");
             mMap.setMyLocationEnabled(true);
         }
-
-       /* LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        String locationProvider = LocationManager.GPS_PROVIDER;
-        locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);*/
     }
 }
