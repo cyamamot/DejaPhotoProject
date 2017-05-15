@@ -22,7 +22,7 @@ public class SortingAlgorithm {
     private static final int MIN_IN_ONE_HOUR = 60; //number of minutes in one hour
     private static final int MIN_IN_TWO_HOUR = 120; //number of minutes in two hours
     private static final int RELEASED_POINT = -1; //point value for a released photo
-    private static final double WITHIN_DISTANCE = 304.8; //1000 feet expressed in meters
+    private static final double WITHIN_DISTANCE = 1604.8; //1 mile expressed in meters
 
 
     Context context;
@@ -72,9 +72,9 @@ public class SortingAlgorithm {
             float distance = location.distanceTo(currentL); //distance in meters
             if (abs(distance) <= WITHIN_DISTANCE) {
                 points += POINT_INC;
-                Log.e("SortingAlg", "Within 1000 Feet");
+                Log.e("SortingAlg", "Within 1 mile");
             }else{
-                Log.e("SortingAlg", "Not Within 1000 Feet");
+                Log.e("SortingAlg", "Not Within 1 mile");
             }
         }
         else if(currentL == null){

@@ -31,7 +31,6 @@ public class LocationWrapper {
     LocationListener locationListener;
     String locationProvider;
     //whether user has location permission turned on; if not this class can't do a whole lot
-    boolean locationPermissionGiven = false;
     static final int TWO_MINUTES = 1000 * 60 * 2;
     Context context;
 
@@ -87,7 +86,7 @@ public class LocationWrapper {
             // receive location updates with passed in minTime and minDistance
             locationManager.requestLocationUpdates(locationProvider, minTime, minDistance,
                     locationListener);
-            locationPermissionGiven = true;
+            //locationPermissionGiven = true;
         }
     }
 
@@ -95,15 +94,8 @@ public class LocationWrapper {
      * Getter method for our background service to get the user's current location
      */
     public Location getCurrentUserLocation(){
-        if (locationPermissionGiven){
             Log.e("LocationWrapper", "Returning User Location");
             return currentUserLocation;
-        }
-        else {
-            //null  to indicate no location
-            Log.e("LocationWrapper", "NO PERMISSION!!!!");
-            return null;
-        }
     }
 
     /**
@@ -117,7 +109,7 @@ public class LocationWrapper {
      * Notifies us if user turned on permission so that we can notify our wrapper class
      */
     public void locationPermissionOn(){
-        locationPermissionGiven = true;
+        //locationPermissionGiven = true;
     }
 
     /**
@@ -243,7 +235,7 @@ public class LocationWrapper {
             // receive location updates with passed in minTime and minDistance
             locationManager.requestLocationUpdates(locationProvider, minTime, minDistance,
                     locationListener);
-            locationPermissionGiven = true;
+            //locationPermissionGiven = true;
         }
     }
 }
