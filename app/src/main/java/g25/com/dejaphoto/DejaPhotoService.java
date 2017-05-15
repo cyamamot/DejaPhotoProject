@@ -11,6 +11,10 @@ import android.util.Log;
 
 public class DejaPhotoService extends Service {
     static final String INIT = "INITIALIZE";
+    static final String NEXT = "NEXT";
+    static final String PREV = "PREV";
+    static final String RELEASE = "RELEASE";
+    static final String KARMA = "KARMA";
     static int transitionDelay;
     AlarmManager alarmChangeWallpaper;
     AlarmManager alarmRecalculatePoints;
@@ -36,17 +40,17 @@ public class DejaPhotoService extends Service {
         initializeWallpaperChanger();
 
         //see what action is requested
-        if(intent.getAction() == NavWidget.NEXT)
+        if(intent.getAction() == NEXT)
         {
             wallpaperChanger.next();
             Log.e("ChangeWallpaperReceiver", "NEXT");
         }
-        else if(intent.getAction() == NavWidget.PREV)
+        else if(intent.getAction() == PREV)
         {
             wallpaperChanger.previous();
             Log.e("ChangeWallpaperReceiver", "PREV");
         }
-        else if(intent.getAction() == NavWidget.RELEASE)
+        else if(intent.getAction() == RELEASE)
         {
             wallpaperChanger.release();
             Log.e("ChangeWallpaperReceiver", "RELEASE");
@@ -109,7 +113,7 @@ public class DejaPhotoService extends Service {
         Intent calcIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
         calcIntent.setAction(INIT);
         alarmRecalculatePoints = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        pendingCalcIntent = PendingIntent.getService(getApplicationContext(), 1,
+        pendingCalcIntent = PendingIntent.getService(getApplicationContext(), 2,
                 calcIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         alarmRecalculatePoints.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
                 3600000, pendingCalcIntent);

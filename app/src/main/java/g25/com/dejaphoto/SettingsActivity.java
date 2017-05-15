@@ -38,7 +38,9 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         setContentView(R.layout.activity_settings);
 
         // requests required permissions like read_external storage
-        requestPermissions();
+        if(!requestPermissions()){
+           onRequestPermissionsResult(1, null, null);
+        }
 
         //initialize fields
         settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -122,7 +124,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     /**
      * Creates the pop up dialogues to ask user to permission.
      */
-    public void requestPermissions(){
+    public boolean requestPermissions(){
 
         // request read_external_storage
         if (ContextCompat.checkSelfPermission(this,
@@ -177,6 +179,14 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
                 // result of the request.
             }
         }
+
+        //If already have permission, start service
+        if (ContextCompat.checkSelfPermission(this, permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            return true;
+        }
+        return false;
     }
 
     // this function is our onClick to the MapsActivity used only for testing LocationWrapper
