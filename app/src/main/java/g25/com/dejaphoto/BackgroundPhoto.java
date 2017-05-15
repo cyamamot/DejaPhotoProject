@@ -67,7 +67,6 @@ public class BackgroundPhoto {
     static final String RELEASED_INDICATOR = "DJP_RELEASED";
     static SharedPreferences settings;
     static SharedPreferences.Editor settingsEditor;
-    String locationString;
 
     /**
      * Constructor for the photo and passes in the path to it and the context

@@ -82,7 +82,7 @@ public class WallpaperChanger {
         //fill queue
         populateQueue();
 
-        Toast.makeText(context, "Initialized", Toast.LENGTH_SHORT).show();
+        Log.e("WallpaperChanger", "INITIALIZED");
     }
 
     /**
@@ -132,7 +132,8 @@ public class WallpaperChanger {
             Log.e("mNames[i]", mNames[i] + ":" + cursor.getColumnCount() + " : " + cursor.getString(1));
             Log.e("QUEUE SIZE", Integer.toString(queue.size()));
         }
-         Toast.makeText(context, "Queue Size : " + queue.size(), Toast.LENGTH_LONG).show();
+
+         Log.e("WallpaperChanger", "Queue Size: " + Integer.toString(queue.size()));
          next();
     }
 
@@ -142,7 +143,7 @@ public class WallpaperChanger {
      */
     public void next() {
 
-        Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
+        Log.e("WallpaperChanger", "NEXT");
         BackgroundPhoto nextPhoto = null;
 
         if (queue.isEmpty()) {
@@ -205,7 +206,7 @@ public class WallpaperChanger {
      */
     public void previous() {
 
-        Toast.makeText(context, "PREV", Toast.LENGTH_SHORT).show();
+        Log.e("WallpaperChanger", "PREV");
         //not at end
         if (prevCursor < 10 && prevList.size() > prevCursor + 1) {
             prevCursor++;
@@ -226,7 +227,7 @@ public class WallpaperChanger {
      */
     public void release() {
 
-        Toast.makeText(context, "RELEASED", Toast.LENGTH_SHORT).show();
+        Log.e("WallpaperChanger", "RELEASED");
         //always in some position in the prevList, just set release bool and remove from list
         prevList.get(prevCursor).release();
         prevList.remove(prevCursor);

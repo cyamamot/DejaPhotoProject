@@ -47,9 +47,9 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         settingsEditor = settings.edit();
         useCustomAlbum = settings.getBoolean("useCustomAlbum", false);
-        transitionDelay = settings.getInt("transitionDelay", -1);
+        transitionDelay = settings.getInt("transitionDelay", 1);
         delayLabel = (TextView)findViewById(R.id.label_transitionDelay);
-        delayLabel.setText("Transition Delay: " + transitionDelay);
+        delayLabel.setText("Transition Delay (Minutes): " + transitionDelay);
 
         // set the edit text transition delay
         EditText etTransitionDelay = (EditText)findViewById(R.id.editText_transitionDelay);
@@ -127,7 +127,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
             //service will restart itself when stopped
             launchService();
         Log.e("Settings Save", "Button Clicked");
-    }
+        }
     }
 
 

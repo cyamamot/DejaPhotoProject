@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class DejaPhotoService extends Service {
+    static final int MINUTE_MULTIPLIER = 1000 * 60;
     static final String INIT = "INITIALIZE";
     static final String NEXT = "NEXT";
     static final String PREV = "PREV";
@@ -114,7 +115,7 @@ public class DejaPhotoService extends Service {
                 changeWallpaperIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         //configures the AlarmManager object to send the intent on a repeating countdown.
         alarmChangeWallpaper.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-                1000 * transitionDelay, pendingChangingWallpaperIntent);
+                MINUTE_MULTIPLIER * transitionDelay, pendingChangingWallpaperIntent);
 
 
         //Recalculate Points every Hour

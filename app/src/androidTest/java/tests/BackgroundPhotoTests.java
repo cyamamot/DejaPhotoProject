@@ -1,10 +1,15 @@
 package tests;
 
+import android.util.Log;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import g25.com.dejaphoto.BackgroundPhoto;
+
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 /**
  * Created by Tim on 5/14/2017.
@@ -23,20 +28,25 @@ public class BackgroundPhotoTests {
 
     @Test
     public void testFormatLatLng(){
-        String testCoord = "1/1,1/1,1/1";
+        String testCoord = "100/1,100/1,100/1";
         String[] testDir = {"N", "S", "E", "W"};
-        double calc = 1 + 1/60 + 1/3600;
-        Double[] expectedVal = {calc, -calc, calc, -calc};
+        double calc = 100  + 100/60 + 100/3600;
+        double[] expectedVal = {calc, 0-calc, calc, 0-calc};
 
         for(int i = 0; i < expectedVal.length; i ++){
             double output = photo.formatLatLng(testCoord, testDir[i]);
-            assertTrue(output == expectedVal[i]);
+            assertTrue((int)output == (int)expectedVal[i]);
         }
 
 
         //Null case
-        exception.expect(IndexOutOfBoundsException.class);
-        photo.formatLatLng(null, null);
+        try{
+            photo.formatLatLng(null, null);
+            fail();
+        }
+        catch(NullPointerException e){
+
+        }
 
     }
 

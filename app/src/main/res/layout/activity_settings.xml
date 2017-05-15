@@ -79,7 +79,7 @@
         android:id="@+id/label_transitionDelay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Transition Delay:"
+        android:text="Transition Delay (Minutes):"
         android:textSize="18sp" />
 
     <EditText
@@ -87,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="in seconds"
+        android:hint="in Minutes"
         android:inputType="number"
         android:text="5" />
 
@@ -96,7 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="saveSettings"
-        android:text="Save Settings" />
+        android:text="Start DejaPhoto" />
 
     <Button
         android:id="@+id/btn_testMap"

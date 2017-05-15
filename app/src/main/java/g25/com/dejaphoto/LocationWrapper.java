@@ -65,9 +65,7 @@ public class LocationWrapper {
                     initWallpaperChanger();
                 }
                 Log.e("Location Test", "User Location Changed: " + location.toString());
-                if(isBetterLocation(location, currentUserLocation)) {
-                    //DEBUG Log location
-                }
+
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -95,7 +93,6 @@ public class LocationWrapper {
             // receive location updates with passed in minTime and minDistance
             locationManager.requestLocationUpdates(locationProvider, minTime, minDistance,
                     locationListener);
-            //locationPermissionGiven = true;
         }
     }
 
@@ -117,88 +114,6 @@ public class LocationWrapper {
      */
     private void setCurrentUserLocation(Location location){
         currentUserLocation = location;
-    }
-
-    /**
-     * Notifies us if user turned on permission so that we can notify our wrapper class
-     */
-    public void locationPermissionOn(){
-        //locationPermissionGiven = true;
-    }
-
-    /**
-     * Method to stop updating the location
-     */
-    public void stopLocationTracking(){
-        // Remove the listener you previously added
-        locationManager.removeUpdates(locationListener);
-    }
-
-    public void sendResetIntent(){
-        Intent intent = new Intent(context, DejaPhotoService.class);
-        intent.setAction(DejaPhotoService.INIT);
-        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-
-        Log.e("Location Moved", "Reset Service");
-    }
-
-    /**
-     * Determines whether one Location reading is better than the current Location fix
-     * location is the new Location that you want to evaluate
-     * currentBestLocation is the current Location fix to which you want to compare the new one
-     */
-    protected boolean isBetterLocation(Location location, Location currentBestLocation) {
-        if (currentBestLocation == null) {
-            // A new location is always better than no location
-            return true;
-        }
-
-        // Check whether the new location fix is newer or older
-        long timeDelta = location.getTime() - currentBestLocation.getTime();
-        boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
-        boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
-        boolean isNewer = timeDelta > 0;
-
-        // If it's been more than two minutes since the current location, use the new location
-        // because the user has likely moved
-        if (isSignificantlyNewer) {
-            return true;
-            // If the new location is more than two minutes older, it must be worse
-        } else if (isSignificantlyOlder) {
-            return false;
-        }
-
-        // Check whether the new location fix is more or less accurate
-        int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
-        boolean isLessAccurate = accuracyDelta > 0;
-        boolean isMoreAccurate = accuracyDelta < 0;
-        boolean isSignificantlyLessAccurate = accuracyDelta > 200;
-
-        // Check if the old and new location are from the same provider
-        boolean isFromSameProvider = isSameProvider(location.getProvider(),
-                currentBestLocation.getProvider());
-
-        // Determine location quality using a combination of timeliness and accuracy
-        if (isMoreAccurate) {
-            return true;
-        } else if (isNewer && !isLessAccurate) {
-            return true;
-        } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Checks whether two providers are the same
-     * NOTE: android api included this for us to check which provider we trust more but we probably
-     *       won't need to check for this
-     */
-    private boolean isSameProvider(String provider1, String provider2) {
-        if (provider1 == null) {
-            return provider2 == null;
-        }
-        return provider1.equals(provider2);
     }
 
 
@@ -249,7 +164,6 @@ public class LocationWrapper {
             // receive location updates with passed in minTime and minDistance
             locationManager.requestLocationUpdates(locationProvider, minTime, minDistance,
                     locationListener);
-            //locationPermissionGiven = true;
         }
     }
 }
