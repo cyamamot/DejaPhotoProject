@@ -71,7 +71,7 @@ public class DejaPhotoService extends Service {
         }
 
 
-        wallpaperChanger.setLocation();
+        //wallpaperChanger.setLocation();
 
 
         //DEBUG MESSAGES

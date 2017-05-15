@@ -132,7 +132,7 @@ public class WallpaperChanger {
             Log.e("mNames[i]", mNames[i] + ":" + cursor.getColumnCount() + " : " + cursor.getString(1));
             Log.e("QUEUE SIZE", Integer.toString(queue.size()));
         }
-        Toast.makeText(context, "Queue Size : " + queue.size(), Toast.LENGTH_LONG).show();
+         Toast.makeText(context, "Queue Size : " + queue.size(), Toast.LENGTH_LONG).show();
          next();
     }
 
@@ -282,8 +282,8 @@ public class WallpaperChanger {
         ComponentName thisWidget = new ComponentName(context, NavWidget.class);
 
 
-        remoteViews.setTextViewText(R.id.location_textview, curr.locationString);
-        appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+        //remoteViews.setTextViewText(R.id.location_textview, curr.locationString);
+        //appWidgetManager.updateAppWidget(thisWidget, remoteViews);
 
 
         geocoder = new Geocoder(context, Locale.getDefault());

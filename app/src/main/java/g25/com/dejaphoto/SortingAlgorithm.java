@@ -71,6 +71,7 @@ public class SortingAlgorithm {
 
         if(currentL != null && location != null) {
             float distance = location.distanceTo(currentL); //distance in meters
+            Log.e("SortingAlgorithm", "Distance: " + distance);
             if (abs(distance) <= WITHIN_DISTANCE) {
                 points += POINT_INC;
                 Log.e("SortingAlg", "Within 1 mile");

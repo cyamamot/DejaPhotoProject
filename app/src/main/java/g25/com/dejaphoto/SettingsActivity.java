@@ -56,6 +56,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         etTransitionDelay.setText(String.valueOf(transitionDelay));
         etTransitionDelay.setSelection(String.valueOf(transitionDelay).length());
 
+        Log.i("ActivitySettings", String.valueOf(useCustomAlbum) + ", " + String.valueOf(transitionDelay));
         if(!debug){
             mapsButton = (Button) findViewById(R.id.btn_testMap);
             mapsButton.setVisibility(View.GONE);
