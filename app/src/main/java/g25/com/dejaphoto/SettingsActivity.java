@@ -38,10 +38,8 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         setContentView(R.layout.activity_settings);
 
         // requests required permissions like read_external storage
-        if(hasPermissions()){
-            launchService();
-        }
-        else {
+        if(!hasPermissions()){
+
             requestPermissionLocation();
         }
         //requestPermissionStorage();
@@ -127,11 +125,9 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
             delayLabel.setText("Transition Delay: " + transitionDelay);
 
             //service will restart itself when stopped
-            Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
-            stopService(intent);
-
-            Log.e("Settings Save", "Button Clicked");
-        }
+            launchService();
+        Log.e("Settings Save", "Button Clicked");
+    }
     }
 
 
