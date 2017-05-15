@@ -112,12 +112,16 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     public void selectDefaultAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", false);
         settingsEditor.commit();
+
+        Log.e("Album Selected", "Default Album");
     }
 
 
     public void selectCustomAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", true);
         settingsEditor.commit();
+
+        Log.e("Album Selected", "Custom Album");
     }
 
 
