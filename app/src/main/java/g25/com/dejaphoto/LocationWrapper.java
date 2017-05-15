@@ -117,6 +117,8 @@ public class LocationWrapper {
         Intent intent = new Intent(context, DejaPhotoService.class);
         intent.setAction(DejaPhotoService.INIT);
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
+        Log.e("Location Moved", "Reset Service");
     }
 
     /** Determines whether one Location reading is better than the current Location fix

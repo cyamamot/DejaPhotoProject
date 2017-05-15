@@ -38,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         setContentView(R.layout.activity_settings);
 
         // requests required permissions like read_external storage
-        if(!requestPermissions()){
+        if(requestPermissions()){
            onRequestPermissionsResult(1, null, null);
         }
 
@@ -182,8 +182,8 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
         //If already have permission, start service
         if (ContextCompat.checkSelfPermission(this, permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
-                permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             return true;
         }
         return false;
