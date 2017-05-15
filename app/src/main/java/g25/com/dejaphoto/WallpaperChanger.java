@@ -65,43 +65,7 @@ public class WallpaperChanger {
         }
         Log.e("POINTS", Integer.toString(photoWrapper.getPoints()));
     }
-    /*
-    // Method to add location to wallpaper
-    private Bitmap addLocationtoBitmap(Bitmap bitmap) {
 
-        android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
-        // set default bitmap config if none
-        if(bitmapConfig == null) {
-            bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
-        }
-        // resource bitmaps are immutable,
-        // so we need to convert it to mutable one
-        bitmap = bitmap.copy(bitmapConfig, true);
-
-        // trying to set text on the bitmap
-        Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        // text color
-        textPaint.setColor(Color.BLUE);
-        // text shadow
-        textPaint.setShadowLayer(1f, 0f, 1f, Color.WHITE);
-        textPaint.setTextSize(14);
-
-        Canvas canvas = new Canvas(bitmap);
-        String location = "cse 110 is so much fun";
-
-        // draw text to the Canvas center
-        textPaint.setTextAlign(CENTER);
-
-        Rect bounds = new Rect();
-        textPaint.getTextBounds(location, 0, location.length(), bounds);
-        int x = (canvas.getWidth()/2) - (bounds.width()/2);
-        int y = (canvas.getHeight()/2);
-
-        canvas.drawText(location, x, y, textPaint);
-
-        return bitmap;
-    }
-    */
 
     /**
      * Cursor gets the photos from media store and we use it to point to each photo in
