@@ -93,7 +93,7 @@ public class LocationWrapper {
 
             // Register the listener with the Location Manager,
             // receive location updates with passed in minTime and minDistance
-            locationManager.requestLocationUpdates(locationProvider, 0, 0,
+            locationManager.requestLocationUpdates(locationProvider, minTime, minDistance,
                     locationListener);
             //locationPermissionGiven = true;
         }

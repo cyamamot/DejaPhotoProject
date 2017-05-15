@@ -17,13 +17,13 @@ import static java.lang.Math.abs;
 public class SortingAlgorithm {
 
     private static final int MIN_DISTANCE = 152; //update every 500 feet (uses meters)
-    private static final int MIN_TIME = 1 * 60 * 60 * 1000; //update every hour (uses milliseconds)
+    private static final int MIN_TIME =  1000; //update every second (uses milliseconds)
     private static final int POINT_INC = 5; //point value that photos are incremented by
     private static final int KARMA_INC = 1; //point value karma increments by
     private static final int MIN_IN_ONE_HOUR = 60; //number of minutes in one hour
     private static final int MIN_IN_TWO_HOUR = 120; //number of minutes in two hours
     private static final int RELEASED_POINT = -1; //point value for a released photo
-    private static final double WITHIN_DISTANCE = 1604.8; //1 mile expressed in meters
+    private static final double WITHIN_DISTANCE = 1000; //1 mile expressed in meters
 
 
     Context context;
