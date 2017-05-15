@@ -53,9 +53,9 @@ public class LocationWrapper {
                 // Called when a new location is found by the network location provider.
                 // when location changes, we set the currentUserLocation field
                 // but first we have to check if newly returned location is better/more accurate than the last one
+                sendResetIntent();
                 if(isBetterLocation(location, currentUserLocation)) {
                     setCurrentUserLocation(location);
-                    sendResetIntent();
                     //DEBUG Log location
                     Log.e("Location Test", "User Location Changed: " + location.toString());
                 }

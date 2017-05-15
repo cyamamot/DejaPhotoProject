@@ -43,7 +43,6 @@ public class WallpaperChanger {
     // constructor passes in activity to get context and stuff
     public WallpaperChanger(Context context) {
         this.context = context;
-        this.sorter = new SortingAlgorithm(context);
     }
 
     // http://stackoverflow.com/questions/25828808/issue-converting-uri-to-bitmap-2014
@@ -109,6 +108,8 @@ public class WallpaperChanger {
         if (queue != null && queue.size() != 0) {
             return;
         }
+
+        this.sorter = new SortingAlgorithm(context);
 
         //fill queue
         populateQueue();
