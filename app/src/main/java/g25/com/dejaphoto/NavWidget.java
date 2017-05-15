@@ -1,24 +1,14 @@
 package g25.com.dejaphoto;
 
-import android.app.Activity;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.Context;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RemoteViews;
-
-import android.content.Intent;
-import android.net.Uri;
-import android.app.PendingIntent;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ImageView;
-import android.widget.ImageButton;
-import android.widget.Button;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import android.widget.RemoteViews;
+import android.widget.Toast;
 
 /**
  * Implementation of App Widget functionality.
@@ -94,8 +84,11 @@ public class NavWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-// onClick action is here
+
+        // create the intent to go to the DejaPhotoService class
         Intent sendToService = new Intent(context, DejaPhotoService.class);
+
+        // set the action for the intent
         if (NEXT.equals(intent.getAction())) {
             sendToService.setAction(NEXT);
             Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
@@ -108,8 +101,7 @@ public class NavWidget extends AppWidgetProvider {
             sendToService.setAction(RELEASE);
             Toast.makeText(context, "RELEASE", Toast.LENGTH_SHORT).show();
             Log.v("Widget", "Clicked RELEASE");
-        }
-        else if (KARMA.equals(intent.getAction())){
+        } else if (KARMA.equals(intent.getAction())){
             sendToService.setAction(KARMA);
             Toast.makeText(context, "KARMA", Toast.LENGTH_SHORT).show();
             Log.v("Widget", "Clicked KARMA");}

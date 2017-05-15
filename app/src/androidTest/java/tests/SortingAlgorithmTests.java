@@ -1,6 +1,8 @@
 package tests;
 
 import android.support.test.rule.ActivityTestRule;
+import android.util.Log;
+
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -45,5 +47,12 @@ public class SortingAlgorithmTests {
         photo.release();
         points = sorter.assignPoints(photo);
         assertTrue(points == -1);
+    }
+
+    @Test
+    public void testToMins(){
+        String time = "05:20";
+        int num = sorter.toMins(time);
+        assertTrue(num == 320);
     }
 }
