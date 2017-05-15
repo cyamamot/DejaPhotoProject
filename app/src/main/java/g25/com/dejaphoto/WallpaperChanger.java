@@ -45,7 +45,6 @@ public class WallpaperChanger {
      */
     public WallpaperChanger(Context context) {
         this.context = context;
-        this.sorter = new SortingAlgorithm(context);
     }
 
     /**
@@ -77,6 +76,8 @@ public class WallpaperChanger {
         if (queue != null && queue.size() != 0) {
             return;
         }
+
+        this.sorter = new SortingAlgorithm(context);
 
         //fill queue
         populateQueue();
@@ -299,6 +300,12 @@ public class WallpaperChanger {
                 appWidgetManager.updateAppWidget(thisWidget, remoteViews);
 
                 Log.e("Setting Location", "No Location Available");
+            }
+            catch(IndexOutOfBoundsException e){
+                remoteViews.setTextViewText(R.id.location_textview, "No Location");
+                appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+
+                Log.e("Settings Location", "No Location Available");
             }
         }
     }
