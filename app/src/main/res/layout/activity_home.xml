@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="g25.com.dejaphoto.HomeActivity">
+
+    <TextView
+        android:id="@+id/tvHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:text="Home Page" />
+
+    <Button
+        android:id="@+id/btViewAlbums"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvHome"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:text="View Albums" />
+
+    <Button
+        android:id="@+id/btFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btViewAlbums"
+        android:layout_below="@+id/btViewAlbums"
+        android:layout_marginTop="53dp"
+        android:layout_centerHorizontal="true"
+        android:text="Friends" />
+
+    <Button
+        android:id="@+id/btSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/btFriends"
+        android:layout_below="@+id/btFriends"
+        android:layout_marginTop="92dp"
+        android:layout_centerHorizontal="true"
+        android:text="Settings" />
+</RelativeLayout>
