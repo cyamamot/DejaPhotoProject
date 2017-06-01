@@ -63,14 +63,5 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvRequests" />
 
-        <Button
-            android:id="@+id/btBackToHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/lvFriendsList"
-            android:layout_alignParentEnd="true"
-            android:onClick="backToHome"
-            android:text="Home" />
-
     </RelativeLayout>
 </ScrollView>
