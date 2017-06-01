@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context="g25.com.dejaphoto.LoginActivity">
 
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <Button
         android:id="@+id/btLogin"
         android:layout_width="wrap_content"
