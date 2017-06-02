@@ -9,6 +9,9 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class DejaPhotoService extends Service {
     static final int MINUTE_MULTIPLIER = 1000 * 60;
     static final String INIT = "INITIALIZE";
@@ -22,6 +25,7 @@ public class DejaPhotoService extends Service {
     PendingIntent pendingChangingWallpaperIntent;
     PendingIntent pendingCalcIntent;
     static WallpaperChanger wallpaperChanger;
+    static FirebaseWrapper fbWrapper;
 
     public DejaPhotoService() {
     }
@@ -29,7 +33,9 @@ public class DejaPhotoService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-
+        FirebaseApp.initializeApp(this);
+        fbWrapper = new FirebaseWrapper();
+        fbWrapper.addUser(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         initializeWallpaperChanger();
 
         //initial initialization

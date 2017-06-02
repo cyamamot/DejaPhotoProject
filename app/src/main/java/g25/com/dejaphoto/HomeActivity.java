@@ -2,14 +2,10 @@ package g25.com.dejaphoto;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.io.File;
 
 public class HomeActivity extends AppCompatActivity {
 

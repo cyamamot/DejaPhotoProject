@@ -82,6 +82,9 @@ public class WallpaperChanger {
         //fill queue
         populateQueue();
 
+        // test uploading photo
+        DejaPhotoService.fbWrapper.uploadPhoto("test", queue.peek());
+
         Log.e("WallpaperChanger", "INITIALIZED");
     }
 
