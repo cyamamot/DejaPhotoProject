@@ -1,11 +1,11 @@
 package g25.com.dejaphoto;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity implements
     private static final int RC_SIGN_IN = 9001;
 
     private FirebaseAuth mAuth;
-
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -56,11 +56,31 @@ public class LoginActivity extends AppCompatActivity implements
                 .build();
 
         mAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
     }
 
     // DELETE WHEN WE IMPLEMENT GOOGLE SIGN_IN
     // onClick method to go to Home Page
     public void toHomePage(View v) {
+        Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
+    }
+
+    public void toHomePage() {
         Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
     }
@@ -79,6 +99,8 @@ public class LoginActivity extends AppCompatActivity implements
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //updateUI(currentUser);
         Log.d(TAG, "Logged In");
+
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
@@ -147,6 +169,7 @@ public class LoginActivity extends AppCompatActivity implements
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             //updateUI(user);
+                           toHomePage();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -160,5 +183,13 @@ public class LoginActivity extends AppCompatActivity implements
                         // [END_EXCLUDE]
                     }
                 });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 }

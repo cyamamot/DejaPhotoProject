@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -30,5 +32,19 @@ public class HomeActivity extends AppCompatActivity {
     public void toSettings(View v) {
         Intent i = new Intent(this, SettingsActivity.class);
         startActivity(i);
+    }
+
+    // signs user out of google/firebase account
+    public void signOut(View v) {
+        // Firebase sign out
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
+        goToHomeActivity();
+    }
+
+    // when user signs out, we return to login screen
+    public void goToHomeActivity(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }

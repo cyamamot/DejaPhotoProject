@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "349712057097-i83uli53ia30poupcltj74p9q64oqvjb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "g25.com.dejaphoto",
+            "certificate_hash": "0bed565b562afdd45d995002780a7891fe38eb87"
+          }
+        },
+        {
           "client_id": "349712057097-320l6dhr91kkr3rrh6v21c8b92lhh158.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -30,6 +38,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyDATt-AhoUUAmv4hU2bJiNcFbOeUW2sX5g"
+        },
+        {
+          "current_key": "AIzaSyB3pffGrbmVfRYmKISy4KMPLDZpX8KRYTI"
         }
       ],
       "services": {
