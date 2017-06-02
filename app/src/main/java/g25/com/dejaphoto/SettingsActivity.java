@@ -39,7 +39,6 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
         // requests required permissions like read_external storage
         if(!hasPermissions()){
-
             requestPermissionLocation();
         }
 
@@ -236,5 +235,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
             startActivity(intent);
         }
     }
+
+
 }
 

@@ -27,6 +27,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="56dp"
-        android:onClick="toHomePage"
+        android:onClick="toSettingsPage"
         android:text="Google Sign-In" />
 </RelativeLayout>

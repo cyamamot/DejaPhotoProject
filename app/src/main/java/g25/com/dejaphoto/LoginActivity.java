@@ -1,7 +1,9 @@
 package g25.com.dejaphoto;
 
 import android.content.Intent;
+import android.media.audiofx.BassBoost;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,10 +26,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.io.File;
+
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener{
 
+
+    public static final String DJP_DIR = "DejaPhoto";
+    public static final String DJP_COPIED_DIR = "DejaPhotoCopied";
+    public static final String DJP_FRIENDS_DIR = "DejaPhotoFriends";
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
 
@@ -71,17 +79,20 @@ public class LoginActivity extends AppCompatActivity implements
                 // ...
             }
         };
+
+        //check and make directories
+        initDirectories();
     }
 
     // DELETE WHEN WE IMPLEMENT GOOGLE SIGN_IN
     // onClick method to go to Home Page
-    public void toHomePage(View v) {
-        Intent i = new Intent(this, HomeActivity.class);
+    public void toSettingsPage(View v) {
+        Intent i = new Intent(this, SettingsActivity.class);
         startActivity(i);
     }
 
-    public void toHomePage() {
-        Intent i = new Intent(this, HomeActivity.class);
+    public void toSettingsPage() {
+        Intent i = new Intent(this, SettingsActivity.class);
         startActivity(i);
     }
 
@@ -169,7 +180,7 @@ public class LoginActivity extends AppCompatActivity implements
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             //updateUI(user);
-                           toHomePage();
+                           toSettingsPage();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -192,4 +203,28 @@ public class LoginActivity extends AppCompatActivity implements
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+        //Check if DJP directories exists, make them if not
+    private void initDirectories(){
+        File DJPDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), DJP_DIR);
+        File DJPCopyDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), DJP_COPIED_DIR);
+        File DJPFriends = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), DJP_FRIENDS_DIR);
+        Log.e("EXTERNAL STOR LOC", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString());
+
+        if(!DJPDir.exists()) {
+            DJPDir.mkdirs();
+            Log.e("MAKE DIRECTORIES", "FOLDER MADE");
+        }
+
+        if(!DJPCopyDir.exists()){
+            DJPCopyDir.mkdirs();
+            Log.e("MAKE DIRECTORIES", "FOLDER MADE");
+        }
+
+        if(!DJPFriends.exists()){
+            DJPFriends.mkdirs();
+            Log.e("MAKE DIRECTORIES", "FOLDER MADE");
+        }
+    }
+
 }
