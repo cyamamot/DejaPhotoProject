@@ -42,12 +42,28 @@
             android:gravity="left"
             android:text="DejaPhotoCopied" />
 
+        <Button
+            android:id="@+id/button_pick_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="56dp"
+            android:text="Add Photos from Gallery"
+            android:layout_below="@+id/tvDejaPhotoCopied"/>
+
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_pick_image"
+            android:layout_marginTop="40dp" />
+
         <GridView
             android:id="@+id/gvDejaPhotoCopied"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/tvDejaPhotoCopied" />
+            android:layout_below="@+id/text_view" />
         <TextView
             android:id="@+id/tvDejaPhotoFriends"
             android:layout_width="wrap_content"
