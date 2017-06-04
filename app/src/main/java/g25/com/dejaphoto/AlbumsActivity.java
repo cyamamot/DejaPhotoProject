@@ -101,7 +101,6 @@ public class AlbumsActivity extends AppCompatActivity {
         if(requestCode == RC_CAMERA && resultCode == RESULT_OK && data != null){
             Uri pic = data.getData();
             Log.d("Camera Result", data.getData().toString());
-            moveImages(pic);
             return;
         }
 
@@ -127,37 +126,6 @@ public class AlbumsActivity extends AppCompatActivity {
         textView.setText(stringBuffer.toString());
     }
 
-    private void moveImages(Uri pic){
-        File moveDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_DIR);
-        if(!moveDir.exists()){
-            moveDir.mkdirs();
-        }
-
-        //debug
-        Log.d("MoveImages", "From " + pic.getPath().toString());
-
-        OutputStream out;
-        InputStream in;
-        String filename = pic.getLastPathSegment();
-        File newFile = new File(moveDir + File.separator + filename);
-        try {
-            newFile.createNewFile();
-            out = new FileOutputStream(newFile);
-            in = new FileInputStream(pic.getPath());
-
-            byte[] buffer = new byte[1000];
-            int bytesRead = 0;
-            while ( ( bytesRead = in.read( buffer, 0, buffer.length ) ) >= 0 ){
-                out.write(buffer, 0, buffer.length);
-            }
-
-        }
-        catch(IOException e){
-            e.printStackTrace();
-            Log.e("MovePic", "Can't Move Pic");
-        }
-
-    }
 
     private void copyImages(List<Image> images){
         if (images == null) return;
