@@ -1,10 +1,22 @@
 package g25.com.dejaphoto;
 
+import android.icu.util.Output;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import com.esafirm.imagepicker.features.ImagePicker;
@@ -69,7 +81,9 @@ public class AlbumsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             images = (ArrayList<Image>) ImagePicker.getImages(data);
+            copyImages(images);
             printImages(images);
+
             return;
         }
 
@@ -95,5 +109,38 @@ public class AlbumsActivity extends AppCompatActivity {
         textView.setText(stringBuffer.toString());
     }
 
+    private void copyImages(List<Image> images){
+        if (images == null) return;
+
+        //check and make folder if needed
+        File copyDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_COPIED_DIR);
+        if(!copyDir.exists()){
+            copyDir.mkdirs();
+        }
+        OutputStream out;
+        InputStream in;
+        for(int i = 0; i < images.size(); i++){
+            Uri originalFile = Uri.fromFile(new File(images.get(i).getPath()));
+            String filename = originalFile.getLastPathSegment();
+            File newFile = new File(copyDir + File.separator + filename);
+            try {
+                newFile.createNewFile();
+                out = new FileOutputStream(newFile);
+                in = new FileInputStream(originalFile.getPath());
+
+                byte[] buffer = new byte[1000];
+                int bytesRead = 0;
+                while ( ( bytesRead = in.read( buffer, 0, buffer.length ) ) >= 0 ){
+                    out.write(buffer, 0, buffer.length);
+                }
+
+            }
+            catch(IOException e){
+                e.printStackTrace();
+                Log.e("CopyPic", "Can't create new File");
+            }
+        }
+
+    }
 
 }

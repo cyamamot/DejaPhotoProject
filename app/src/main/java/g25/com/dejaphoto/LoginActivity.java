@@ -206,10 +206,10 @@ public class LoginActivity extends AppCompatActivity implements
 
         //Check if DJP directories exists, make them if not
     private void initDirectories(){
-        File DJPDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), DJP_DIR);
-        File DJPCopyDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), DJP_COPIED_DIR);
-        File DJPFriends = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), DJP_FRIENDS_DIR);
-        Log.e("EXTERNAL STOR LOC", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString());
+        File DJPDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), DJP_DIR);
+        File DJPCopyDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), DJP_COPIED_DIR);
+        File DJPFriends = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), DJP_FRIENDS_DIR);
+        Log.e("EXTERNAL STOR LOC", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString());
 
         if(!DJPDir.exists()) {
             DJPDir.mkdirs();
