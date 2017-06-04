@@ -46,10 +46,10 @@
             android:id="@+id/button_pick_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="55dp"
             android:text="Add Photos from Gallery"
-            android:layout_below="@+id/tvDejaPhotoCopied"/>
+            android:layout_below="@+id/tvDejaPhotoCopied"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/text_view"
@@ -79,5 +79,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/tvDejaPhotoFriends" />
+
+        <Button
+            android:id="@+id/button_open_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:text="Take Photo"
+            android:layout_above="@+id/button_pick_image"
+            android:layout_centerHorizontal="true"
+            />
     </RelativeLayout>
 </ScrollView>

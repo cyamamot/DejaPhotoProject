@@ -1,9 +1,11 @@
 package g25.com.dejaphoto;
 
+import android.icu.text.SimpleDateFormat;
 import android.icu.util.Output;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.features.camera.CameraModule;
@@ -27,6 +30,8 @@ import com.esafirm.imagepicker.model.Image;
 
 public class AlbumsActivity extends AppCompatActivity {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int RC_CODE_PICKER = 2000;
     private static final int RC_CAMERA = 3000;
 
@@ -46,6 +51,14 @@ public class AlbumsActivity extends AppCompatActivity {
                 start();
             }
         });
+
+        findViewById(R.id.button_open_camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCamera(view);
+            }
+        });
+
     }
 
     public void start() {
@@ -82,8 +95,13 @@ public class AlbumsActivity extends AppCompatActivity {
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             images = (ArrayList<Image>) ImagePicker.getImages(data);
             copyImages(images);
-            printImages(images);
+            return;
+        }
 
+        if(requestCode == RC_CAMERA && resultCode == RESULT_OK && data != null){
+            Uri pic = data.getData();
+            Log.d("Camera Result", data.getData().toString());
+            moveImages(pic);
             return;
         }
 
@@ -107,6 +125,38 @@ public class AlbumsActivity extends AppCompatActivity {
             stringBuffer.append(images.get(i).getPath()).append("\n");
         }
         textView.setText(stringBuffer.toString());
+    }
+
+    private void moveImages(Uri pic){
+        File moveDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_DIR);
+        if(!moveDir.exists()){
+            moveDir.mkdirs();
+        }
+
+        //debug
+        Log.d("MoveImages", "From " + pic.getPath().toString());
+
+        OutputStream out;
+        InputStream in;
+        String filename = pic.getLastPathSegment();
+        File newFile = new File(moveDir + File.separator + filename);
+        try {
+            newFile.createNewFile();
+            out = new FileOutputStream(newFile);
+            in = new FileInputStream(pic.getPath());
+
+            byte[] buffer = new byte[1000];
+            int bytesRead = 0;
+            while ( ( bytesRead = in.read( buffer, 0, buffer.length ) ) >= 0 ){
+                out.write(buffer, 0, buffer.length);
+            }
+
+        }
+        catch(IOException e){
+            e.printStackTrace();
+            Log.e("MovePic", "Can't Move Pic");
+        }
+
     }
 
     private void copyImages(List<Image> images){
@@ -142,5 +192,24 @@ public class AlbumsActivity extends AppCompatActivity {
         }
 
     }
+
+    private void openCamera(View view){
+        Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_DIR + File.separator + getImageName());
+        Uri outPutfileUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".fileprovider", file);
+        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
+        captureIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivityForResult(captureIntent, RC_CAMERA);
+
+    }
+
+    private String getImageName(){
+        String mCurrentPhotoPath;
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + ".jpg";
+        return imageFileName;
+    }
+
 
 }

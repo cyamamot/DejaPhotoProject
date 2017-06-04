@@ -29,6 +29,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     static final String PREFS_NAME = "DejaPhotoPreferences";
     static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
     static final int MY_PERMISSIONS_REQUEST_READ_STORAGE = 2;
+    static final int MY_PERMISSIONS_REQUEST_CAMERA = 3;
 
     // used for testing
     private Button mapsButton;
@@ -76,6 +77,10 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
+                requestPermissionCamera();
+                break;
+            }
+             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 requestPermissionStorage();
                 break;
             }
@@ -219,7 +224,35 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         }
 
     }
+   public boolean requestPermissionCamera(){
+        // request location
+        if (ContextCompat.checkSelfPermission(this,
+                permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
 
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    permission.CAMERA)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+        return true;
+    }
     /**
      * Returns whether or not the user has granted permissions
      */
@@ -227,7 +260,8 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         //If we have both permissions, we return true
         if (ContextCompat.checkSelfPermission(this, permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
-                permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
             return true;
         }
         return false;
