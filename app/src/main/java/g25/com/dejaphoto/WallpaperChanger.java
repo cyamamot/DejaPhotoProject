@@ -11,11 +11,13 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -23,6 +25,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.PriorityQueue;
+
+import static g25.com.dejaphoto.LoginActivity.DJP_DIR;
 
 /**
  * Created by dillonliu on 5/6/17.
@@ -83,7 +87,7 @@ public class WallpaperChanger {
         populateQueue();
 
         // test uploading photo
-        DejaPhotoService.fbWrapper.uploadPhoto("test", queue.peek());
+        //DejaPhotoService.fbWrapper.uploadPhoto("test", queue.peek());
 
         Log.e("WallpaperChanger", "INITIALIZED");
     }
@@ -94,8 +98,11 @@ public class WallpaperChanger {
      void populateQueue() {
 
         //cursor to get images from content provider
+         String folder = "%DejaPhoto%";
+         Log.e("FOLDER", folder);
+         String[] whereArgs = new String[]{folder};
         cursor = context.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media.DATA + " like ? ", whereArgs,
                 MediaStore.Images.ImageColumns.DATE_TAKEN);
 
         //initialize cursor and stuff to track location of cursor
@@ -118,7 +125,7 @@ public class WallpaperChanger {
 
         //loop through all images and assign points, put into queue
         PhotoCompare comparator = new PhotoCompare();
-        queue = new PriorityQueue<BackgroundPhoto>(albumSize, comparator);
+        queue = new PriorityQueue<>(albumSize, comparator);
         for (int i = 0; i < albumSize; i++) {
             cursor.moveToPosition(i);
             String path = cursor.getString(1);
@@ -192,7 +199,10 @@ public class WallpaperChanger {
             Log.e("Date", "No Date Stamp Available for this Photo");
         }
 
-        String comments = nextPhoto.exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
+        String comments = null;
+        if(nextPhoto.hasEXIF()){
+            comments = nextPhoto.exifData.getAttribute(ExifInterface.TAG_USER_COMMENT);
+        }
         if (comments != null) {
             Log.e("Printing Comments", comments);
         } else {

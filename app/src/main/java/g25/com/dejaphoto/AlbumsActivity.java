@@ -1,5 +1,6 @@
 package g25.com.dejaphoto;
 
+import android.content.ContentValues;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Output;
 import android.net.Uri;
@@ -177,6 +178,13 @@ public class AlbumsActivity extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + ".jpg";
         return imageFileName;
+    }
+
+    private void updateGallery(File file){
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg"); // set type
+        getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
 
 

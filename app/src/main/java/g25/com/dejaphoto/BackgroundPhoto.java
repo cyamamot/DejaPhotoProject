@@ -417,6 +417,10 @@ public class BackgroundPhoto {
         this.uri = input;
     }
 
+    public boolean hasEXIF(){
+        return this.hasEXIF;
+    }
+
 }
 
 
