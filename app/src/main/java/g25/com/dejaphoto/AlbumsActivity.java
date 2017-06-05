@@ -1,19 +1,20 @@
 package g25.com.dejaphoto;
 
-import android.content.ContentValues;
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
-import android.icu.util.Output;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.content.Intent;
 import android.widget.TextView;
+
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.model.Image;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,11 +25,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import com.esafirm.imagepicker.features.ImagePicker;
-import com.esafirm.imagepicker.features.camera.CameraModule;
-import com.esafirm.imagepicker.features.camera.ImmediateCameraModule;
-import com.esafirm.imagepicker.features.camera.OnImageReadyListener;
-import com.esafirm.imagepicker.model.Image;
 
 public class AlbumsActivity extends AppCompatActivity {
 
@@ -47,8 +43,6 @@ public class AlbumsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_albums);
-
-        textView = (TextView) findViewById(R.id.text_view);
 
         findViewById(R.id.button_pick_image).setOnClickListener(new View.OnClickListener() {
             @Override

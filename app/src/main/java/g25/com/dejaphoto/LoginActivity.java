@@ -1,7 +1,6 @@
 package g25.com.dejaphoto;
 
 import android.content.Intent;
-import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -84,15 +83,8 @@ public class LoginActivity extends AppCompatActivity implements
         initDirectories();
     }
 
-    // DELETE WHEN WE IMPLEMENT GOOGLE SIGN_IN
-    // onClick method to go to Home Page
-    public void toSettingsPage(View v) {
-        Intent i = new Intent(this, SettingsActivity.class);
-        startActivity(i);
-    }
-
-    public void toSettingsPage() {
-        Intent i = new Intent(this, SettingsActivity.class);
+    public void toHomePage() {
+        Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
     }
 
@@ -180,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             //updateUI(user);
-                           toSettingsPage();
+                           toHomePage();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
