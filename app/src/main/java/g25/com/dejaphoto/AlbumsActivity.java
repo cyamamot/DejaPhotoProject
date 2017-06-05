@@ -109,7 +109,7 @@ public class AlbumsActivity extends AppCompatActivity {
 
         if(requestCode == RC_CAMERA){
             Log.d("Camera Result", "CAMERA RETURNED");
-            updateGallery();
+            updateGallery(null);
             String userId = fbWrapper.getSelfId();
             fbWrapper.uploadPhoto(userId, new BackgroundPhoto(cameraOutUri.getPath(), this));
             return;
@@ -166,6 +166,7 @@ public class AlbumsActivity extends AppCompatActivity {
                 }
                 //UPLOAD
                 fbWrapper.uploadPhoto(userId, new BackgroundPhoto(newFile.getPath(), this));
+                updateGallery(Uri.fromFile(newFile));
             }
             catch(IOException e){
                 e.printStackTrace();
@@ -193,9 +194,12 @@ public class AlbumsActivity extends AppCompatActivity {
         return imageFileName;
     }
 
-    private void updateGallery(){
+    private void updateGallery(Uri uri){
+        if(uri == null){
+            uri = cameraOutUri;
+        }
 
-        File file = new File(cameraOutUri.getPath());
+        File file = new File(uri.getPath());
         MediaScannerConnection.scanFile(this,
                 new String[] { file.toString() }, null,
                 new MediaScannerConnection.OnScanCompletedListener() {
