@@ -3,6 +3,7 @@ package g25.com.dejaphoto;
 import android.content.ContentValues;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Output;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -38,6 +39,8 @@ public class AlbumsActivity extends AppCompatActivity {
 
     private TextView textView;
     private ArrayList<Image> images = new ArrayList<>();
+
+    private Uri cameraOutUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +102,9 @@ public class AlbumsActivity extends AppCompatActivity {
             return;
         }
 
-        if(requestCode == RC_CAMERA && resultCode == RESULT_OK && data != null){
-            Uri pic = data.getData();
-            Log.d("Camera Result", data.getData().toString());
+        if(requestCode == RC_CAMERA){
+            Log.d("Camera Result", "CAMERA RETURNED");
+            updateGallery();
             return;
         }
 
@@ -165,8 +168,8 @@ public class AlbumsActivity extends AppCompatActivity {
     private void openCamera(View view){
         Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_DIR + File.separator + getImageName());
-        Uri outPutfileUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".fileprovider", file);
-        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
+        cameraOutUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".fileprovider", file);
+        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraOutUri);
         captureIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(captureIntent, RC_CAMERA);
 
@@ -180,11 +183,18 @@ public class AlbumsActivity extends AppCompatActivity {
         return imageFileName;
     }
 
-    private void updateGallery(File file){
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg"); // set type
-        getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+    private void updateGallery(){
+
+        File file = new File(cameraOutUri.getPath());
+        MediaScannerConnection.scanFile(this,
+                new String[] { file.toString() }, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                    }
+                });
+
     }
 
 
