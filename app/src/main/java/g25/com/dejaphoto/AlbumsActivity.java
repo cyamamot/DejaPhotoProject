@@ -106,6 +106,7 @@ public class AlbumsActivity extends AppCompatActivity {
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             images = (ArrayList<Image>) ImagePicker.getImages(data);
             copyImages(images);
+
             return;
         }
 
