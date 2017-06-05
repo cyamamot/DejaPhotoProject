@@ -152,6 +152,22 @@ public class FirebaseWrapper {
             return true;
     }
 
+    public void sendFriendRequest(String email) {
+        int hash = (email).hashCode();
+        String key = Integer.toString(hash);
+
+        DatabaseReference friend = database.getReference("users").child(key).child("friendRequests");
+        friend.setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+    }
+
+    public ArrayList<String> getFriendRequests() {
+        ArrayList<String> requests = new ArrayList<>();
+
+        DatabaseReference myRequests = database.getReference("users").child(selfId).child("friendRequests");
+        requests.add(myRequests.getKey());
+        return requests;
+    }
+
     // adds a friend to current user's list of friends
     public void addFriend(String email){
         int hash = (email).hashCode();
