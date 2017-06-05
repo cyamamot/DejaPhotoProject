@@ -39,12 +39,14 @@ public class WallpaperChanger {
     private Context context;
     private SortingAlgorithm sorter;
     private int albumSize;
+    private FirebaseWrapper fbWrapper;
 
     /**
      * Constructor passes in activity to get context and stuff
      */
     public WallpaperChanger(Context context) {
         this.context = context;
+        this.fbWrapper = new FirebaseWrapper();
     }
 
     /**
@@ -81,7 +83,6 @@ public class WallpaperChanger {
 
         //fill queue
         populateQueue();
-
         // test uploading photo
         //DejaPhotoService.fbWrapper.uploadPhoto("test", queue.peek());
 
@@ -91,12 +92,12 @@ public class WallpaperChanger {
     /**
      * Fill the queue with photos that will appear as the wallpaper
      */
-     void populateQueue() {
+    void populateQueue() {
 
         //cursor to get images from content provider
-         String folder = "%DejaPhoto%";
-         Log.e("FOLDER", folder);
-         String[] whereArgs = new String[]{folder};
+        String folder = "%DejaPhoto%";
+        Log.e("FOLDER", folder);
+        String[] whereArgs = new String[]{folder};
         cursor = context.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media.DATA + " like ? ", whereArgs,
                 MediaStore.Images.ImageColumns.DATE_TAKEN);
@@ -114,7 +115,7 @@ public class WallpaperChanger {
         if(prevList == null){
             prevList = new ArrayList<BackgroundPhoto>();
         }
-         prevCursor = 0;
+        prevCursor = 0;
 
         //String[] strUrls = new String[albumSize];
         String[] mNames = new String[albumSize];
@@ -139,8 +140,8 @@ public class WallpaperChanger {
             Log.e("QUEUE SIZE", Integer.toString(queue.size()));
         }
 
-         Log.e("WallpaperChanger", "Queue Size: " + Integer.toString(queue.size()));
-         next();
+        Log.e("WallpaperChanger", "Queue Size: " + Integer.toString(queue.size()));
+        next();
     }
 
 
@@ -325,5 +326,45 @@ public class WallpaperChanger {
             }
         }
     }
+
+    public void uploadPhotos(){
+        String userId = fbWrapper.getSelfId();
+        //cursor for pictures taken
+        String camerFolder = "%DejaPhoto%";
+        String[] whereArgsCamera = new String[]{camerFolder};
+        Cursor cameraCursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media.DATA + " like ? ", whereArgsCamera,
+                MediaStore.Images.ImageColumns.DATE_TAKEN);
+        int cameraSize = cameraCursor.getCount();
+
+        //cursor for coped
+        String copiedFolder = "%DejaPhotoCopied%";
+        String[] whereArgsCopied = new String[]{copiedFolder};
+        Cursor copiedCursor= context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media.DATA + " like ? ", whereArgsCopied,
+                MediaStore.Images.ImageColumns.DATE_TAKEN);
+        int copiedSize = copiedCursor.getCount();
+
+        Log.d("PHOTO UPLOAD SIZE", Integer.toString(cameraSize) + " " + Integer.toString(copiedSize));
+
+        for (int i = 0; i < cameraSize; i++) {
+            cameraCursor.moveToPosition(i);
+            String path = cameraCursor.getString(1);
+            fbWrapper.uploadPhoto(userId, new BackgroundPhoto(path, context));
+            Log.d("Upload", "Upload");
+        }
+
+        for (int i = 0; i < copiedSize; i++) {
+            copiedCursor.moveToPosition(i);
+            String path = copiedCursor.getString(1);
+            fbWrapper.uploadPhoto(userId, new BackgroundPhoto(path, context));
+            Log.d("Upload", "Upload");
+        }
+
+
+
+    }
+
+
 }
 

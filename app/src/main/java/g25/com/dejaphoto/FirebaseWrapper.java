@@ -38,6 +38,7 @@ public class FirebaseWrapper {
     public FirebaseWrapper(){
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
+        storage.setMaxUploadRetryTimeMillis(180000);
         storageRef = storage.getReference();
 
         int hashSelf = FirebaseAuth.getInstance().getCurrentUser().getEmail().hashCode();
@@ -90,6 +91,7 @@ public class FirebaseWrapper {
         //photoRef.putFil
 
         // uploads photo
+        Log.d("UPLOAD ATTEMPT", "RECEIVED");
         imagesRef.putFile(photo.getUri())
                 .addOnSuccessListener(new OnSuccessListener<TaskSnapshot>() {
                     @Override
@@ -102,7 +104,7 @@ public class FirebaseWrapper {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         // Handle unsuccessful uploads
-                        // ...
+                        return;
                     }
                 });
     }
@@ -215,5 +217,9 @@ public class FirebaseWrapper {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+    }
+
+    public String getSelfId(){
+        return this.selfId;
     }
 }

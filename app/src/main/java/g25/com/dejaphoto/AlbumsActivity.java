@@ -37,6 +37,7 @@ public class AlbumsActivity extends AppCompatActivity {
     private static final int RC_CODE_PICKER = 2000;
     private static final int RC_CAMERA = 3000;
 
+    private FirebaseWrapper fbWrapper;
     private TextView textView;
     private ArrayList<Image> images = new ArrayList<>();
 
@@ -62,6 +63,10 @@ public class AlbumsActivity extends AppCompatActivity {
                 openCamera(view);
             }
         });
+
+        if(fbWrapper == null){
+            fbWrapper = new FirebaseWrapper();
+        }
 
     }
 
@@ -105,6 +110,8 @@ public class AlbumsActivity extends AppCompatActivity {
         if(requestCode == RC_CAMERA){
             Log.d("Camera Result", "CAMERA RETURNED");
             updateGallery();
+            String userId = fbWrapper.getSelfId();
+            fbWrapper.uploadPhoto(userId, new BackgroundPhoto(cameraOutUri.getPath(), this));
             return;
         }
 
@@ -139,6 +146,8 @@ public class AlbumsActivity extends AppCompatActivity {
         if(!copyDir.exists()){
             copyDir.mkdirs();
         }
+
+        String userId = fbWrapper.getSelfId();
         OutputStream out;
         InputStream in;
         for(int i = 0; i < images.size(); i++){
@@ -155,7 +164,8 @@ public class AlbumsActivity extends AppCompatActivity {
                 while ( ( bytesRead = in.read( buffer, 0, buffer.length ) ) >= 0 ){
                     out.write(buffer, 0, buffer.length);
                 }
-
+                //UPLOAD
+                fbWrapper.uploadPhoto(userId, new BackgroundPhoto(newFile.getPath(), this));
             }
             catch(IOException e){
                 e.printStackTrace();
