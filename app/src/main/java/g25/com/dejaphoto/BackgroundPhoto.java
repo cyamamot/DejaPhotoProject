@@ -61,6 +61,7 @@ public class BackgroundPhoto {
     boolean hasLocation;
     boolean hasDate;
     boolean hasEXIF;
+    String name;
     int points = 0;
     Context context;
     static final String KARMA_INDICATOR = "DJP_KARMA";
@@ -81,6 +82,7 @@ public class BackgroundPhoto {
         parseDateFromExif();
         initializeSettings();
         parseKarmaAndReleased();
+        name = uri.getLastPathSegment();
     }
 
 
@@ -421,6 +423,18 @@ public class BackgroundPhoto {
         return this.hasEXIF;
     }
 
+    // should strip .extensions from the photo name. e.g. photo.jpg -> photo
+    // use this to pass photo into database
+    public String parseName(Uri uri){
+        String tempName = uri.getLastPathSegment();
+        int index = tempName.indexOf(".");
+        String parsedName = tempName.substring(0, index);
+        return parsedName;
+    }
+
+    public String getName(){
+        return name;
+    }
 }
 
 

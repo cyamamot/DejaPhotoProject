@@ -83,14 +83,14 @@ public class FirebaseWrapper {
         // Create a child reference
         // imagesRef now points to the child which is a user
         // and photos should be stored under each user node
-        StorageReference imagesRef = storageRef.child("test");
-
-        StorageReference riversRef = storageRef.child("images/rivers.jpg");
+        String path = "images/" + hash + "/" + photo.getName();
+        Log.d("FirebaseWrapper", "Uploading photo to this path: " + path);
+        StorageReference imagesRef = storageRef.child(path);
         //StorageReference photoRef = storageRef.child(hash + "/" + photo.getName());
         //photoRef.putFil
 
         // uploads photo
-        riversRef.putFile(photo.getUri())
+        imagesRef.putFile(photo.getUri())
                 .addOnSuccessListener(new OnSuccessListener<TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

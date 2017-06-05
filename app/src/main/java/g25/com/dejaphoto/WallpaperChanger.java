@@ -11,13 +11,11 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -25,8 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.PriorityQueue;
-
-import static g25.com.dejaphoto.LoginActivity.DJP_DIR;
 
 /**
  * Created by dillonliu on 5/6/17.
