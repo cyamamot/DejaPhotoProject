@@ -101,6 +101,8 @@ public class AlbumsActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
+            Log.d("ACTIVITY RESULT ", Integer.toString(requestCode));
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             images = (ArrayList<Image>) ImagePicker.getImages(data);
             copyImages(images);
@@ -124,7 +126,6 @@ public class AlbumsActivity extends AppCompatActivity {
                 }
             });
         }*/
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void printImages(List<Image> images) {
@@ -179,8 +180,9 @@ public class AlbumsActivity extends AppCompatActivity {
     private void openCamera(View view){
         Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_DIR + File.separator + getImageName());
-        cameraOutUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".fileprovider", file);
-        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraOutUri);
+        cameraOutUri = Uri.fromFile(file);
+        Uri cameraOut = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".fileprovider", file);
+        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraOut);
         captureIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(captureIntent, RC_CAMERA);
 
