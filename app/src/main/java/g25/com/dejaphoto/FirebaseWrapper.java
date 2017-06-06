@@ -152,22 +152,6 @@ public class FirebaseWrapper {
             return true;
     }
 
-    public void sendFriendRequest(String email) {
-        int hash = (email).hashCode();
-        String key = Integer.toString(hash);
-
-        DatabaseReference friend = database.getReference("users").child(key).child("friendRequests");
-        friend.setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-    }
-
-    public ArrayList<String> getFriendRequests() {
-        ArrayList<String> requests = new ArrayList<>();
-
-        DatabaseReference myRequests = database.getReference("users").child(selfId).child("friendRequests");
-        requests.add(myRequests.getKey());
-        return requests;
-    }
-
     // adds a friend to current user's list of friends
     public void addFriend(String email){
         int hash = (email).hashCode();
@@ -175,6 +159,31 @@ public class FirebaseWrapper {
 
         DatabaseReference friend = database.getReference("users").child(selfId).child("friends").child(key);
         friend.setValue(email);
+        addFriendToList(email);
+    }
+
+    public ArrayList<String> getFriends() {
+
+        DatabaseReference ref = database.getReference("users").child(selfId).child("friends");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> snapshot = dataSnapshot.getChildren();
+                for(DataSnapshot friend : snapshot){
+                    Log.d("DEBUG", "Adding a friend!!!" + friend.getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+
+        return friendsList;
+    }
+
+    public void addFriendToList(String friend){
+        friendsList.add(friend);
+        Log.d("DEBUG", "friend list size: " + friendsList.size());
     }
 
     // checks a bunch of stuff and returns if the friend is a confirmed friend
