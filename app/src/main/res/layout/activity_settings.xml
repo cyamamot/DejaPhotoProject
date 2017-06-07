@@ -110,8 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="additionalSettings"
-        android:text="Additional Options"/>
-
+        android:text="Additional Options" />
 
 
 </LinearLayout>

@@ -42,6 +42,8 @@ public class WallpaperChanger {
     private SortingAlgorithm sorter;
     private int albumSize;
     private FirebaseWrapper fbWrapper;
+    static SharedPreferences settings;
+    static SharedPreferences.Editor settingsEditor;
 
     /**
      * Constructor passes in activity to get context and stuff
@@ -49,6 +51,8 @@ public class WallpaperChanger {
     public WallpaperChanger(Context context) {
         this.context = context;
         this.fbWrapper = new FirebaseWrapper(context);
+        settings = context.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
+        settingsEditor = settings.edit();
     }
 
     /**
@@ -88,16 +92,22 @@ public class WallpaperChanger {
         Cursor cursor = initializeCursor("%DejaPhoto/%");
         Cursor copiedCursor = initializeCursor("%DejaPhotoCopied/%");
         Cursor friendCursor = initializeCursor("%DejaPhotoFriends/%");
+        boolean useMyAlbum = settings.getBoolean("use my album", true);
+        boolean useCopiedAlbum = settings.getBoolean("use copied album", true);
+        boolean useFriendsAlbum = settings.getBoolean("use friends album", true);
+
 
         PhotoCompare comparator = new PhotoCompare();
         queue = new PriorityQueue<>(1, comparator);
         //fill queue
 
-        populateQueue(cursor);
-        populateQueue(copiedCursor);
+        if (useMyAlbum) populateQueue(cursor);
+        if (useCopiedAlbum) populateQueue(copiedCursor);
 
-        if(sharingOn()){
-            populateQueue(friendCursor);
+        if (useFriendsAlbum) {
+            if (sharingOn()) {
+                populateQueue(friendCursor);
+            }
         }
 
         // test uploading photo

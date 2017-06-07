@@ -2,7 +2,9 @@ package g25.com.dejaphoto;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.icu.text.SimpleDateFormat;
 import android.media.MediaScannerConnection;
@@ -15,6 +17,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.esafirm.imagepicker.features.ImagePicker;
@@ -44,6 +47,8 @@ public class AlbumsActivity extends AppCompatActivity {
     private FirebaseWrapper fbWrapper;
     private TextView textView;
     private ArrayList<Image> images = new ArrayList<>();
+    static SharedPreferences settings;
+    static SharedPreferences.Editor settingsEditor;
 
 
 
@@ -53,6 +58,15 @@ public class AlbumsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_albums);
+
+        settings = this.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
+        settingsEditor = settings.edit();
+        /*settingsEditor.putBoolean("use my album", true);
+        settingsEditor.commit();
+        settingsEditor.putBoolean("use friends album", true);
+        settingsEditor.commit();
+        settingsEditor.putBoolean("use copied album", true);
+        settingsEditor.commit();*/
 
         findViewById(R.id.button_pick_image).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,6 +299,40 @@ public class AlbumsActivity extends AppCompatActivity {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 break;
             }
+        }
+    }
+
+    public void useMyAlbum(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+        if (checked) {
+            settingsEditor.putBoolean("use my album", true);
+            settingsEditor.commit();
+        }
+        else {
+            settingsEditor.putBoolean("use my album", false);
+            settingsEditor.commit();
+        }
+    }
+    public void useCopiedAlbum(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+        if (checked) {
+            settingsEditor.putBoolean("use copied album", true);
+            settingsEditor.commit();
+        }
+        else {
+            settingsEditor.putBoolean("use copied album", false);
+            settingsEditor.commit();
+        }
+    }
+    public void useFriendsAlbum(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+        if (checked) {
+            settingsEditor.putBoolean("use friends album", true);
+            settingsEditor.commit();
+        }
+        else {
+            settingsEditor.putBoolean("use friends album", false);
+            settingsEditor.commit();
         }
     }
 

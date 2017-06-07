@@ -9,6 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/tvAlbumsPage"
             android:layout_width="wrap_content"
@@ -81,6 +82,37 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/tvDejaPhotoFriends"
             android:numColumns="4"/>
+
+        <CheckBox
+            android:id="@+id/useDefaultAlbum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Include My Photos"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="19dp"
+            android:layout_alignTop="@+id/tvDejaPhoto"
+            android:layout_toEndOf="@+id/tvDejaPhotoFriends"
+            android:onClick="useMyAlbum" />
+
+        <CheckBox
+            android:id="@+id/useCopiedAlbum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Include Copied Photos"
+            android:layout_above="@+id/button_pick_image"
+            android:layout_alignStart="@+id/useDefaultAlbum"
+            android:layout_alignEnd="@+id/useDefaultAlbum"
+            android:onClick="useCopiedAlbum" />
+
+        <CheckBox
+            android:id="@+id/useFriendsAlbum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/gvDejaPhotoFriends"
+            android:layout_alignStart="@+id/useCopiedAlbum"
+            android:text="Include Friend's Photos"
+            android:layout_alignEnd="@+id/useCopiedAlbum"
+            android:onClick="useFriendsAlbum" />
 
 
     </RelativeLayout>

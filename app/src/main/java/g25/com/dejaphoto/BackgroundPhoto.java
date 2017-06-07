@@ -88,9 +88,9 @@ public class BackgroundPhoto {
         parseLocationFromExif();
         parseDateFromExif();
         initializeSettings();
+        listOfKarmaers = new HashSet<String>();
         parseKarmaAndReleased();
         name = uri.getLastPathSegment();
-        listOfKarmaers = new HashSet<String>();
         customLocation = "default";
     }
 
@@ -257,8 +257,10 @@ public class BackgroundPhoto {
         //karma
         if(settings.getBoolean(karmaStr, false)){
             Log.i("Parse Karma", "Karma Detected");
-            for (String str : temp) {
-                giveKarma(str);
+            if (temp != null) {
+                for (String str : temp) {
+                    giveKarma(str);
+                }
             }
         }
 

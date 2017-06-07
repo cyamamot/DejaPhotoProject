@@ -39,11 +39,11 @@
         android:id="@+id/btSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btFriends"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:onClick="toSettings"
-        android:text="Settings" />
+        android:text="Settings"
+        android:layout_below="@+id/btFriends"
+        android:layout_alignEnd="@+id/btFriends" />
 
     <Button
         android:id="@+id/button_SignOut"
