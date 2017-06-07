@@ -59,7 +59,7 @@ public class LocationWrapper {
 
                 setCurrentUserLocation(location);
                 if(wallpaperChanger != null) {
-                    wallpaperChanger.populateQueue();
+                    wallpaperChanger.initialize();
                 }
                 else {
                     initWallpaperChanger();
