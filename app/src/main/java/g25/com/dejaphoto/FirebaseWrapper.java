@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
@@ -48,7 +49,7 @@ public class FirebaseWrapper {
     private String selfId;
     private String currFriendId;
     private boolean isCurrFriendAFriend = false;
-    private ArrayList<String> friendsList;
+    private static ArrayList<String> friendsList;
     private HashMap<String, ArrayList<BackgroundPhoto>> allFriendsPhotos;
     private ArrayList<BackgroundPhoto> currFriendPhotos;
     private Context context;
@@ -64,6 +65,7 @@ public class FirebaseWrapper {
 
         allFriendsPhotos = new HashMap<>();
         friendsList = new ArrayList<>();
+        loadFriends();
         currFriendPhotos = new ArrayList<>();
     }
 
@@ -244,6 +246,26 @@ public class FirebaseWrapper {
         Log.d("DEBUG", "friend list size: " + friendsList.size());
     }
 
+    // used to load the users friends into friendsList
+    public void loadFriends(){
+
+        DatabaseReference ref = database.getReference("users").child(selfId).child("friends");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<Map<String, String>> t = new GenericTypeIndicator<Map<String, String>>(){};
+                Map<String, String> f = dataSnapshot.getValue(t);
+                for(Map.Entry<String, String> entry : f.entrySet()) {
+                    friendsList.add(entry.getValue());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     // checks a bunch of stuff and returns if the friend is a confirmed friend
     // once we confirm a friend, we add/get their list of photos
     public void isFriends(String email){
@@ -262,7 +284,6 @@ public class FirebaseWrapper {
                 // if we are in friend's friends list, we are friends
                 if(dataSnapshot.exists()) {
                     //setCurrFriend(true);
-                    friendsList.add(friendEmail);
                     Log.d("FirebaseWrapper", "friend confirmed: " + friendEmail);
 
                     // gets this friend's list of photos after friend confirmed

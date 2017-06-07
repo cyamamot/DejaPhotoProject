@@ -33,7 +33,6 @@ public class FriendsActivity extends AppCompatActivity {
         EditText email = (EditText) findViewById(R.id.etAddFriend);
         String emailText = email.getText().toString();
         fbWrapper.addFriend(emailText);
-        friends = fbWrapper.getFriends();
         friendsAdapter.notifyDataSetChanged();
         email.setText("");
         for(String f : friends){
