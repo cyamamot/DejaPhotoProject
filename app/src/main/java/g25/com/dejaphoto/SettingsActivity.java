@@ -62,8 +62,8 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
             mapsButton.setVisibility(View.GONE);
         }
 
-        // calling syncFriends to eventually pull confirmed friends from database
-        // and so fbWrapper.friendsList will eventually be the updated list we use and iterate through
+        // calling syncFriends to pull confirmed friends from database
+        // and so fbWrapper.friendsList will be the updated list we use and iterate through
         FirebaseWrapper fbWrapper = new FirebaseWrapper();
         fbWrapper.syncFriends();
     }

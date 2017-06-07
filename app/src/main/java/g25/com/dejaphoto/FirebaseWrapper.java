@@ -107,13 +107,43 @@ public class FirebaseWrapper {
                         return;
                     }
                 });
+
+        // every time we upload a photo to storage, we also upload metadata to db
+        addPhotoMetadata(photo);
+    }
+
+    public void downloadAllFriendsPhotos(){
+        StorageReference friendRef;
+        String hashCode;
+        for(int i = 0; i < friendsList.size(); i++){
+            hashCode = Integer.toString(friendsList.get(i).hashCode());
+            friendRef = storageRef.child("images").child(hashCode);
+
+            // loop through list of photo id's to download each photo
+            downloadPhoto(hashCode);
+        }
     }
 
     public void downloadPhoto(String hash){
         // Create a child reference
         // imagesRef now points to the child which is a user
         // and photos should be stored under each user node
-        StorageReference imagesRef = storageRef.child(hash);
+        StorageReference imagesRef = storageRef.child("images").child(hash);
+        /*islandRef = storageRef.child("images/island.jpg");
+
+        File localFile = File.createTempFile("images", "jpg");
+
+        islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                // Local temp file has been created
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });*/
     }
 
     // from our list of friends, we call this on each one to check if they also added us
@@ -226,7 +256,7 @@ public class FirebaseWrapper {
         friends.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.e("Count " ,""+snapshot.getChildrenCount());
+                Log.e("size of friend list: " ,""+snapshot.getChildrenCount());
                 // here we loop through our entire list of friends
                 // for each friend we add the friend to our hashmap, and we set the value listener
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
@@ -246,5 +276,14 @@ public class FirebaseWrapper {
 
     public String getSelfId(){
         return this.selfId;
+    }
+
+    // adds a photo to the database to store photo's metadata
+    // we store each background photo as an object in database
+    // we can then retrieve the karma and locationname from its child nodes
+    public void addPhotoMetadata(BackgroundPhoto photo){
+        DatabaseReference photos = database.getReference("users").child(selfId).child("photos");
+
+        photos.child(photo.getName()).setValue(photo);
     }
 }
