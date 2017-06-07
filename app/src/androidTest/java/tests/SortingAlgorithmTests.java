@@ -40,7 +40,7 @@ public class SortingAlgorithmTests {
         int points;
         assertTrue(photo.getPoints() == 0);
 
-        photo.giveKarma();
+        photo.giveKarma("unique Id 1");
         points = sorter.assignPoints(photo);
         assertTrue(points ==  1);
 

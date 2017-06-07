@@ -145,7 +145,6 @@ public class FirebaseWrapper {
                 // for each photo we add the photo to our arraylist, and we set the value listener
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                     // now we loop through each field in the photo
-                    if (postSnapshot.child("released").getValue() == true) continue;
                     String parsedName = postSnapshot.getKey();
                     String name = postSnapshot.child("name").getValue().toString();
                     int karma = Integer.parseInt(postSnapshot.child("karma").getValue().toString());
@@ -321,10 +320,9 @@ public class FirebaseWrapper {
         DatabaseReference photoRef = database.getReference("users").child(selfId).child("photos").child(photo.parseName());
 
         // we store each field of the photo in database
-        photoRef.child("karma").setValue(photo.getKarma());
+        photoRef.child("karmaCount").setValue(photo.getKarma());
         photoRef.child("customLocation").setValue(photo.getCustomLocation());
         photoRef.child("name").setValue(photo.getName());
-        photoRef.child("released").setValue(photo.getReleased());
     }
 
     // adds a photo to the correct friend's arraylist within the hashmap that has each friend's list

@@ -254,8 +254,8 @@ public class WallpaperChanger {
         Log.e("WallpaperChanger", "RELEASED");
         //always in some position in the prevList, just set release bool and remove from list
         prevList.get(prevCursor).release();
-        prevList.remove(prevCursor);
         fbWrapper.releaseFromDatabase(prevList.get(prevCursor));
+        prevList.remove(prevCursor);
         next();
 
     }
@@ -264,9 +264,9 @@ public class WallpaperChanger {
     /**
      * Set current wallpaper karma boolean to true
      */
-    public void karma() {
+    public void karma(String id) {
         Toast.makeText(context, "KARMA SET <3", Toast.LENGTH_SHORT).show();
-        prevList.get(prevCursor).giveKarma();
+        prevList.get(prevCursor).giveKarma(id);
     }
 
 
@@ -323,7 +323,7 @@ public class WallpaperChanger {
                 String country = addresses.get(0).getCountryName();
                 //String postalCode = addresses.get(0).getPostalCode();
                 //String knownName = addresses.get(0).getFeatureName();
-                String output = address + ", " + country + " --- " + Integer.toString(curr.numberofKarmas);
+                String output = address + ", " + country + " --- " + Integer.toString(curr.karmaCount);
                 remoteViews.setTextViewText(R.id.location_textview, output);
                 appWidgetManager.updateAppWidget(thisWidget, remoteViews);
             } catch (IOException e) {

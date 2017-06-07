@@ -57,7 +57,7 @@ public class BackgroundPhotoTests {
 
     @Test
     public void hasKarma(){
-        photo.giveKarma();
+        photo.giveKarma("");
         assertTrue(photo.hasKarma());
     }
 

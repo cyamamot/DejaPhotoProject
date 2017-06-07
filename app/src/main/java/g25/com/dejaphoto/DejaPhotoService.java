@@ -69,7 +69,7 @@ public class DejaPhotoService extends Service {
         // give karma to the current wallpaper photo
         else if(intent.getAction() == KARMA)
         {
-            wallpaperChanger.karma();
+            wallpaperChanger.karma(fbWrapper.getSelfId());
             Log.e("ChangeWallpaperReceiver", "KARMA");
         }
         else{

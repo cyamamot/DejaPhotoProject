@@ -64,7 +64,6 @@ public class BackgroundPhoto {
     boolean hasEXIF;
     String name;
     int points = 0;
-    int numberofKarmas = 0;
     ArrayList<String> listOfKarmaers;
     Context context;
     static final String KARMA_INDICATOR = "DJP_KARMA";
@@ -254,7 +253,7 @@ public class BackgroundPhoto {
         //karma
         if(settings.getBoolean(karmaStr, false)){
             Log.i("Parse Karma", "Karma Detected");
-            giveKarma();
+            giveKarma("");
         }
 
         //release
@@ -301,14 +300,17 @@ public class BackgroundPhoto {
     /**
      * Gives karma to the photo if it doesn't have karma already
      */
-    public void giveKarma(){
+    public void giveKarma(String id){
 
         // if the photo already has karma, return
-        if(hasKarma()){
+        if (id == "") return;
+        if(hasKarma() && listOfKarmaers.contains(id)){
             return;
         }
 
         initializeSettings();
+        listOfKarmaers.add(id);
+        karmaCount += 1;
         if (uri == null) {
             this.karma = true;
             return;
@@ -316,8 +318,6 @@ public class BackgroundPhoto {
         String uriStr = uri.toString() + KARMA_INDICATOR;
         settingsEditor.putBoolean(uriStr, true);
         settingsEditor.commit();
-        numberofKarmas += 1;
-        //listOfKarmaers.add(id);
         this.karma = true;
 
         Log.i("Give Karma", "Karma Given");

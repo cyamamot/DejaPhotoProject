@@ -118,7 +118,7 @@ public class SortingAlgorithm {
 
         if (karma){
             Log.d("SortingAlg", "Adding karma");
-            points += KARMA_INC;
+            points += (KARMA_INC * photo.karmaCount);
         }
 
         photo.setPoints(points);
