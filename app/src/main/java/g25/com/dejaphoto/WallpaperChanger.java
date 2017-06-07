@@ -333,7 +333,7 @@ public class WallpaperChanger {
                 String country = addresses.get(0).getCountryName();
                 //String postalCode = addresses.get(0).getPostalCode();
                 //String knownName = addresses.get(0).getFeatureName();
-                String output = address + ", " + country + " --- " + Integer.toString(curr.karmaCount);
+                String output = address + ", " + country + " --- " + Integer.toString(curr.karmaCount) + " <3";
                 remoteViews.setTextViewText(R.id.location_textview, output);
                 appWidgetManager.updateAppWidget(thisWidget, remoteViews);
             } catch (IOException e) {
