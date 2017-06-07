@@ -105,4 +105,13 @@
         android:onClick="testMap"
         android:text="Test Map"/>
 
+    <Button
+        android:id="@+id/btn_additionalSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="additionalSettings"
+        android:text="Additional Options"/>
+
+
+
 </LinearLayout>

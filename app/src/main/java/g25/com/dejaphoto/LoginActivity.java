@@ -1,6 +1,7 @@
 package g25.com.dejaphoto;
 
 import android.content.Intent;
+import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -85,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     public void toHomePage() {
-        Intent i = new Intent(this, HomeActivity.class);
+        Intent i = new Intent(this, SettingsActivity.class);
         startActivity(i);
     }
 

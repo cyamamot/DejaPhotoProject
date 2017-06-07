@@ -274,5 +274,13 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
             startActivity(intent);
         }
     }
+
+    /**
+     * Used to access additional buttons
+     */
+    public void additionalSettings(View view){
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
 }
 
