@@ -1,6 +1,7 @@
 package g25.com.dejaphoto;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
@@ -184,6 +185,12 @@ public class FirebaseWrapper {
 
     // downloads a photo from the firebase storage, places it in local friends album
     public void downloadPhoto(String hash, String photoName){
+
+        // checks if user has released a friends' photo; if so, we don't return
+        if(photoIsReleased(photoName)){
+            return;
+        }
+
         // Create a child reference
         // imagesRef now points to the child which is a user
         // and photos should be stored under each user node
@@ -331,4 +338,10 @@ public class FirebaseWrapper {
         return friendsList;
     }
 
+    // checks local preferences; if a friend's photo was released by you, this returns true
+    private boolean photoIsReleased(String photoName){
+        SharedPreferences settings = context.getSharedPreferences(SettingsActivity.PREFS_NAME, SettingsActivity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        return settings.getBoolean(photoName, false);
+    }
 }
