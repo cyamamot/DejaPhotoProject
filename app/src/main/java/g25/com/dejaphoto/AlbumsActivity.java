@@ -25,15 +25,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.esafirm.imagepicker.features.ImagePicker;
-import com.esafirm.imagepicker.features.camera.CameraModule;
-import com.esafirm.imagepicker.features.camera.ImmediateCameraModule;
-import com.esafirm.imagepicker.features.camera.OnImageReadyListener;
 import com.esafirm.imagepicker.model.Image;
 
 public class AlbumsActivity extends AppCompatActivity {
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int RC_CODE_PICKER = 2000;
     private static final int RC_CAMERA = 3000;
 
