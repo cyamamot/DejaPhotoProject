@@ -20,7 +20,7 @@ public class FriendsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
-        fbWrapper = new FirebaseWrapper();
+        fbWrapper = new FirebaseWrapper(this);
 
         friends = fbWrapper.getFriends();
         friendList = (ListView)findViewById(R.id.lvFriendsList);

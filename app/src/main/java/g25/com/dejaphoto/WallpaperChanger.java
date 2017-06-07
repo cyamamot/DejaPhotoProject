@@ -46,7 +46,7 @@ public class WallpaperChanger {
      */
     public WallpaperChanger(Context context) {
         this.context = context;
-        this.fbWrapper = new FirebaseWrapper();
+        this.fbWrapper = new FirebaseWrapper(context);
     }
 
     /**

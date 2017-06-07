@@ -64,7 +64,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
         // calling syncFriends to pull confirmed friends from database
         // and so fbWrapper.friendsList will be the updated list we use and iterate through
-        FirebaseWrapper fbWrapper = new FirebaseWrapper();
+        FirebaseWrapper fbWrapper = new FirebaseWrapper(this);
         fbWrapper.syncFriends();
     }
 
