@@ -145,7 +145,7 @@ public class FirebaseWrapper {
                 // for each photo we add the photo to our arraylist, and we set the value listener
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                     // now we loop through each field in the photo
-                    if (postSnapshot.child("released").getValue() == false) continue;
+                    if (postSnapshot.child("released").getValue() == true) continue;
                     String parsedName = postSnapshot.getKey();
                     String name = postSnapshot.child("name").getValue().toString();
                     int karma = Integer.parseInt(postSnapshot.child("karma").getValue().toString());

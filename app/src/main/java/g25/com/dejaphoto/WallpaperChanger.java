@@ -255,6 +255,7 @@ public class WallpaperChanger {
         //always in some position in the prevList, just set release bool and remove from list
         prevList.get(prevCursor).release();
         prevList.remove(prevCursor);
+        fbWrapper.releaseFromDatabase(prevList.get(prevCursor));
         next();
 
     }
