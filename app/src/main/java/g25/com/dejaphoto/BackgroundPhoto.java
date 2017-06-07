@@ -10,7 +10,8 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Wrapper class for Photos that encapsulate Location, Date/Time, Karma, Release Status. Also
@@ -63,14 +64,16 @@ public class BackgroundPhoto {
     boolean hasDate;
     boolean hasEXIF;
     String name;
+    String owner;
     int points = 0;
-    ArrayList<String> listOfKarmaers;
+    Set<String> listOfKarmaers;
     Context context;
     static final String KARMA_INDICATOR = "DJP_KARMA";
+    static final String KARMAERS = "DJP_KARMAERS";
     static final String RELEASED_INDICATOR = "DJP_RELEASED";
     static SharedPreferences settings;
     static SharedPreferences.Editor settingsEditor;
-    int karmaCount;
+    int karmaCount = 0;
     String customLocation;
 
     /**
@@ -87,7 +90,7 @@ public class BackgroundPhoto {
         initializeSettings();
         parseKarmaAndReleased();
         name = uri.getLastPathSegment();
-        karmaCount = 0;
+        listOfKarmaers = new HashSet<String>();
         customLocation = "default";
     }
 
@@ -248,12 +251,15 @@ public class BackgroundPhoto {
         initializeSettings();
         String karmaStr = uri.toString() + KARMA_INDICATOR;
         String releaseStr = uri.toString() + RELEASED_INDICATOR;
-
+        String karmaersStr = uri.toString() + KARMAERS;
+        Set<String> temp = settings.getStringSet(karmaersStr, null);
 
         //karma
         if(settings.getBoolean(karmaStr, false)){
             Log.i("Parse Karma", "Karma Detected");
-            giveKarma("");
+            for (String str : temp) {
+                giveKarma(str);
+            }
         }
 
         //release
@@ -316,7 +322,10 @@ public class BackgroundPhoto {
             return;
         }
         String uriStr = uri.toString() + KARMA_INDICATOR;
+        String uriStr2 = uri.toString() + KARMAERS;
         settingsEditor.putBoolean(uriStr, true);
+        settingsEditor.commit();
+        settingsEditor.putStringSet(uriStr2, listOfKarmaers);
         settingsEditor.commit();
         this.karma = true;
 
