@@ -342,8 +342,35 @@ public class FirebaseWrapper {
 
     // checks local preferences; if a friend's photo was released by you, this returns true
     private boolean photoIsReleased(String photoName){
-        SharedPreferences settings = context.getSharedPreferences(SettingsActivity.PREFS_NAME, SettingsActivity.MODE_PRIVATE);
+        SharedPreferences settings =
+                context.getSharedPreferences(SettingsActivity.PREFS_NAME, SettingsActivity.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         return settings.getBoolean(photoName, false);
+    }
+
+    public void releaseFromDatabase(BackgroundPhoto photo){
+        String parseName = photo.parseName();
+        String name = photo.getName();
+
+        //remove from text db
+        DatabaseReference ref
+                = database.getReference().child("users").child(getSelfId()).child("photos").child(parseName);
+        ref.removeValue();
+
+        //remove from storage
+        storageRef.child("images").child(getSelfId()).child(name).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                Log.d(TAG, "onSuccess: deleted file");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+                Log.d(TAG, "onFailure: did not delete file");
+            }
+        });
+
     }
 }
