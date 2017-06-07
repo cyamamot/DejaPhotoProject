@@ -31,6 +31,12 @@ import static g25.com.dejaphoto.LoginActivity.DJP_FRIENDS_DIR;
 
 /**
  * Created by dillonliu on 6/1/17.
+ * USAGE:
+ *  Only external method call is syncFriends()!!
+ *
+ * Internal Flow: syncFriends() gets friend list from firebase, confirms friends with isFriends()
+ * isFriends() calls getPhotoListFromFriend() to get shared photo list from friend if confirmed
+ *  getPhotoListFromFriend() calls downloadPhoto() to download Photo.
  */
 
 public class FirebaseWrapper {
@@ -160,6 +166,7 @@ public class FirebaseWrapper {
     }
 
     // call this to download photos from all friends
+    //CURRENTLY NOT USED BY DO NOT DELETE
     public void downloadAllFriendsPhotos(){
         StorageReference friendRef;
         String hashCode;
@@ -324,9 +331,4 @@ public class FirebaseWrapper {
         return friendsList;
     }
 
-    public void syncFriendsPhotos(){
-        for(int i = 0; i < friendsList.size(); i++){
-            getPhotoListFromFriend(friendsList.get(i));
-        }
-    }
 }
