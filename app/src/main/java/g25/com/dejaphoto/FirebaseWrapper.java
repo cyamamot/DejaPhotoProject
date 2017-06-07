@@ -159,6 +159,31 @@ public class FirebaseWrapper {
 
         DatabaseReference friend = database.getReference("users").child(selfId).child("friends").child(key);
         friend.setValue(email);
+        addFriendToList(email);
+    }
+
+    public ArrayList<String> getFriends() {
+
+        DatabaseReference ref = database.getReference("users").child(selfId).child("friends");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> snapshot = dataSnapshot.getChildren();
+                for(DataSnapshot friend : snapshot){
+                    Log.d("DEBUG", "Adding a friend!!!" + friend.getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+
+        return friendsList;
+    }
+
+    public void addFriendToList(String friend){
+        friendsList.add(friend);
+        Log.d("DEBUG", "friend list size: " + friendsList.size());
     }
 
     // checks a bunch of stuff and returns if the friend is a confirmed friend

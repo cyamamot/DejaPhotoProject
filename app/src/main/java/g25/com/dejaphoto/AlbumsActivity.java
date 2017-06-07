@@ -1,19 +1,26 @@
 package g25.com.dejaphoto;
 
-import android.content.ContentValues;
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.icu.text.SimpleDateFormat;
-import android.icu.util.Output;
 import android.media.MediaScannerConnection;
+import android.support.v4.app.ActivityCompat;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.content.Intent;
 import android.widget.TextView;
+
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.model.Image;
+import com.esafirm.imagepicker.helper.IpLogger;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,17 +31,21 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import com.esafirm.imagepicker.features.ImagePicker;
-import com.esafirm.imagepicker.model.Image;
 
 public class AlbumsActivity extends AppCompatActivity {
 
     private static final int RC_CODE_PICKER = 2000;
     private static final int RC_CAMERA = 3000;
+    private static final int RC_STORAGE = 4000;
+    private static final int ASK_MULTIPLE_PERMISSION_REQUEST_CODE = 5000;
+
+    private IpLogger logger = IpLogger.getInstance();
 
     private FirebaseWrapper fbWrapper;
     private TextView textView;
     private ArrayList<Image> images = new ArrayList<>();
+
+
 
     private Uri cameraOutUri;
 
@@ -42,8 +53,6 @@ public class AlbumsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_albums);
-
-        textView = (TextView) findViewById(R.id.text_view);
 
         findViewById(R.id.button_pick_image).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,9 +62,26 @@ public class AlbumsActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.button_open_camera).setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View view) {
-                openCamera(view);
+
+                final Activity activity = AlbumsActivity.this;
+                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(activity, new String[]{
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.CAMERA},
+                        ASK_MULTIPLE_PERMISSION_REQUEST_CODE);
+                }else if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, RC_STORAGE);
+                }else if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, RC_CAMERA);
+                }else{
+                    openCamera();
+                }
+
             }
         });
 
@@ -89,7 +115,7 @@ public class AlbumsActivity extends AppCompatActivity {
 
         imagePicker.limit(10) // max images can be selected (99 by default)
                 .showCamera(true) // show camera or not (true by default)
-                .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
+                .imageDirectory("DejaPhoto")   // captured image directory name ("Camera" folder by default)
                 .origin(images) // original selected images, used in multi mode
                 .start(RC_CODE_PICKER); // start image picker activity with request code
     }
@@ -172,7 +198,7 @@ public class AlbumsActivity extends AppCompatActivity {
 
     }
 
-    private void openCamera(View view){
+    private void openCamera(){
         Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_DIR + File.separator + getImageName());
         cameraOutUri = Uri.fromFile(file);
@@ -208,5 +234,56 @@ public class AlbumsActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Handle permission results
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        switch (requestCode) {
+            case ASK_MULTIPLE_PERMISSION_REQUEST_CODE:{
+                if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    logger.d("Both permissions granted");
+                    openCamera();
+                    //captureImage();
+                    return;
+                }
+                logger.e("Permission not granted: results len = " + grantResults.length +
+                        " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
+                break;
+            }
+            case RC_STORAGE: {
+                if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    logger.d("Write External permission granted");
+                    Activity activity = AlbumsActivity.this;
+                    if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+                        openCamera();
+                    }
+                    return;
+                }
+                logger.e("Permission not granted: results len = " + grantResults.length +
+                        " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
+                finish();
+            }
+            break;
+            case RC_CAMERA: {
+                if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    logger.d("Camera permission granted");
+                    openCamera();
+                    //captureImage();
+                    return;
+                }
+                logger.e("Permission not granted: results len = " + grantResults.length +
+                        " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
+                break;
+            }
+            default: {
+                logger.d("Got unexpected permission result: " + requestCode);
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                break;
+            }
+        }
+    }
 
 }

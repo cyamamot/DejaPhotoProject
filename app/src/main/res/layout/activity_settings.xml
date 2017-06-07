@@ -105,28 +105,4 @@
         android:onClick="testMap"
         android:text="Test Map"/>
 
-    <Button
-        android:id="@+id/btViewAlbums"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:onClick="toViewAlbums"
-        android:text="View Albums" />
-
-    <Button
-        android:id="@+id/btFriends"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:onClick="toFriends"
-        android:text="Friends" />
-
-    <Button
-        android:id="@+id/button_SignOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:onClick="signOut"
-        android:text="Sign out" />
-
 </LinearLayout>
