@@ -1,5 +1,8 @@
 package g25.com.dejaphoto;
 
+import android.content.Context;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -28,6 +31,12 @@ import static g25.com.dejaphoto.LoginActivity.DJP_FRIENDS_DIR;
 
 /**
  * Created by dillonliu on 6/1/17.
+ * USAGE:
+ *  Only external method call is syncFriends()!!
+ *
+ * Internal Flow: syncFriends() gets friend list from firebase, confirms friends with isFriends()
+ * isFriends() calls getPhotoListFromFriend() to get shared photo list from friend if confirmed
+ *  getPhotoListFromFriend() calls downloadPhoto() to download Photo.
  */
 
 public class FirebaseWrapper {
@@ -41,13 +50,14 @@ public class FirebaseWrapper {
     private ArrayList<String> friendsList;
     private HashMap<String, ArrayList<BackgroundPhoto>> allFriendsPhotos;
     private ArrayList<BackgroundPhoto> currFriendPhotos;
+    private Context context;
 
-    public FirebaseWrapper(){
+    public FirebaseWrapper(Context context){
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
         storage.setMaxUploadRetryTimeMillis(180000);
         storageRef = storage.getReference();
-
+        this.context = context;
         int hashSelf = FirebaseAuth.getInstance().getCurrentUser().getEmail().hashCode();
         selfId = Integer.toString(hashSelf);
 
@@ -156,6 +166,7 @@ public class FirebaseWrapper {
     }
 
     // call this to download photos from all friends
+    //CURRENTLY NOT USED BY DO NOT DELETE
     public void downloadAllFriendsPhotos(){
         StorageReference friendRef;
         String hashCode;
@@ -182,12 +193,15 @@ public class FirebaseWrapper {
         File DJPFriends = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), DJP_FRIENDS_DIR);
         File localFriendsPhotoFile = null;
         localFriendsPhotoFile = new File(DJPFriends, photoName);
+        final Uri uri = Uri.fromFile(localFriendsPhotoFile);
 
         imageRef.getFile(localFriendsPhotoFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 // Local temp file has been created
                 Log.d("fbwrapper download", "photo successfully downloaded");
+                updateGallery(uri);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -195,6 +209,21 @@ public class FirebaseWrapper {
                 // Handle any errors
             }
         });
+    }
+
+
+    private void updateGallery(Uri uri){
+
+        File file = new File(uri.getPath());
+        MediaScannerConnection.scanFile(context,
+                new String[] { file.toString() }, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                    }
+                });
+
     }
 
     // adds a friend to current user's list of friends; updates database and local arraylist of friends
@@ -302,9 +331,4 @@ public class FirebaseWrapper {
         return friendsList;
     }
 
-    public void syncFriendsPhotos(){
-        for(int i = 0; i < friendsList.size(); i++){
-            getPhotoListFromFriend(friendsList.get(i));
-        }
-    }
 }

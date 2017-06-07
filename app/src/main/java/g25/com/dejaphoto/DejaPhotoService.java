@@ -34,7 +34,7 @@ public class DejaPhotoService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         FirebaseApp.initializeApp(this);
-        fbWrapper = new FirebaseWrapper();
+        fbWrapper = new FirebaseWrapper(this);
         fbWrapper.addUser(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         initializeWallpaperChanger();
 

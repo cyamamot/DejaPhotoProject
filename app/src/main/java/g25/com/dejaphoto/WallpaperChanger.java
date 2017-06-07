@@ -4,6 +4,7 @@ import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.location.Address;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.PriorityQueue;
 
+import static g25.com.dejaphoto.SettingsActivity.PREFS_NAME;
+
 /**
  * Created by dillonliu on 5/6/17.
  */
@@ -32,7 +35,6 @@ public class WallpaperChanger {
     private static final int PREV_LIST_SIZE = 10;
 
     private WallpaperManager myWallpaperManager;
-    private Cursor cursor;
     private int prevCursor;
     private ArrayList<BackgroundPhoto> prevList; //TODO use the wrapper
     private PriorityQueue<BackgroundPhoto> queue;
@@ -46,7 +48,7 @@ public class WallpaperChanger {
      */
     public WallpaperChanger(Context context) {
         this.context = context;
-        this.fbWrapper = new FirebaseWrapper();
+        this.fbWrapper = new FirebaseWrapper(context);
     }
 
     /**
@@ -81,26 +83,34 @@ public class WallpaperChanger {
 
         this.sorter = new SortingAlgorithm(context);
 
+
+        //cursor to get images from content provider
+        Cursor cursor = initializeCursor("%DejaPhoto/%");
+        Cursor copiedCursor = initializeCursor("%DejaPhotoCopied/%");
+        Cursor friendCursor = initializeCursor("%DejaPhotoFriends/%");
+
+        PhotoCompare comparator = new PhotoCompare();
+        queue = new PriorityQueue<>(1, comparator);
         //fill queue
-        populateQueue();
+
+        populateQueue(cursor);
+        populateQueue(copiedCursor);
+
+        if(sharingOn()){
+            populateQueue(friendCursor);
+        }
+
         // test uploading photo
         //DejaPhotoService.fbWrapper.uploadPhoto("test", queue.peek());
 
         Log.e("WallpaperChanger", "INITIALIZED");
+        next();
     }
 
     /**
      * Fill the queue with photos that will appear as the wallpaper
      */
-    void populateQueue() {
-
-        //cursor to get images from content provider
-        String folder = "%DejaPhoto%";
-        Log.e("FOLDER", folder);
-        String[] whereArgs = new String[]{folder};
-        cursor = context.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media.DATA + " like ? ", whereArgs,
-                MediaStore.Images.ImageColumns.DATE_TAKEN);
+    void populateQueue(Cursor cursor) {
 
         //initialize cursor and stuff to track location of cursor
         try { //in case gallery is empty
@@ -121,8 +131,6 @@ public class WallpaperChanger {
         String[] mNames = new String[albumSize];
 
         //loop through all images and assign points, put into queue
-        PhotoCompare comparator = new PhotoCompare();
-        queue = new PriorityQueue<>(albumSize, comparator);
         for (int i = 0; i < albumSize; i++) {
             cursor.moveToPosition(i);
             String path = cursor.getString(1);
@@ -141,9 +149,15 @@ public class WallpaperChanger {
         }
 
         Log.e("WallpaperChanger", "Queue Size: " + Integer.toString(queue.size()));
-        next();
     }
 
+    private Cursor initializeCursor(String dirQuery){
+        String[] whereArgs = new String[]{dirQuery};
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media.DATA + " like ? ", whereArgs,
+                MediaStore.Images.ImageColumns.DATE_TAKEN);
+        return cursor;
+    }
 
     /**
      * Sets wallpaper to next photo in album; if we reach the end, we go back to the first photo
@@ -154,7 +168,7 @@ public class WallpaperChanger {
         BackgroundPhoto nextPhoto = null;
 
         if (queue.isEmpty()) {
-            populateQueue();
+            initialize();
             Log.e("Next Test", "Queue Empty");
             Toast.makeText(context, "Restarting from Beginning, Queue Empty,", Toast.LENGTH_LONG).show();
         }
@@ -327,44 +341,11 @@ public class WallpaperChanger {
         }
     }
 
-    public void uploadPhotos(){
-        String userId = fbWrapper.getSelfId();
-        //cursor for pictures taken
-        String camerFolder = "%DejaPhoto%";
-        String[] whereArgsCamera = new String[]{camerFolder};
-        Cursor cameraCursor = context.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media.DATA + " like ? ", whereArgsCamera,
-                MediaStore.Images.ImageColumns.DATE_TAKEN);
-        int cameraSize = cameraCursor.getCount();
-
-        //cursor for coped
-        String copiedFolder = "%DejaPhotoCopied%";
-        String[] whereArgsCopied = new String[]{copiedFolder};
-        Cursor copiedCursor= context.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media.DATA + " like ? ", whereArgsCopied,
-                MediaStore.Images.ImageColumns.DATE_TAKEN);
-        int copiedSize = copiedCursor.getCount();
-
-        Log.d("PHOTO UPLOAD SIZE", Integer.toString(cameraSize) + " " + Integer.toString(copiedSize));
-
-        for (int i = 0; i < cameraSize; i++) {
-            cameraCursor.moveToPosition(i);
-            String path = cameraCursor.getString(1);
-            fbWrapper.uploadPhoto(userId, new BackgroundPhoto(path, context));
-            Log.d("Upload", "Upload");
-        }
-
-        for (int i = 0; i < copiedSize; i++) {
-            copiedCursor.moveToPosition(i);
-            String path = copiedCursor.getString(1);
-            fbWrapper.uploadPhoto(userId, new BackgroundPhoto(path, context));
-            Log.d("Upload", "Upload");
-        }
-
-
-
+    private boolean sharingOn(){
+        SharedPreferences  settings = context.getSharedPreferences(SettingsActivity.PREFS_NAME, SettingsActivity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        return settings.getBoolean("shareWithFriends", true);
     }
-
 
 }
 

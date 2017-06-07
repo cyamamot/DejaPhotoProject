@@ -86,7 +86,7 @@ public class AlbumsActivity extends AppCompatActivity {
         });
 
         if(fbWrapper == null){
-            fbWrapper = new FirebaseWrapper();
+            fbWrapper = new FirebaseWrapper(this);
         }
 
     }
@@ -234,6 +234,7 @@ public class AlbumsActivity extends AppCompatActivity {
                 });
 
     }
+
 
 
     /**
