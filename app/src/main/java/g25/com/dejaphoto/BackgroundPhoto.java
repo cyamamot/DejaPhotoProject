@@ -68,6 +68,8 @@ public class BackgroundPhoto {
     static final String RELEASED_INDICATOR = "DJP_RELEASED";
     static SharedPreferences settings;
     static SharedPreferences.Editor settingsEditor;
+    int karmaCount;
+    String customLocation;
 
     /**
      * Constructor for the photo and passes in the path to it and the context
@@ -83,8 +85,16 @@ public class BackgroundPhoto {
         initializeSettings();
         parseKarmaAndReleased();
         name = uri.getLastPathSegment();
+        karmaCount = 0;
+        customLocation = "default";
     }
 
+    // constructor for creating arraylist of photo metadata
+    public BackgroundPhoto(String name, int karma, String customLocation){
+        this.name = name;
+        karmaCount = karma;
+        this.customLocation = customLocation;
+    }
 
     /**
      * Converts lat and lng from a string indicating degrees and seconds into a double that
@@ -425,15 +435,22 @@ public class BackgroundPhoto {
 
     // should strip .extensions from the photo name. e.g. photo.jpg -> photo
     // use this to pass photo into database
-    public String parseName(Uri uri){
-        String tempName = uri.getLastPathSegment();
-        int index = tempName.indexOf(".");
-        String parsedName = tempName.substring(0, index);
+    public String parseName(){
+        int index = name.indexOf(".");
+        String parsedName = name.substring(0, index);
         return parsedName;
     }
 
     public String getName(){
         return name;
+    }
+
+    public int getKarma(){
+        return karmaCount;
+    }
+
+    public String getCustomLocation(){
+        return customLocation;
     }
 }
 

@@ -1,5 +1,6 @@
 package g25.com.dejaphoto;
 
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -11,15 +12,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.firebase.storage.UploadTask.TaskSnapshot;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import static android.R.attr.value;
+import static g25.com.dejaphoto.LoginActivity.DJP_FRIENDS_DIR;
 
 /**
  * Created by dillonliu on 6/1/17.
@@ -34,6 +39,8 @@ public class FirebaseWrapper {
     private String currFriendId;
     private boolean isCurrFriendAFriend = false;
     private ArrayList<String> friendsList;
+    private HashMap<String, ArrayList<BackgroundPhoto>> allFriendsPhotos;
+    private ArrayList<BackgroundPhoto> currFriendPhotos;
 
     public FirebaseWrapper(){
         database = FirebaseDatabase.getInstance();
@@ -44,7 +51,9 @@ public class FirebaseWrapper {
         int hashSelf = FirebaseAuth.getInstance().getCurrentUser().getEmail().hashCode();
         selfId = Integer.toString(hashSelf);
 
+        allFriendsPhotos = new HashMap<>();
         friendsList = new ArrayList<>();
+        currFriendPhotos = new ArrayList<>();
     }
 
     // adds a user to the database
@@ -107,65 +116,105 @@ public class FirebaseWrapper {
                         return;
                     }
                 });
+
+        // every time we upload a photo to storage, we also upload metadata to db
+        addPhotoMetadata(photo);
     }
 
-    public void downloadPhoto(String hash){
-        // Create a child reference
-        // imagesRef now points to the child which is a user
-        // and photos should be stored under each user node
-        StorageReference imagesRef = storageRef.child(hash);
-    }
-
-    // from our list of friends, we call this on each one to check if they also added us
-    public boolean isConfirmedFriend(String email1, String email2){
-        boolean oneAddedTwo = false;
-        boolean twoAddedOne = false;
-
-        int hash1 = (email1).hashCode();
-        String key1 = Integer.toString(hash1);
-
-        int hash2 = (email2).hashCode();
-        String key2 = Integer.toString(hash2);
-
-        // should return if user2 has added user1
-        DatabaseReference friend2Added1 = database.getReference("users").child(key2).child("friends").child(key1);
+    // gets a list of all the photos from a specific friend
+    public void getPhotoListFromFriend(String hashedFriend) {
+        final String friendId = hashedFriend;
+        DatabaseReference photos = database.getReference("users").child(hashedFriend).child("photos");
         // Read from the database
-        friend2Added1.addValueEventListener(new ValueEventListener() {
+        photos.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                //String value = dataSnapshot.getValue(String.class);
-                boolean oneAddedTwo = (boolean) dataSnapshot.getValue();
-                if(oneAddedTwo){
-                    //addConfirmedFriend(email2);
-                }
-                Log.i(TAG, "friend2Added1: " + oneAddedTwo);
-            }
+            public void onDataChange(DataSnapshot snapshot) {
+                Log.e("fbwrapper", "size of this friend's photo list: "+ snapshot.getChildrenCount());
+                // here we loop through our entire list of photos
+                // for each photo we add the photo to our arraylist, and we set the value listener
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    // now we loop through each field in the photo
+                    String parsedName = postSnapshot.getKey();
+                    String name = postSnapshot.child("name").getValue().toString();
+                    int karma = Integer.parseInt(postSnapshot.child("karma").getValue().toString());
+                    String customLocation = postSnapshot.child("customLocation").getValue().toString();
 
+                    // addPhotoToPhotoList(friendId, new BackgroundPhoto(name, karma, customLocation));
+
+                    // once we get the photo's metadata, we can now download it
+                    downloadPhoto(friendId, name);
+
+                    Log.d("fbWrapper", "this friend's photo: " + name + " has karma = " + karma + " customLocation = " + customLocation);
+                }
+            }
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-            return true;
     }
 
-    // adds a friend to current user's list of friends
+    // call this to download photos from all friends
+    public void downloadAllFriendsPhotos(){
+        StorageReference friendRef;
+        String hashCode;
+        for(int i = 0; i < friendsList.size(); i++){
+            hashCode = Integer.toString(friendsList.get(i).hashCode());
+            friendRef = storageRef.child("images").child(hashCode);
+
+            ArrayList<BackgroundPhoto> currFriendPhotos = allFriendsPhotos.get(friendRef);
+            for(int j = 0; j < currFriendPhotos.size(); j++) {
+                // loop through list of photo id's to download each photo
+                downloadPhoto(hashCode, currFriendPhotos.get(j).getName());
+            }
+        }
+    }
+
+    // downloads a photo from the firebase storage, places it in local friends album
+    public void downloadPhoto(String hash, String photoName){
+        // Create a child reference
+        // imagesRef now points to the child which is a user
+        // and photos should be stored under each user node
+        StorageReference imageRef = storageRef.child("images").child(hash).child(photoName);
+
+        // this is where file is stored; photo should be downloaded to friends' album
+        File DJPFriends = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), DJP_FRIENDS_DIR);
+        File localFriendsPhotoFile = null;
+        localFriendsPhotoFile = new File(DJPFriends, photoName);
+
+        imageRef.getFile(localFriendsPhotoFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                // Local temp file has been created
+                Log.d("fbwrapper download", "photo successfully downloaded");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+    }
+
+    // adds a friend to current user's list of friends; updates database and local arraylist of friends
     public void addFriend(String email){
         int hash = (email).hashCode();
         String key = Integer.toString(hash);
 
         DatabaseReference friend = database.getReference("users").child(selfId).child("friends").child(key);
         friend.setValue(email);
+        friendsList.add(email);
+        Log.d("DEBUG", "friend list size: " + friendsList.size());
     }
 
     // checks a bunch of stuff and returns if the friend is a confirmed friend
+    // once we confirm a friend, we add/get their list of photos
     public void isFriends(String email){
         final String friendEmail = email;
         int hash = (email).hashCode();
         currFriendId = Integer.toString(hash);
+        final String friendHash = currFriendId;
         Log.d("FirebaseWrapper", "current Friend email: " + friendEmail);
         DatabaseReference ref = database.getReference("users").child(currFriendId).child("friends").child(selfId);
         // Read from the database
@@ -179,6 +228,9 @@ public class FirebaseWrapper {
                     //setCurrFriend(true);
                     friendsList.add(friendEmail);
                     Log.d("FirebaseWrapper", "friend confirmed: " + friendEmail);
+
+                    // gets this friend's list of photos after friend confirmed
+                    getPhotoListFromFriend(friendHash);
                 }
             }
 
@@ -201,7 +253,7 @@ public class FirebaseWrapper {
         friends.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.e("Count " ,""+snapshot.getChildrenCount());
+                Log.e("size of friend list: " ,""+snapshot.getChildrenCount());
                 // here we loop through our entire list of friends
                 // for each friend we add the friend to our hashmap, and we set the value listener
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
@@ -210,6 +262,7 @@ public class FirebaseWrapper {
                     isFriends(friendEmail);
                     Log.e("friend email: ", friendEmail);
                 }
+
             }
             @Override
             public void onCancelled(DatabaseError error) {
@@ -221,5 +274,37 @@ public class FirebaseWrapper {
 
     public String getSelfId(){
         return this.selfId;
+    }
+
+    // adds a photo to the database to store photo's metadata
+    // we store each background photo as an object in database
+    // we can then retrieve the karma and locationname from its child nodes
+    public void addPhotoMetadata(BackgroundPhoto photo){
+        // we identify each photo by parsed name in database by removing .jpg
+        DatabaseReference photoRef = database.getReference("users").child(selfId).child("photos").child(photo.parseName());
+
+        // we store each field of the photo in database
+        photoRef.child("karma").setValue(photo.getKarma());
+        photoRef.child("customLocation").setValue(photo.getCustomLocation());
+        photoRef.child("name").setValue(photo.getName());
+    }
+
+    // adds a photo to the correct friend's arraylist within the hashmap that has each friend's list
+    public void addPhotoToPhotoList(String friendId, BackgroundPhoto photo){
+        allFriendsPhotos.get(friendId).add(photo);
+    }
+
+    public ArrayList<BackgroundPhoto> getCurrFriendPhotos(){
+        return currFriendPhotos;
+    }
+
+    public ArrayList<String> getFriends(){
+        return friendsList;
+    }
+
+    public void syncFriendsPhotos(){
+        for(int i = 0; i < friendsList.size(); i++){
+            getPhotoListFromFriend(friendsList.get(i));
+        }
     }
 }

@@ -15,8 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 
 public class SettingsActivity extends AppCompatActivity /*implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener*/{
     boolean useCustomAlbum;
@@ -64,8 +62,8 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
             mapsButton.setVisibility(View.GONE);
         }
 
-        // calling syncFriends to eventually pull confirmed friends from database
-        // and so fbWrapper.friendsList will eventually be the updated list we use and iterate through
+        // calling syncFriends to pull confirmed friends from database
+        // and so fbWrapper.friendsList will be the updated list we use and iterate through
         FirebaseWrapper fbWrapper = new FirebaseWrapper();
         fbWrapper.syncFriends();
     }
@@ -277,31 +275,12 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         }
     }
 
-    // onClick method to go to the Friends Page
-    public void toFriends(View v) {
-        Intent i = new Intent(this, FriendsActivity.class);
-        startActivity(i);
-    }
-
-    // onClick method to go to the Albums Page
-    public void toViewAlbums(View v) {
-        Intent i = new Intent(this, AlbumsActivity.class);
-        startActivity(i);
-    }
-
-    // signs user out of google/firebase account
-    public void signOut(View v) {
-        // Firebase sign out
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signOut();
-        goToHomeActivity();
-    }
-
-    // when user signs out, we return to login screen
-    public void goToHomeActivity(){
-        Intent intent = new Intent(this, LoginActivity.class);
+    /**
+     * Used to access additional buttons
+     */
+    public void additionalSettings(View view){
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
-
 }
 
