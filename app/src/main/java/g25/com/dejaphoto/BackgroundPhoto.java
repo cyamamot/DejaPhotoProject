@@ -10,6 +10,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.ArrayList;
 
 /**
  * Wrapper class for Photos that encapsulate Location, Date/Time, Karma, Release Status. Also
@@ -63,6 +64,8 @@ public class BackgroundPhoto {
     boolean hasEXIF;
     String name;
     int points = 0;
+    int numberofKarmas = 0;
+    ArrayList<String> listOfKarmaers;
     Context context;
     static final String KARMA_INDICATOR = "DJP_KARMA";
     static final String RELEASED_INDICATOR = "DJP_RELEASED";
@@ -301,7 +304,9 @@ public class BackgroundPhoto {
     public void giveKarma(){
 
         // if the photo already has karma, return
-        if(hasKarma()){ return; }
+        if(hasKarma()){
+            return;
+        }
 
         initializeSettings();
         if (uri == null) {
@@ -311,6 +316,8 @@ public class BackgroundPhoto {
         String uriStr = uri.toString() + KARMA_INDICATOR;
         settingsEditor.putBoolean(uriStr, true);
         settingsEditor.commit();
+        numberofKarmas += 1;
+        //listOfKarmaers.add(id);
         this.karma = true;
 
         Log.i("Give Karma", "Karma Given");
@@ -452,6 +459,8 @@ public class BackgroundPhoto {
     public String getCustomLocation(){
         return customLocation;
     }
+
+    public boolean getReleased() { return released; }
 }
 
 

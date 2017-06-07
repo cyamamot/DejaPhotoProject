@@ -322,7 +322,7 @@ public class WallpaperChanger {
                 String country = addresses.get(0).getCountryName();
                 //String postalCode = addresses.get(0).getPostalCode();
                 //String knownName = addresses.get(0).getFeatureName();
-                String output = address + ", " + country;
+                String output = address + ", " + country + " --- " + Integer.toString(curr.numberofKarmas);
                 remoteViews.setTextViewText(R.id.location_textview, output);
                 appWidgetManager.updateAppWidget(thisWidget, remoteViews);
             } catch (IOException e) {
