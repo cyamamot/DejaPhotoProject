@@ -71,6 +71,7 @@ public class BackgroundPhoto {
     static final String KARMA_INDICATOR = "DJP_KARMA";
     static final String KARMAERS = "DJP_KARMAERS";
     static final String RELEASED_INDICATOR = "DJP_RELEASED";
+    static final String CLOCATION_INDICATOR = "DJP_CLOCATION";
     static SharedPreferences settings;
     static SharedPreferences.Editor settingsEditor;
     int karmaCount = 0;
@@ -89,9 +90,9 @@ public class BackgroundPhoto {
         parseDateFromExif();
         initializeSettings();
         listOfKarmaers = new HashSet<String>();
-        parseKarmaAndReleased();
+        parseKarmaAndReleasedAndCLoc();
         name = uri.getLastPathSegment();
-        customLocation = "default";
+        //customLocation = "default";
     }
 
     // constructor for creating arraylist of photo metadata
@@ -244,15 +245,20 @@ public class BackgroundPhoto {
         return converted;
     }
 
+
+
     /**
-     * Checks if the photo has been given karma/has been released
+     * Checks if the photo has been given karma/has been released/has custom location name
      */
-    private void parseKarmaAndReleased(){
+    private void parseKarmaAndReleasedAndCLoc(){
         initializeSettings();
         String karmaStr = uri.toString() + KARMA_INDICATOR;
         String releaseStr = uri.toString() + RELEASED_INDICATOR;
         String karmaersStr = uri.toString() + KARMAERS;
+        String clocationStr = uri.toString() + CLOCATION_INDICATOR;
         Set<String> temp = settings.getStringSet(karmaersStr, null);
+
+        customLocation = settings.getString(clocationStr, "default");
 
         //karma
         if(settings.getBoolean(karmaStr, false)){
@@ -302,6 +308,14 @@ public class BackgroundPhoto {
         if (context == null) { return; }
         settings = context.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
         settingsEditor = settings.edit();
+    }
+
+    public void setCustomLocation(String s){
+        initializeSettings();
+        String clocationStr = uri.toString() + CLOCATION_INDICATOR;
+        settingsEditor.putString(clocationStr, s);
+        settingsEditor.commit();
+        this.customLocation = s;
     }
 
 

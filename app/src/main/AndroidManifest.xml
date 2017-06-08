@@ -70,6 +70,8 @@
         <activity android:name=".FriendsActivity" />
         <activity android:name=".AlbumsActivity"/>
         <activity android:name=".AlbumGridActivity"/>
+        <activity android:name=".ChangeLocationActivity"/>
+
 
         <provider
             android:name="android.support.v4.content.FileProvider"
