@@ -255,8 +255,10 @@ public class FirebaseWrapper {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 GenericTypeIndicator<Map<String, String>> t = new GenericTypeIndicator<Map<String, String>>(){};
                 Map<String, String> f = dataSnapshot.getValue(t);
-                for(Map.Entry<String, String> entry : f.entrySet()) {
-                    friendsList.add(entry.getValue());
+                if(dataSnapshot.exists()) {
+                    for(Map.Entry<String, String> entry : f.entrySet()) {
+                        friendsList.add(entry.getValue());
+                    }
                 }
             }
             @Override
