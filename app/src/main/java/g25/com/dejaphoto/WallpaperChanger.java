@@ -276,7 +276,7 @@ public class WallpaperChanger {
      */
     public void karma(String id) {
         Toast.makeText(context, "KARMA SET <3", Toast.LENGTH_SHORT).show();
-        prevList.get(prevCursor).giveKarma(id);
+        prevList.get(prevCursor).giveKarma(id, fbWrapper);
     }
 
 

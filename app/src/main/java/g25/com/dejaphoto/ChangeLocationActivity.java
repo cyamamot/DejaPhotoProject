@@ -14,10 +14,14 @@ import android.widget.EditText;
 public class ChangeLocationActivity extends Activity {
 
     BackgroundPhoto curr;
+    private FirebaseWrapper fbWrapper;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_changeloc);
+        fbWrapper = new FirebaseWrapper(this);
+
 
         // Get intent data
         Intent i = getIntent();
@@ -42,5 +46,7 @@ public class ChangeLocationActivity extends Activity {
         //change settings
         EditText name = (EditText) findViewById(R.id.editText_cL);
         curr.setCustomLocation(name.getText().toString());
+
+        fbWrapper.addPhotoMetadata(curr);
     }
 }

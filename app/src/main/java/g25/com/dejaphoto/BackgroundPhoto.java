@@ -98,7 +98,7 @@ public class BackgroundPhoto {
     // constructor for creating arraylist of photo metadata
     public BackgroundPhoto(String name, int karma, String customLocation){
         this.name = name;
-        karmaCount = karma;
+        this.karmaCount = karma;
         this.customLocation = customLocation;
     }
 
@@ -265,7 +265,7 @@ public class BackgroundPhoto {
             Log.i("Parse Karma", "Karma Detected");
             if (temp != null) {
                 for (String str : temp) {
-                    giveKarma(str);
+                    giveKarma(str, null);
                 }
             }
         }
@@ -322,7 +322,7 @@ public class BackgroundPhoto {
     /**
      * Gives karma to the photo if it doesn't have karma already
      */
-    public void giveKarma(String id){
+    public void giveKarma(String id, FirebaseWrapper wrapper){
 
         // if the photo already has karma, return
         if (id == "") return;
@@ -344,6 +344,12 @@ public class BackgroundPhoto {
         settingsEditor.putStringSet(uriStr2, listOfKarmaers);
         settingsEditor.commit();
         this.karma = true;
+
+        if (wrapper != null){
+            wrapper.addPhotoMetadata(this);
+        }
+
+
 
         Log.i("Give Karma", "Karma Given");
 
