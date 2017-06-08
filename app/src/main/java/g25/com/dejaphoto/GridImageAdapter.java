@@ -21,7 +21,7 @@ import java.io.File;
 
 public class GridImageAdapter extends BaseAdapter {
     private Context mContext;
-    ArrayList<String> itemList = new ArrayList<String>();
+    ArrayList<BackgroundPhoto> itemList = new ArrayList<BackgroundPhoto>();
 
 
     public GridImageAdapter(Context c) {
@@ -29,7 +29,7 @@ public class GridImageAdapter extends BaseAdapter {
         getImages();
     }
 
-    void add(String path){
+    void add(BackgroundPhoto path){
         itemList.add(path);
     }
 
@@ -58,7 +58,7 @@ public class GridImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        Bitmap bm = decodeSampledBitmapFromUri(itemList.get(position), 220, 220);
+        Bitmap bm = decodeSampledBitmapFromUri(itemList.get(position).getUri().getPath(), 220, 220);
 
         imageView.setImageBitmap(bm);
         return imageView;
@@ -105,7 +105,8 @@ public class GridImageAdapter extends BaseAdapter {
         File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_DIR);
         File[] files = dir.listFiles();
         for (File file : files){
-            add(file.getAbsolutePath());
+            BackgroundPhoto curr = new BackgroundPhoto(file.getAbsolutePath(), mContext);
+            add(curr);
         }
 
     }

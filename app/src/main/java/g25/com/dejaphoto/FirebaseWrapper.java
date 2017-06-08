@@ -149,7 +149,7 @@ public class FirebaseWrapper {
                     // now we loop through each field in the photo
                     String parsedName = postSnapshot.getKey();
                     String name = postSnapshot.child("name").getValue().toString();
-                    int karma = Integer.parseInt(postSnapshot.child("karma").getValue().toString());
+                    int karma = Integer.parseInt(postSnapshot.child("karmaCount").getValue().toString());
                     String customLocation = postSnapshot.child("customLocation").getValue().toString();
 
                     // addPhotoToPhotoList(friendId, new BackgroundPhoto(name, karma, customLocation));

@@ -323,7 +323,11 @@ public class WallpaperChanger {
 
 
         geocoder = new Geocoder(context, Locale.getDefault());
-        if (curr.hasLocation()) {
+        if (!(curr.getCustomLocation().equals("default"))){
+            String output = curr.getCustomLocation();
+            remoteViews.setTextViewText(R.id.location_textview, output);
+            appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+        }else if (curr.hasLocation()) {
             try {
                 Log.e("Setting Location", "setting location");
                 addresses = geocoder.getFromLocation(currPhotoLocation.getLatitude(), currPhotoLocation.getLongitude(), 1);
