@@ -35,6 +35,17 @@
             android:layout_height="wrap_content"
             android:text="Take Photo"
             android:layout_below="@+id/tvDejaPhoto" />
+
+        <Button
+            android:id="@+id/button_gridview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View Photos"
+            android:layout_above="@+id/gvDejaPhoto"
+            android:layout_alignStart="@+id/useDefaultAlbum"
+            android:onClick="toGrid"
+            android:layout_marginStart="14dp" />
+
         <GridView
             android:id="@+id/gvDejaPhoto"
             android:layout_width="match_parent"
@@ -92,7 +103,8 @@
             android:layout_marginEnd="19dp"
             android:layout_alignTop="@+id/tvDejaPhoto"
             android:layout_toEndOf="@+id/tvDejaPhotoFriends"
-            android:onClick="useMyAlbum" />
+            android:onClick="useMyAlbum"
+            android:checked="true" />
 
         <CheckBox
             android:id="@+id/useCopiedAlbum"
@@ -102,7 +114,8 @@
             android:layout_above="@+id/button_pick_image"
             android:layout_alignStart="@+id/useDefaultAlbum"
             android:layout_alignEnd="@+id/useDefaultAlbum"
-            android:onClick="useCopiedAlbum" />
+            android:onClick="useCopiedAlbum"
+            android:checked="true"/>
 
         <CheckBox
             android:id="@+id/useFriendsAlbum"
@@ -112,7 +125,8 @@
             android:layout_alignStart="@+id/useCopiedAlbum"
             android:text="Include Friend's Photos"
             android:layout_alignEnd="@+id/useCopiedAlbum"
-            android:onClick="useFriendsAlbum" />
+            android:onClick="useFriendsAlbum"
+            android:checked="true" />
 
 
     </RelativeLayout>

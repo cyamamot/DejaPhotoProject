@@ -105,6 +105,11 @@ public class AlbumsActivity extends AppCompatActivity {
 
     }
 
+    public void toGrid(View v) {
+        Intent i = new Intent(this, AlbumGridActivity.class);
+        startActivity(i);
+    }
+
     public void start() {
         //final boolean returnAfterCapture = ((Switch) findViewById(R.id.ef_switch_return_after_capture)).isChecked();
         //final boolean isSingleMode = ((Switch) findViewById(R.id.ef_switch_single)).isChecked();
