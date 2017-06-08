@@ -24,7 +24,9 @@ public class ChangeLocationActivity extends Activity {
 
         // Selected image id
         int position = i.getExtras().getInt("id");
-        GridImageAdapter imageAdapter = new GridImageAdapter(this);
+        String album = i.getExtras().getString("album");
+
+        GridImageAdapter imageAdapter = new GridImageAdapter(this, album);
 
         curr = imageAdapter.itemList.get(position);
         String currName = curr.getCustomLocation();

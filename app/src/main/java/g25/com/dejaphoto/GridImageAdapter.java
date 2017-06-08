@@ -24,9 +24,9 @@ public class GridImageAdapter extends BaseAdapter {
     ArrayList<BackgroundPhoto> itemList = new ArrayList<BackgroundPhoto>();
 
 
-    public GridImageAdapter(Context c) {
+    public GridImageAdapter(Context c, String album) {
         mContext = c;
-        getImages();
+        getImages(album);
     }
 
     void add(BackgroundPhoto path){
@@ -101,8 +101,14 @@ public class GridImageAdapter extends BaseAdapter {
         return inSampleSize;
     }
 
-    private void getImages() {
-        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_DIR);
+    private void getImages(String album) {
+        File dir;
+        if (album.equals("DJP")) {
+            dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_DIR);
+        }else{
+            dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_COPIED_DIR);
+
+        }
         File[] files = dir.listFiles();
         for (File file : files){
             BackgroundPhoto curr = new BackgroundPhoto(file.getAbsolutePath(), mContext);

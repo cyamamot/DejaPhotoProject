@@ -16,14 +16,18 @@ import android.widget.Toast;
 
 public class AlbumGridActivity extends AppCompatActivity {
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
 
+        Intent intent = getIntent();
+
         Activity activity = AlbumGridActivity.this;
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new GridImageAdapter(activity));
+        final String album = intent.getExtras().getString("album");
+        gridview.setAdapter(new GridImageAdapter(activity, album));
 
         gridview.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent,
@@ -32,6 +36,7 @@ public class AlbumGridActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), ChangeLocationActivity.class);
                 // Pass image index
                 i.putExtra("id", position);
+                i.putExtra("album", album);
                 startActivity(i);
             }
         });

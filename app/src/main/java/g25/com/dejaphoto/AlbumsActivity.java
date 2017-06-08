@@ -107,6 +107,13 @@ public class AlbumsActivity extends AppCompatActivity {
 
     public void toGrid(View v) {
         Intent i = new Intent(this, AlbumGridActivity.class);
+        i.putExtra("album", "DJP");
+        startActivity(i);
+    }
+
+    public void toGrid2(View v) {
+        Intent i = new Intent(this, AlbumGridActivity.class);
+        i.putExtra("album", "DJPC");
         startActivity(i);
     }
 
