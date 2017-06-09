@@ -78,7 +78,7 @@ public class BackgroundPhoto {
     String customLocation;
 
     /**
-     * Constructor for the photo and passes in the path to it and the context
+     * Description: Constructor for the photo and passes in the path to it and the context
      */
     public BackgroundPhoto(String path, Context context){
         if (path == null && context == null) return;
@@ -92,24 +92,27 @@ public class BackgroundPhoto {
         listOfKarmaers = new HashSet<String>();
         parseKarmaAndReleasedAndCLoc();
         name = uri.getLastPathSegment();
-        //customLocation = "default";
     }
 
-    // constructor for creating arraylist of photo metadata
+    /**
+     * Description: constructor for creating arraylist of photo metadata
+     */
     public BackgroundPhoto(String name, int karma, String customLocation){
         this.name = name;
         this.karmaCount = karma;
         this.customLocation = customLocation;
     }
 
-    // constructor for creating tester file
+    /**
+     * Description: constructor for creating tester file
+     */
     public BackgroundPhoto(String name, int points) {
         this.name = name;
         this.points = points;
     }
 
     /**
-     * Converts lat and lng from a string indicating degrees and seconds into a double that
+     * Description: Converts lat and lng from a string indicating degrees and seconds into a double
      * that can be used to make location object.
      */
     private void parseLocationFromExif() {
@@ -155,8 +158,8 @@ public class BackgroundPhoto {
 
 
     /**
-     * Parses the string output of exif date into a Calendar object that can return a Date
-     * object.
+     * Description: Parses the string output of exif date into a Calendar object that can return a
+     * Date object.
      */
     void parseDateFromExif(){
         if(exifData == null){
@@ -202,9 +205,9 @@ public class BackgroundPhoto {
 
 
     /**
-     * Converts the GPS lat or lng from string format to a double (minutes), calls on helper
-     * method formatLatLng() to format the string output (ex. 51/8 43/3 33/1) into total number of
-     * degrees.
+     * Description: Converts the GPS lat or lng from string format to a double (minutes), calls on
+     * helper method formatLatLng() to format the string output (ex. 51/8 43/3 33/1) into total
+     * number of degrees.
      *
      * method taken from:
      * http://android-er.blogspot.in/2010/01/convert-exif-gps-info-to-degree-format.html
@@ -254,7 +257,8 @@ public class BackgroundPhoto {
 
 
     /**
-     * Checks if the photo has been given karma/has been released/has custom location name
+     * Description: Checks if the photo has been given karma/has been released/has custom location
+     * name
      */
     private void parseKarmaAndReleasedAndCLoc(){
         initializeSettings();
@@ -286,7 +290,7 @@ public class BackgroundPhoto {
 
 
     /**
-     * Attempts to get ExifData object from photo and set the corresponding field, marks
+     * Description: Attempts to get ExifData object from photo and set the corresponding field, marks
      * boolean indicating success accordingly.
      */
     private void setExifData(){
@@ -305,7 +309,7 @@ public class BackgroundPhoto {
     }
 
     /**
-     * Initialize the settings for the photo
+     * Description: Initialize the settings for the photo
      */
     private void initializeSettings(){
         if(this.settings != null){
@@ -316,6 +320,9 @@ public class BackgroundPhoto {
         settingsEditor = settings.edit();
     }
 
+    /**
+     * Description: Set the custom location of the photo to the string that was passed in.
+     */
     public void setCustomLocation(String s){
         initializeSettings();
         String clocationStr = uri.toString() + CLOCATION_INDICATOR;
@@ -326,7 +333,7 @@ public class BackgroundPhoto {
 
 
     /**
-     * Gives karma to the photo if it doesn't have karma already
+     * Description: Gives karma to the photo if it doesn't have karma already
      */
     public void giveKarma(String id, FirebaseWrapper wrapper){
 
@@ -371,7 +378,7 @@ public class BackgroundPhoto {
     }
 
     /**
-     * Releases the photo from being shown as a wallpaper
+     * Description: Releases the photo from being shown as a wallpaper
      */
     public void release(){
         initializeSettings();
@@ -390,7 +397,7 @@ public class BackgroundPhoto {
 
 
     /**
-     * Getter method for the location
+     * Description: Getter method for the location
      */
     public Location getLocation(){
         if(!hasLocation){ return null; }
@@ -398,7 +405,7 @@ public class BackgroundPhoto {
     }
 
     /**
-     * Setter method for the location
+     * Description: Setter method for the location
      */
     private void setLocation(Location loc){
         if(loc == null){ return; }
@@ -406,28 +413,28 @@ public class BackgroundPhoto {
     }
 
     /**
-     * Getter method to check if there's a location
+     * Description: Getter method to check if there's a location
      */
     public boolean hasLocation(){
         return this.hasLocation;
     }
 
     /**
-     * Getter method for the URI path
+     * Description: Getter method for the URI path
      */
     public String getPath(){
         return this.uri.getPath();
     }
 
     /**
-     * Getter method for the URI
+     * Description: Getter method for the URI
      */
     public Uri getUri(){
         return this.uri;
     }
 
     /**
-     * Getter method for the date
+     * Description: Getter method for the date
      */
     public Date getDate(){
         if(!hasDate) { return null; }
@@ -435,40 +442,40 @@ public class BackgroundPhoto {
     }
 
     /**
-     * Getter method for if the photo has a date
+     * Description: Getter method for if the photo has a date
      */
     public boolean hasDate(){
         return this.hasDate;
     }
 
     /**
-     * Getter method for if the photo has karma
+     * Description: Getter method for if the photo has karma
      */
     public boolean hasKarma(){
         return this.karma;
     }
 
     /**
-     * Getter method for if photo has been released
+     * Description: Getter method for if photo has been released
      */
     public boolean isReleased(){
         return this.released;
     }
 
     /**
-     * Getter method for the points
+     * Description: Getter method for the points
      */
     public int getPoints(){
         return this.points;
     }
 
     /**
-     * Setter method for the points
+     * Description: Setter method for the points
      */
     public void setPoints(int points) {this.points = points;}
 
     /**
-     * Setter method for the context
+     * Description: Setter method for the context
      */
     private void setContext(Context context){
         if(context == null){ return; }
@@ -476,36 +483,53 @@ public class BackgroundPhoto {
     }
 
     /**
-     * Setter method for the photo's URI
+     * Description: Setter method for the photo's URI
      */
     private void setUri(Uri input){
         this.uri = input;
     }
 
+    /**
+     * Description: Returns whether or not the photo has EXIF data
+     */
     public boolean hasEXIF(){
         return this.hasEXIF;
     }
 
-    // should strip .extensions from the photo name. e.g. photo.jpg -> photo
-    // use this to pass photo into database
+    /**
+     * Description: should strip .extensions from the photo name. e.g. photo.jpg -> photo
+     * use this to pass photo into database
+     */
     public String parseName(){
         int index = name.indexOf(".");
         String parsedName = name.substring(0, index);
         return parsedName;
     }
 
+    /**
+     * Description: Getter method for the name
+     */
     public String getName(){
         return name;
     }
 
+    /**
+     * Description: Getter method for the number of karma
+     */
     public int getKarma(){
         return karmaCount;
     }
 
+    /**
+     * Description: Getter method for the custom location
+     */
     public String getCustomLocation(){
         return customLocation;
     }
 
+    /**
+     * Description: Getter method for whether or not the photo was released
+     */
     public boolean getReleased() { return released; }
 }
 

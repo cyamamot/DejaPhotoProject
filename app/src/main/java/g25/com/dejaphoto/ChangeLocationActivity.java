@@ -38,14 +38,11 @@ public class ChangeLocationActivity extends Activity {
 
         TextView tv = (TextView)findViewById(R.id.imageCustomLocation);
         tv.setText(currName);
-
-        /*if (!currName.equals("default")){
-            EditText name = (EditText)findViewById(R.id.editText_cL);
-            name.setText(currName);
-        }*/
-
     }
 
+    /**
+     * Description: Save the custom location that the user entered.
+     */
     public void saveChange(View view) {
         //change settings
         EditText name = (EditText) findViewById(R.id.editText_cL);
@@ -53,5 +50,8 @@ public class ChangeLocationActivity extends Activity {
 
         fbWrapper.addPhotoMetadata(curr);
         Log.d("change location name", curr.getName() + "-->" + curr.getCustomLocation());
+
+        Intent i = new Intent(this, AlbumsActivity.class);
+        startActivity(i);
     }
 }

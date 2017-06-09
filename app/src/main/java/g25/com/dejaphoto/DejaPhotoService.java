@@ -77,10 +77,6 @@ public class DejaPhotoService extends Service {
             Log.e("ChangeWallpaperReceiver", "NEXT");
         }
 
-
-        //wallpaperChanger.setLocation();
-
-
         //DEBUG MESSAGES
         Log.e("ServiceLog", "Service Called");
 

@@ -59,14 +59,18 @@ public class AlbumsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_albums);
 
+        // Set up settings
         settings = this.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
         settingsEditor = settings.edit();
-        /*settingsEditor.putBoolean("use my album", true);
+
+        /*
+        settingsEditor.putBoolean("use my album", true);
         settingsEditor.commit();
         settingsEditor.putBoolean("use friends album", true);
         settingsEditor.commit();
         settingsEditor.putBoolean("use copied album", true);
-        settingsEditor.commit();*/
+        settingsEditor.commit();
+        */
 
         findViewById(R.id.button_pick_image).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,27 +86,35 @@ public class AlbumsActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 final Activity activity = AlbumsActivity.this;
+
+                // Request permissions if they have not been granted yet
                 if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(activity, new String[]{
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.CAMERA},
-                        ASK_MULTIPLE_PERMISSION_REQUEST_CODE);
-                }else if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, ASK_MULTIPLE_PERMISSION_REQUEST_CODE);
+                }
+                // Request writing to external storage permission
+                else if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
                     ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, RC_STORAGE);
-                }else if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                }
+                // Request camera permission
+                else if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
                     ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, RC_CAMERA);
-                }else{
+                }
+                // If the permissions have been granted, open the camera
+                else{
                     openCamera();
                 }
 
             }
         });
 
+        // Create new FirebaseWrapper if it has not been created yet
         if(fbWrapper == null){
             fbWrapper = new FirebaseWrapper(this);
         }
 
+        // Set the Settings according to the checkboxes
         CheckBox cb1 = (CheckBox)findViewById(R.id.useDefaultAlbum);
         CheckBox cb2 = (CheckBox)findViewById(R.id.useCopiedAlbum);
         CheckBox cb3 = (CheckBox)findViewById(R.id.useFriendsAlbum);
@@ -112,90 +124,76 @@ public class AlbumsActivity extends AppCompatActivity {
 
     }
 
+    /*
+     * Description: Goes to the DejaPhoto album grid view. Called when the user clicks on the button
+     * to view the DejaPhoto album
+     */
     public void toGrid(View v) {
         Intent i = new Intent(this, AlbumGridActivity.class);
         i.putExtra("album", "DJP");
         startActivity(i);
     }
 
+    /*
+     * Description: Goes to the DejaPhotoCopied album grid view. Called when the user clicks on the
+     * button to view the DejaPhotoCopied album
+     */
     public void toGrid2(View v) {
         Intent i = new Intent(this, AlbumGridActivity.class);
         i.putExtra("album", "DJPC");
         startActivity(i);
     }
 
+    /*
+     * Description: Displays the photos for the user to select and add to the DejaPhotoCopied album.
+     * Called when the button is pressed by the user to add photos from the gallery
+     */
     public void start() {
-        //final boolean returnAfterCapture = ((Switch) findViewById(R.id.ef_switch_return_after_capture)).isChecked();
-        //final boolean isSingleMode = ((Switch) findViewById(R.id.ef_switch_single)).isChecked();
-        //final boolean useCustomImageLoader = ((Switch) findViewById(R.id.ef_switch_imageloader)).isChecked();
 
+        // Create the image picker
         ImagePicker imagePicker = ImagePicker.create(this)
-                //.theme(R.style.ImagePickerTheme)
-                //.returnAfterFirst(returnAfterCapture) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
                 .folderMode(true) // set folder mode (false by default)
                 .folderTitle("Folder") // folder selection title
                 .imageTitle("Tap to select"); // image selection title
 
-        /*if (useCustomImageLoader) {
-            imagePicker.imageLoader(new GrayscaleImageLoader());
-        }
 
-        if (isSingleMode) {
-            imagePicker.single();
-        } else {*/
-            imagePicker.multi(); // multi mode (default mode)
-        //}
+        imagePicker.multi(); // multi mode (default mode)
 
         imagePicker.limit(10) // max images can be selected (99 by default)
                 .showCamera(true) // show camera or not (true by default)
                 .imageDirectory("DejaPhoto")   // captured image directory name ("Camera" folder by default)
                 .origin(images) // original selected images, used in multi mode
                 .start(RC_CODE_PICKER); // start image picker activity with request code
-
-
     }
 
+    /*
+     * Description: Executes when it returns from an activity, specifically when a user used the
+     * camera to take a picture or when the user selected photos from the gallery
+     */
     @Override
     protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
-            Log.d("ACTIVITY RESULT ", Integer.toString(requestCode));
+        Log.d("ACTIVITY RESULT ", Integer.toString(requestCode));
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Copy the images that were selected by the user from the gallery
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             images = (ArrayList<Image>) ImagePicker.getImages(data);
             copyImages(images);
-
-            return;
         }
 
+        // Upload the photo that the user took using the camera
         if(requestCode == RC_CAMERA){
             Log.d("Camera Result", "CAMERA RETURNED");
             updateGallery(null);
             String userId = fbWrapper.getSelfId();
             fbWrapper.uploadPhoto(userId, new BackgroundPhoto(cameraOutUri.getPath(), this));
-            return;
         }
-
-        /*if (requestCode == RC_CAMERA && resultCode == RESULT_OK) {
-            getCameraModule().getImage(this, data, new OnImageReadyListener() {
-                @Override
-                public void onImageReady(List<Image> resultImages) {
-                    images = (ArrayList<Image>) resultImages;
-                    printImages(images);
-                }
-            });
-        }*/
     }
 
-    private void printImages(List<Image> images) {
-        if (images == null) return;
-
-        StringBuilder stringBuffer = new StringBuilder();
-        for (int i = 0, l = images.size(); i < l; i++) {
-            stringBuffer.append(images.get(i).getPath()).append("\n");
-        }
-        textView.setText(stringBuffer.toString());
-    }
-
-
+    /*
+     * Description: Copy images over into the DejaPhotoCopied album. Called when the user selects
+     * photos from the gallery to copy over.
+     */
     private void copyImages(List<Image> images){
         if (images == null) return;
 
@@ -208,6 +206,8 @@ public class AlbumsActivity extends AppCompatActivity {
         String userId = fbWrapper.getSelfId();
         OutputStream out;
         InputStream in;
+
+        // Go through all of the images and upload them
         for(int i = 0; i < images.size(); i++){
             Uri originalFile = Uri.fromFile(new File(images.get(i).getPath()));
             String filename = originalFile.getLastPathSegment();
@@ -234,6 +234,10 @@ public class AlbumsActivity extends AppCompatActivity {
 
     }
 
+    /*
+     * Description: Opens the camera when the user wants to take a photo. Called when the user presses
+     * the button to take a picture to add to DejaPhoto album.
+     */
     private void openCamera(){
         Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_DIR + File.separator + getImageName());
@@ -242,17 +246,21 @@ public class AlbumsActivity extends AppCompatActivity {
         captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraOut);
         captureIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(captureIntent, RC_CAMERA);
-
     }
 
+    /*
+     * Description: Called to return the image name.
+     */
     private String getImageName(){
-        String mCurrentPhotoPath;
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + ".jpg";
         return imageFileName;
     }
 
+    /*
+     * Description: Update the gallery with the uri that is passed in.
+     */
     private void updateGallery(Uri uri){
         if(uri == null){
             uri = cameraOutUri;
@@ -272,8 +280,8 @@ public class AlbumsActivity extends AppCompatActivity {
 
 
 
-    /**
-     * Handle permission results
+    /*
+     * Description: Handle permission results
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -323,6 +331,9 @@ public class AlbumsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Description: Configure settings to use the DejaPhoto album depending on the checkbox
+     */
     public void useMyAlbum(View view) {
         boolean checked = ((CheckBox) view).isChecked();
         if (checked) {
@@ -336,6 +347,10 @@ public class AlbumsActivity extends AppCompatActivity {
             cb.setChecked(false);
         }
     }
+
+    /**
+     * Description: Configure settings to use the DejaPhotoCopied album depending on the checkbox
+     */
     public void useCopiedAlbum(View view) {
         boolean checked = ((CheckBox) view).isChecked();
         if (checked) {
@@ -347,6 +362,10 @@ public class AlbumsActivity extends AppCompatActivity {
             settingsEditor.commit();
         }
     }
+
+    /**
+     * Description: Configure settings to use the DejaPhotoFriends album depending on the checkbox
+     */
     public void useFriendsAlbum(View view) {
         boolean checked = ((CheckBox) view).isChecked();
         if (checked) {
