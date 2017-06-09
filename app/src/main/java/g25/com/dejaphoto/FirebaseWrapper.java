@@ -466,4 +466,24 @@ public class FirebaseWrapper {
         });
 
     }
+
+    /**
+     * Description: Used for testing whether a friend is added correctly
+     */
+    public boolean findFriend(String email) {
+        for(int i = 0; i < friendsList.size(); i++) {
+            if(friendsList.get(i) == email) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void removeFriend(String email) {
+        for(int i = 0; i < friendsList.size(); i++) {
+            if(friendsList.get(i) == email) {
+                friendsList.remove(i);
+            }
+        }
+    }
 }
