@@ -103,6 +103,13 @@ public class AlbumsActivity extends AppCompatActivity {
             fbWrapper = new FirebaseWrapper(this);
         }
 
+        CheckBox cb1 = (CheckBox)findViewById(R.id.useDefaultAlbum);
+        CheckBox cb2 = (CheckBox)findViewById(R.id.useCopiedAlbum);
+        CheckBox cb3 = (CheckBox)findViewById(R.id.useFriendsAlbum);
+        cb1.setChecked(settings.getBoolean("use my album", true));
+        cb2.setChecked(settings.getBoolean("use copied album", true));
+        cb3.setChecked(settings.getBoolean("use friends album", true));
+
     }
 
     public void toGrid(View v) {
@@ -144,6 +151,8 @@ public class AlbumsActivity extends AppCompatActivity {
                 .imageDirectory("DejaPhoto")   // captured image directory name ("Camera" folder by default)
                 .origin(images) // original selected images, used in multi mode
                 .start(RC_CODE_PICKER); // start image picker activity with request code
+
+
     }
 
     @Override
@@ -323,6 +332,8 @@ public class AlbumsActivity extends AppCompatActivity {
         else {
             settingsEditor.putBoolean("use my album", false);
             settingsEditor.commit();
+            CheckBox cb = (CheckBox)findViewById(R.id.useDefaultAlbum);
+            cb.setChecked(false);
         }
     }
     public void useCopiedAlbum(View view) {

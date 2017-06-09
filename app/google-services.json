@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "349712057097-922hqou8hbc62s1qtan96egqquka84e1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "g25.com.dejaphoto",
+            "certificate_hash": "65dacf34f64813885fd9b4efca536ef16c016222"
+          }
+        },
+        {
+          "client_id": "349712057097-maoup1pt7cbkk5abrtd4ovh1d3o3ru97.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "g25.com.dejaphoto",
+            "certificate_hash": "328f80f94b25457ff3d1939e776cf9fdc51736c0"
+          }
+        },
+        {
+          "client_id": "349712057097-k7uidquh619dvocfp7qq1fr0hh7dadjh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "g25.com.dejaphoto",
+            "certificate_hash": "020b2087a3d740b3da19de2b15cc7c8b908f9179"
+          }
+        },
+        {
           "client_id": "349712057097-5qgs3upp71bvgl3ao8hnbrn3cu2482bc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
