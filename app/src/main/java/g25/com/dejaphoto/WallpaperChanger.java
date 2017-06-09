@@ -280,8 +280,11 @@ public class WallpaperChanger {
      * Set current wallpaper karma boolean to true
      */
     public void karma(String id) {
+        Log.e("WallpaperChanger", "k1");
         Toast.makeText(context, "KARMA SET <3", Toast.LENGTH_SHORT).show();
+        Log.e("WallpaperChanger", "k2");
         prevList.get(prevCursor).giveKarma(id, fbWrapper);
+        Log.e("WallpaperChanger", "karma bitch");
     }
 
 

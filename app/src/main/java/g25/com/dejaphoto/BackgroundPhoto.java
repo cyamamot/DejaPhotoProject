@@ -330,9 +330,16 @@ public class BackgroundPhoto {
      */
     public void giveKarma(String id, FirebaseWrapper wrapper){
 
+        Log.e("BackgroundPhoto", "k1");
+
+
         // if the photo already has karma, return
-        if (id == "") return;
+        if (id == ""){
+            Log.e("BackgroundPhoto", "k2");
+            return;
+        }
         if(hasKarma() && listOfKarmaers.contains(id)){
+            Log.e("BackgroundPhoto", "k3");
             return;
         }
 
@@ -340,6 +347,7 @@ public class BackgroundPhoto {
         listOfKarmaers.add(id);
         karmaCount += 1;
         if (uri == null) {
+            Log.e("BackgroundPhoto", "k4");
             this.karma = true;
             return;
         }
