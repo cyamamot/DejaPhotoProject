@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.Query;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -340,12 +341,32 @@ public class FirebaseWrapper {
     // we can then retrieve the karma and locationname from its child nodes
     public void addPhotoMetadata(BackgroundPhoto photo){
         // we identify each photo by parsed name in database by removing .jpg
-        DatabaseReference photoRef = database.getReference("users").child(selfId).child("photos").child(photo.parseName());
-
-        // we store each field of the photo in database
-        photoRef.child("karmaCount").setValue(photo.getKarma());
-        photoRef.child("customLocation").setValue(photo.getCustomLocation());
-        photoRef.child("name").setValue(photo.getName());
+        //DatabaseReference photoRef = database.getReference("users").child(selfId).child("photos").child(photo.parseName());
+        DatabaseReference ref = database.getReference("users");
+        final String photoName = photo.parseName();
+        final int pkarma = photo.getKarma();
+        final String plocation = photo.getCustomLocation();
+        final String pname = photo.getName();
+        ref.orderByChild("photos/"+photoName+"/name").equalTo(pname).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // dataSnapshot is the "issue" node with all children with id 0
+                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                        // do something with the individual "issues"
+                        Log.e("FirebaseWrapper", issue.getKey());
+                        DatabaseReference photoRef = database.getReference("users").child(issue.getKey()).child("photos").child(photoName);
+                        photoRef.child("karmaCount").setValue(pkarma);
+                        photoRef.child("customLocation").setValue(plocation);
+                        photoRef.child("name").setValue(pname);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("FirebaseWrapper", "herro");
+            }
+        });
     }
 
     // adds a photo to the correct friend's arraylist within the hashmap that has each friend's list
