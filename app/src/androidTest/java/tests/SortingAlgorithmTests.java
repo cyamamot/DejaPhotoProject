@@ -1,8 +1,6 @@
 package tests;
 
 import android.support.test.rule.ActivityTestRule;
-import android.util.Log;
-
 
 import org.junit.Before;
 import org.junit.Rule;

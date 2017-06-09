@@ -1,13 +1,11 @@
 package tests;
 
-import android.util.Log;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import g25.com.dejaphoto.BackgroundPhoto;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
