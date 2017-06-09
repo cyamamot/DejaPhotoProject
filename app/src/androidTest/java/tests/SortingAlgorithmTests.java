@@ -54,4 +54,6 @@ public class SortingAlgorithmTests {
         int num = sorter.toMins(time);
         assertTrue(num == 320);
     }
+
+
 }

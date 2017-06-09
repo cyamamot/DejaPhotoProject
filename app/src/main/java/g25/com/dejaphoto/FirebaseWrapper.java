@@ -372,6 +372,7 @@ public class FirebaseWrapper {
     // adds a photo to the correct friend's arraylist within the hashmap that has each friend's list
     public void addPhotoToPhotoList(String friendId, BackgroundPhoto photo){
         allFriendsPhotos.get(friendId).add(photo);
+
     }
 
     public ArrayList<BackgroundPhoto> getCurrFriendPhotos(){

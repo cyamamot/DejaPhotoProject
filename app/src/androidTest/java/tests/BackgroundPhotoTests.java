@@ -68,6 +68,15 @@ public class BackgroundPhotoTests {
     public void releaseThenCheckRelease(){
         photo.release();
         assertTrue(photo.isReleased());
+
+
+
+    }
+
+
+    @Test
+    public void hasLocation(){
+        assertTrue(!photo.hasLocation());
     }
 
 }
