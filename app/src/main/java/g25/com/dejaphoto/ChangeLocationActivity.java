@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class ChangeLocationActivity extends Activity {
 
@@ -35,10 +36,13 @@ public class ChangeLocationActivity extends Activity {
         curr = imageAdapter.itemList.get(position);
         String currName = curr.getCustomLocation();
 
-        if (!currName.equals("default")){
+        TextView tv = (TextView)findViewById(R.id.imageCustomLocation);
+        tv.setText(currName);
+
+        /*if (!currName.equals("default")){
             EditText name = (EditText)findViewById(R.id.editText_cL);
             name.setText(currName);
-        }
+        }*/
 
     }
 
@@ -48,5 +52,6 @@ public class ChangeLocationActivity extends Activity {
         curr.setCustomLocation(name.getText().toString());
 
         fbWrapper.addPhotoMetadata(curr);
+        Log.d("change location name", curr.getName() + "-->" + curr.getCustomLocation());
     }
 }

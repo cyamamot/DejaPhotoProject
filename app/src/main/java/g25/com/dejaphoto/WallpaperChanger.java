@@ -234,7 +234,7 @@ public class WallpaperChanger {
         } else {
             Log.e("Printing Comments", "No Comments");
         }
-
+        //Toast.makeText(context, "NEXT", Toast.LENGTH_SHORT).show();
         setWallpaper(nextPhoto);
         setLocation();
     }
@@ -257,6 +257,7 @@ public class WallpaperChanger {
         else {
             Toast.makeText(context, "No More Previous Photos!", Toast.LENGTH_LONG).show();
         }
+        //Toast.makeText(context, "PREVIOUS", Toast.LENGTH_SHORT).show();
         setLocation();
     }
 
@@ -267,6 +268,7 @@ public class WallpaperChanger {
     public void release() {
 
         Log.e("WallpaperChanger", "RELEASED");
+        Toast.makeText(context, "RELEASED", Toast.LENGTH_SHORT).show();
         //always in some position in the prevList, just set release bool and remove from list
         prevList.get(prevCursor).release();
         fbWrapper.releaseFromDatabase(prevList.get(prevCursor));
