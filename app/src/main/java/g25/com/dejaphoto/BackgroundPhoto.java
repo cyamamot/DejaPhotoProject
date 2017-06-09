@@ -100,7 +100,8 @@ public class BackgroundPhoto {
     public BackgroundPhoto(String name, int karma, String customLocation){
         this.name = name;
         this.karmaCount = karma;
-        this.customLocation = customLocation;
+        this.setCustomLocation(customLocation);
+
     }
 
     /**

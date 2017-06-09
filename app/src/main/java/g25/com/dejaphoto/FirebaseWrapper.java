@@ -53,6 +53,9 @@ public class FirebaseWrapper {
     private HashMap<String, ArrayList<BackgroundPhoto>> allFriendsPhotos;
     private ArrayList<BackgroundPhoto> currFriendPhotos;
     private Context context;
+    static SharedPreferences settings;
+    static SharedPreferences.Editor settingsEditor;
+
 
     /**
      * Description: Constructor for the FirebaseWrapper. Initializes the database, storage, and
