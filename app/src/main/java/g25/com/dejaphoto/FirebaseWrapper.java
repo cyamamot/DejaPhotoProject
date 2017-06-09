@@ -17,7 +17,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.Query;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -152,6 +151,7 @@ public class FirebaseWrapper {
                     String name = postSnapshot.child("name").getValue().toString();
                     int karma = Integer.parseInt(postSnapshot.child("karmaCount").getValue().toString());
                     String customLocation = postSnapshot.child("customLocation").getValue().toString();
+
 
                     // addPhotoToPhotoList(friendId, new BackgroundPhoto(name, karma, customLocation));
 
@@ -347,9 +347,12 @@ public class FirebaseWrapper {
         final int pkarma = photo.getKarma();
         final String plocation = photo.getCustomLocation();
         final String pname = photo.getName();
+        Log.e("FirebaseWrapper", "1");
+
         ref.orderByChild("photos/"+photoName+"/name").equalTo(pname).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("FirebaseWrapper", "2");
                 if (dataSnapshot.exists()) {
                     // dataSnapshot is the "issue" node with all children with id 0
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
@@ -360,6 +363,11 @@ public class FirebaseWrapper {
                         photoRef.child("customLocation").setValue(plocation);
                         photoRef.child("name").setValue(pname);
                     }
+                }else{
+                    DatabaseReference photoRef = database.getReference("users").child(selfId).child("photos").child(photoName);
+                    photoRef.child("karmaCount").setValue(pkarma);
+                    photoRef.child("customLocation").setValue(plocation);
+                    photoRef.child("name").setValue(pname);
                 }
             }
             @Override
