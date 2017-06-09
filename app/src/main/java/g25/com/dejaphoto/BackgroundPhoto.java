@@ -346,6 +346,7 @@ public class BackgroundPhoto {
         this.karma = true;
 
         if (wrapper != null){
+            Log.e("BackgroundPhoto", "hello");
             wrapper.addPhotoMetadata(this);
         }
 

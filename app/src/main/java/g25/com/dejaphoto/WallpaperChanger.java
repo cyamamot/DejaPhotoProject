@@ -324,7 +324,7 @@ public class WallpaperChanger {
 
         geocoder = new Geocoder(context, Locale.getDefault());
         if (!(curr.getCustomLocation().equals("default"))){
-            String output = curr.getCustomLocation();
+            String output = curr.getCustomLocation()+ " --- " + Integer.toString(curr.karmaCount) + " <3";
             remoteViews.setTextViewText(R.id.location_textview, output);
             appWidgetManager.updateAppWidget(thisWidget, remoteViews);
         }else if (curr.hasLocation()) {
@@ -353,6 +353,9 @@ public class WallpaperChanger {
 
                 Log.e("Settings Location", "No Location Available");
             }
+        }else{
+            remoteViews.setTextViewText(R.id.location_textview, "No Location"+ " --- " + Integer.toString(curr.karmaCount) + " <3");
+            appWidgetManager.updateAppWidget(thisWidget, remoteViews);
         }
     }
 
