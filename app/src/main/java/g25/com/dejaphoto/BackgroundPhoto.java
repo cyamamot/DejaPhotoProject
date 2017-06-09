@@ -102,20 +102,12 @@ public class BackgroundPhoto {
         this.customLocation = customLocation;
     }
 
-<<<<<<< Updated upstream
     // constructor for creating tester file
-    public BackgroundPhoto(String name, int points){
+    public BackgroundPhoto(String name, int points) {
         this.name = name;
         this.points = points;
-=======
-    // constructor for creating arraylist of photo metadata
-    public BackgroundPhoto(String name, int karma, String customLocation, int points){
-        this.name = name;
-        karmaCount = karma;
-
-        this.customLocation = customLocation;
->>>>>>> Stashed changes
     }
+
     /**
      * Converts lat and lng from a string indicating degrees and seconds into a double that
      * that can be used to make location object.
