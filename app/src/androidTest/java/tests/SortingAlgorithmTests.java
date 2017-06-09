@@ -38,7 +38,7 @@ public class SortingAlgorithmTests {
         int points;
         assertTrue(photo.getPoints() == 0);
 
-        photo.giveKarma("unique Id 1");
+        photo.giveKarma("unique Id 1", null);
         points = sorter.assignPoints(photo);
         assertTrue(points ==  1);
 
