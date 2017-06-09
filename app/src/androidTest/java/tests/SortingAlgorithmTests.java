@@ -1,8 +1,6 @@
 package tests;
 
 import android.support.test.rule.ActivityTestRule;
-import android.util.Log;
-
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,7 +38,7 @@ public class SortingAlgorithmTests {
         int points;
         assertTrue(photo.getPoints() == 0);
 
-        photo.giveKarma("unique Id 1");
+        photo.giveKarma("unique Id 1", null);
         points = sorter.assignPoints(photo);
         assertTrue(points ==  1);
 
@@ -56,4 +54,6 @@ public class SortingAlgorithmTests {
         int num = sorter.toMins(time);
         assertTrue(num == 320);
     }
+
+
 }

@@ -1,13 +1,11 @@
 package tests;
 
-import android.util.Log;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import g25.com.dejaphoto.BackgroundPhoto;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
@@ -57,8 +55,8 @@ public class BackgroundPhotoTests {
 
     @Test
     public void hasKarma(){
-        photo.giveKarma("");
-        assertTrue(photo.hasKarma());
+        photo.giveKarma("", null);
+        assertTrue(!photo.hasKarma());
     }
 
     @Test
@@ -70,6 +68,15 @@ public class BackgroundPhotoTests {
     public void releaseThenCheckRelease(){
         photo.release();
         assertTrue(photo.isReleased());
+
+
+
+    }
+
+
+    @Test
+    public void hasLocation(){
+        assertTrue(!photo.hasLocation());
     }
 
 }

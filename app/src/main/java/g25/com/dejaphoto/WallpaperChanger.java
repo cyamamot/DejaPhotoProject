@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.PriorityQueue;
 
-import static g25.com.dejaphoto.SettingsActivity.PREFS_NAME;
-
 /**
  * Created by dillonliu on 5/6/17.
  */
@@ -36,15 +34,15 @@ public class WallpaperChanger {
 
     private WallpaperManager myWallpaperManager;
     private int prevCursor;
-    private ArrayList<BackgroundPhoto> prevList; //TODO use the wrapper
-    private PriorityQueue<BackgroundPhoto> queue;
+    public ArrayList<BackgroundPhoto> prevList; //TODO use the wrapper
+    public PriorityQueue<BackgroundPhoto> queue;
     private Context context;
     private SortingAlgorithm sorter;
     private int albumSize;
     private FirebaseWrapper fbWrapper;
     static SharedPreferences settings;
     static SharedPreferences.Editor settingsEditor;
-
+    public PhotoCompare photoCompare;
     /**
      * Constructor passes in activity to get context and stuff
      */
@@ -54,6 +52,13 @@ public class WallpaperChanger {
         settings = context.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
         settingsEditor = settings.edit();
     }
+
+    public WallpaperChanger() {
+        photoCompare = new PhotoCompare();
+        queue = new PriorityQueue<BackgroundPhoto>(1, photoCompare);
+    }
+
+
 
     /**
      * Calls WallpaperManager to set wallpaper to specified image
