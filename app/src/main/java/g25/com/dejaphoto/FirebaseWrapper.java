@@ -314,6 +314,7 @@ public class FirebaseWrapper {
     }
 
     public void updateShare(boolean s){
+        Log.e("FW", "yo");
         database.getReference("users").child(selfId).child("isSharingOn").setValue(s);
     }
 
