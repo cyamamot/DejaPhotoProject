@@ -50,6 +50,8 @@ public class AlbumsActivity extends AppCompatActivity {
     static SharedPreferences settings;
     static SharedPreferences.Editor settingsEditor;
 
+    public int numImagesCopied;
+
 
 
     private Uri cameraOutUri;
@@ -194,7 +196,7 @@ public class AlbumsActivity extends AppCompatActivity {
      * Description: Copy images over into the DejaPhotoCopied album. Called when the user selects
      * photos from the gallery to copy over.
      */
-    private void copyImages(List<Image> images){
+    public void copyImages(List<Image> images){
         if (images == null) return;
 
         //check and make folder if needed
@@ -207,8 +209,11 @@ public class AlbumsActivity extends AppCompatActivity {
         OutputStream out;
         InputStream in;
 
+        numImagesCopied = 0;
+
         // Go through all of the images and upload them
         for(int i = 0; i < images.size(); i++){
+            numImagesCopied++;
             Uri originalFile = Uri.fromFile(new File(images.get(i).getPath()));
             String filename = originalFile.getLastPathSegment();
             File newFile = new File(copyDir + File.separator + filename);

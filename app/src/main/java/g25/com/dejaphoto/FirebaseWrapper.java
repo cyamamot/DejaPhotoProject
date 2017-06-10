@@ -49,10 +49,14 @@ public class FirebaseWrapper {
     private String selfId;
     private String currFriendId;
     private boolean isCurrFriendAFriend = false;
-    private static ArrayList<String> friendsList;
+    public static ArrayList<String> friendsList;
     private HashMap<String, ArrayList<BackgroundPhoto>> allFriendsPhotos;
     private ArrayList<BackgroundPhoto> currFriendPhotos;
     private Context context;
+
+    public boolean uploadPhotoSuccess;
+    public boolean isFriend;
+    public boolean addEmail;
 
 
     /**
@@ -79,6 +83,11 @@ public class FirebaseWrapper {
      * Description: Adds the passed in user to the database
      */
     public void addUser(String email) {
+        addEmail = false;
+        if (email == "") {
+            return;
+        }
+        addEmail = true;
         DatabaseReference users = database.getReference("users");
 
         int hash = (email).hashCode();
@@ -119,6 +128,7 @@ public class FirebaseWrapper {
         // Create a child reference
         // imagesRef now points to the child which is a user
         // and photos should be stored under each user node
+        uploadPhotoSuccess = false;
         String path = "images/" + hash + "/" + photo.getName();
         Log.d("FirebaseWrapper", "Uploading photo to this path: " + path);
         StorageReference imagesRef = storageRef.child(path);
@@ -131,6 +141,7 @@ public class FirebaseWrapper {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // Get a URL to the uploaded content
                         //Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        uploadPhotoSuccess = true;
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -324,6 +335,7 @@ public class FirebaseWrapper {
      * confirm a friend, we add/get their list of photos.
      */
     public void isFriends(String email){
+        isFriend = false;
         final String friendEmail = email;
         int hash = (email).hashCode();
         currFriendId = Integer.toString(hash);
@@ -339,6 +351,7 @@ public class FirebaseWrapper {
                 // if we are in friend's friends list, we are friends
                 if(dataSnapshot.exists()) {
                     //setCurrFriend(true);
+                    isFriend = true;
                     Log.d("FirebaseWrapper", "friend confirmed: " + friendEmail);
 
                     // gets this friend's list of photos after friend confirmed
