@@ -71,6 +71,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         // and so fbWrapper.friendsList will be the updated list we use and iterate through
         FirebaseWrapper fbWrapper = new FirebaseWrapper(this);
         fbWrapper.syncFriends();
+        //fbWrapper.syncCurrentUserPhotos();
     }
 
     /**

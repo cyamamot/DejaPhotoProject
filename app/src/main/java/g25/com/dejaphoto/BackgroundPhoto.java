@@ -371,7 +371,7 @@ public class BackgroundPhoto {
             Log.e("BackgroundPhoto", "k2");
             return;
         }
-        if(hasKarma() && listOfKarmaers.contains(id)){
+        if(hasKarma()){
             Log.e("BackgroundPhoto", "k3");
             return;
         }
