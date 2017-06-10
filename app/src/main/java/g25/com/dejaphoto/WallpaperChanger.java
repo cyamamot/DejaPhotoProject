@@ -1,11 +1,11 @@
 package g25.com.dejaphoto;
 
 import android.app.WallpaperManager;
-import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.location.Address;
@@ -17,8 +17,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-import android.util.DisplayMetrics;
-import android.content.res.Resources;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,6 +44,10 @@ public class WallpaperChanger {
     static SharedPreferences settings;
     static SharedPreferences.Editor settingsEditor;
     public PhotoCompare photoCompare;
+    private int display_width = Resources.getSystem().getDisplayMetrics().widthPixels;
+    private int display_height = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private int display_ratio = display_height/display_width;
+
     /**
      * Constructor passes in activity to get context and stuff
      */
@@ -69,6 +71,7 @@ public class WallpaperChanger {
      */
     private void setWallpaper(BackgroundPhoto photoWrapper) {
         Uri uri = photoWrapper.getUri();
+
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
             int height = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -76,6 +79,23 @@ public class WallpaperChanger {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
             Bitmap b = Bitmap.createScaledBitmap(bitmap, width, height, true);
             //Bitmap b = addLocationtoBitmap(bitmap);
+
+            int bitmap_ratio = bitmap.getHeight()/bitmap.getWidth();
+
+            // Check if the bitmap width is bigger than the display width
+            if(bitmap.getWidth() > display_width) {
+                // Set the height/width to the new proportions
+                bitmap.setHeight(bitmap_ratio * display_width);
+                bitmap.setWidth(display_width);
+            }
+
+            // Check if the bitmap height is bigger than the display height
+            if(bitmap.getHeight() > display_height) {
+                // Set the height/width to the new proportions
+                bitmap.setWidth(display_height / bitmap_ratio);
+                bitmap.setHeight(display_height);
+            }
+
             myWallpaperManager.setBitmap(bitmap);
 
             //this one resizes it by stretching it out which isn't right
@@ -85,7 +105,6 @@ public class WallpaperChanger {
         }
         Log.e("POINTS", Integer.toString(photoWrapper.getPoints()));
     }
-
 
     /**
      * Cursor gets the photos from media store and we use it to point to each photo in
