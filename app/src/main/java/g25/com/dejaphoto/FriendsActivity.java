@@ -28,7 +28,10 @@ public class FriendsActivity extends AppCompatActivity {
         friendList.setAdapter(friendsAdapter);
     }
 
-    // we click send request to add friend by email to our own self-list
+    /**
+     * Description: Click the button to add friend by email to our friend list in firebase and then
+     * notify the adapter to add that friend to the list view
+     */
     public void addFriend(View view){
         EditText email = (EditText) findViewById(R.id.etAddFriend);
         String emailText = email.getText().toString();

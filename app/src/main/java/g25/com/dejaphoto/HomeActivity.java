@@ -15,25 +15,33 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
     }
 
-    // onClick method to go to the Friends Page
+    /**
+     * Description: onClick method to go to the Friends Page
+     */
     public void toFriends(View v) {
         Intent i = new Intent(this, FriendsActivity.class);
         startActivity(i);
     }
 
-    // onClick method to go to the Albums Page
+    /**
+     * Description: onClick method to go to the Albums Page
+     */
     public void toViewAlbums(View v) {
         Intent i = new Intent(this, AlbumsActivity.class);
         startActivity(i);
     }
 
-    // onClick method to go to the Settings Page
+    /**
+     * Description: onClick method to go to the Settings Page
+     */
     public void toSettings(View v) {
         Intent i = new Intent(this, SettingsActivity.class);
         startActivity(i);
     }
 
-    // signs user out of google/firebase account
+    /**
+     * Description: Signs user out of google/firebase account
+     */
     public void signOut(View v) {
         // Firebase sign out
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -41,7 +49,9 @@ public class HomeActivity extends AppCompatActivity {
         goToHomeActivity();
     }
 
-    // when user signs out, we return to login screen
+    /**
+     * Description: When the user signs out, we return to login screen
+     */
     public void goToHomeActivity(){
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

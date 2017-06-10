@@ -50,32 +50,22 @@ public class NavWidget extends AppWidgetProvider {
 
         for (int widgetId : allWidgetIds){
 
-
             //Get RemoteView object
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.nav_widget);
-
 
             remoteViews.setOnClickPendingIntent(R.id.next, getPendingSelfIntent(context, NEXT));
             remoteViews.setOnClickPendingIntent(R.id.prev, getPendingSelfIntent(context, PREV));
             remoteViews.setOnClickPendingIntent(R.id.release, getPendingSelfIntent(context, RELEASE));
             remoteViews.setOnClickPendingIntent(R.id.karma, getPendingSelfIntent(context,KARMA));
 
-
             appWidgetManager.updateAppWidget(thisWidget, remoteViews);
 
-            //specify the action that should occur when the Button is tapped
-            //Intent intent = new Intent(context, NavWidget.class);
-            //intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            //intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds);
-
-            //This is the same action sent by the system when the widget needs to be updated automatically
-            // PendingIntent pendingChangingWallpaperIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             Log.i("updating id : ", String.valueOf(widgetId));
         }
     }
 
     /**
-     * Use PendingIntent to request manual update when the update button is clicked
+     * Description: Use PendingIntent to request manual update when the update button is clicked
      */
     protected PendingIntent getPendingSelfIntent(Context context, String action) {
         Intent intent = new Intent(context, DejaPhotoService.class);
