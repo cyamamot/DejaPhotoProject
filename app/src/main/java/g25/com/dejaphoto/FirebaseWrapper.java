@@ -53,8 +53,6 @@ public class FirebaseWrapper {
     private HashMap<String, ArrayList<BackgroundPhoto>> allFriendsPhotos;
     private ArrayList<BackgroundPhoto> currFriendPhotos;
     private Context context;
-    static SharedPreferences settings;
-    static SharedPreferences.Editor settingsEditor;
 
 
     /**
@@ -74,6 +72,7 @@ public class FirebaseWrapper {
         friendsList = new ArrayList<>();
         loadFriends();
         currFriendPhotos = new ArrayList<>();
+
     }
 
     /**
@@ -85,9 +84,8 @@ public class FirebaseWrapper {
         int hash = (email).hashCode();
         String key = Integer.toString(hash);
 
-
+        Log.e("FW", email);
         users.child(key).child("email").setValue(email);
-        users.child(key).child("isSharingOn").setValue(settings.getBoolean("sharePhotos", true));
     }
 
     /**
@@ -153,7 +151,7 @@ public class FirebaseWrapper {
     public void getPhotoListFromFriend(String hashedFriend) {
         final String friendId = hashedFriend;
         Log.e("FirebaseWrapper", friendId);
-        DatabaseReference isShared = database.getReference("users").child(hashedFriend).child("isSharingOn");
+        DatabaseReference isShared = database.getReference("users").child(friendId).child("isSharingOn");
         isShared.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
