@@ -85,8 +85,9 @@ public class FirebaseWrapper {
         int hash = (email).hashCode();
         String key = Integer.toString(hash);
 
+
         users.child(key).child("email").setValue(email);
-        users.child(key).child("isSharingOn").setValue(true);
+        users.child(key).child("isSharingOn").setValue(settings.getBoolean("sharePhotos", true));
     }
 
     /**
