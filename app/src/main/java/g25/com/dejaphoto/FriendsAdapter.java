@@ -22,10 +22,12 @@ public class FriendsAdapter extends ArrayAdapter<String>{
     public View getView(int position, View convertView, ViewGroup parent) {
         String email = getItem(position);
 
+        // Inflate the view if it hasn't already been inflated
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.friend, parent, false);
         }
 
+        // Set the text to the friend's email at that position
         TextView tvFriendEmail = (TextView)convertView.findViewById(R.id.tvFriendEmail);
         tvFriendEmail.setText(email);
 

@@ -66,7 +66,7 @@ public class WallpaperChanger {
 
 
     /**
-     * Calls WallpaperManager to set wallpaper to specified image
+     * Description: Calls WallpaperManager to set wallpaper to specified image
      * http://stackoverflow.com/questions/25828808/issue-converting-uri-to-bitmap-2014
      */
     private void setWallpaper(BackgroundPhoto photoWrapper) {
@@ -397,9 +397,11 @@ public class WallpaperChanger {
         }
     }
 
+    /**
+     * Description: Turns sharing on
+     */
     private boolean sharingOn(){
-        SharedPreferences  settings = context.getSharedPreferences(SettingsActivity.PREFS_NAME, SettingsActivity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences settings = context.getSharedPreferences(SettingsActivity.PREFS_NAME, SettingsActivity.MODE_PRIVATE);
         return settings.getBoolean("shareWithFriends", true);
     }
 

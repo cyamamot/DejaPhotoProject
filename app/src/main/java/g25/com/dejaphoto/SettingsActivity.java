@@ -75,7 +75,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     }
 
     /**
-     * Method only executes if User grants permission to use location.
+     * Description: Method only executes if User grants permission to use location.
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
@@ -114,7 +114,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     }
 
     /**
-     * Starts the DejaPhoto service to change the wallpaper
+     * Description: Starts the DejaPhoto service to change the wallpaper
      */
     private void launchService() {
         Intent intent = new Intent(SettingsActivity.this, DejaPhotoService.class);
@@ -124,7 +124,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
 
     /**
-     * Saves all settings to sharedPreferences.
+     * Description: Saves all settings to sharedPreferences.
      */
     public void saveSettings(View view){
         //change settings
@@ -147,7 +147,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
 
     /**
-     * Saves the user's preference to use the default album
+     * Description: Saves the user's preference to use the default album
      */
     public void selectDefaultAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", false);
@@ -157,7 +157,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     }
 
     /**
-     * Saves the user's preference to use the custom album
+     * Description: Saves the user's preference to use the custom album
      */
     public void selectCustomAlbum(View view){
         settingsEditor.putBoolean("useCustomAlbum", true);
@@ -168,7 +168,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
 
 
     /**
-     * Creates the pop up dialogues to ask user to permission.
+     * Description: Creates the pop up dialogues to ask user to permission.
      */
     public boolean requestPermissionLocation(){
         // request location
@@ -199,6 +199,10 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         }
         return true;
     }
+
+    /**
+     * Description: Request permission for storage.
+     */
     public void requestPermissionStorage(){
         // request read_external_storage
         if (ContextCompat.checkSelfPermission(this,
@@ -228,6 +232,10 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         }
 
     }
+
+    /**
+     * Description: Request permission to use the camera.
+     */
    public boolean requestPermissionCamera(){
         // request location
         if (ContextCompat.checkSelfPermission(this,
@@ -258,7 +266,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
         return true;
     }
     /**
-     * Returns whether or not the user has granted permissions
+     * Description: Returns whether or not the user has granted permissions
      */
     public boolean hasPermissions(){
         //If we have both permissions, we return true
@@ -272,7 +280,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     }
 
     /**
-     * Used for testing LocationWrapper and is the onClick to the MapsActivity
+     * Description: Used for testing LocationWrapper and is the onClick to the MapsActivity
      */
     public void testMap(View view){
         if(debug) {
@@ -282,23 +290,26 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     }
 
     /**
-     * Used to access additional buttons
+     * Description: Used to access additional buttons
      */
     public void additionalSettings(View view){
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Description: Share the photos depending on the checkbox.
+     */
     public void sharePhotos(View view) {
         boolean checked = ((CheckBox) view).isChecked();
         if (checked) {
-            Log.e("SettingsAct", "hello1");
+            Log.e("SettingsAct", "sharing photos is allowed");
             settingsEditor.putBoolean("sharePhotos", true);
             settingsEditor.commit();
             fbWrapper.updateShare(true);
         }
         else {
-            Log.e("SettingsAct", "hello2");
+            Log.e("SettingsAct", "sharing photos is NOT allowed");
             fbWrapper.updateShare(false);
             settingsEditor.putBoolean("sharePhotos", false);
             settingsEditor.commit();

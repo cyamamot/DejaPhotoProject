@@ -1,7 +1,6 @@
 package g25.com.dejaphoto;
 
 import android.content.Intent;
-import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -85,6 +84,9 @@ public class LoginActivity extends AppCompatActivity implements
         initDirectories();
     }
 
+    /**
+     * Description: Launch intent to go to the Home Page
+     */
     public void toHomePage() {
         Intent i = new Intent(this, SettingsActivity.class);
         startActivity(i);
@@ -120,12 +122,17 @@ public class LoginActivity extends AppCompatActivity implements
         }*/
     }
 
-
+    /**
+     * Description: Launch intent to sign the user in with Google
+     */
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    /**
+     * Description: Signs the user out
+     */
     private void signOut() {
         // Firebase sign out
         mAuth.signOut();
@@ -158,6 +165,9 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Description: Add the Google user to the Firebase
+     */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
@@ -180,12 +190,7 @@ public class LoginActivity extends AppCompatActivity implements
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
                         }
-
-                        // [START_EXCLUDE]
-                        //hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
     }
@@ -198,7 +203,9 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-        //Check if DJP directories exists, make them if not
+    /**
+     * Description: Check if DJP directories exists, make them if not
+     */
     private void initDirectories(){
         File DJPDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), DJP_DIR);
         File DJPCopyDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), DJP_COPIED_DIR);
