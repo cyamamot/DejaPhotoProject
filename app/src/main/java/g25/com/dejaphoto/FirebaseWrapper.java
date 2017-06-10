@@ -61,7 +61,7 @@ public class FirebaseWrapper {
      * Description: Constructor for the FirebaseWrapper. Initializes the database, storage, and
      * other data fields.
      */
-    public FirebaseWrapper(Context context){
+    public FirebaseWrapper(Context context) {
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
         storage.setMaxUploadRetryTimeMillis(180000);
@@ -79,19 +79,20 @@ public class FirebaseWrapper {
     /**
      * Description: Adds the passed in user to the database
      */
-    public void addUser(String email){
+    public void addUser(String email) {
         DatabaseReference users = database.getReference("users");
 
         int hash = (email).hashCode();
         String key = Integer.toString(hash);
 
         users.child(key).child("email").setValue(email);
+        users.child(key).child("isSharingOn").setValue(true);
     }
 
     /**
      * Description: Reads users from database
      */
-    public void readUsers(){
+    public void readUsers() {
         DatabaseReference Msg = database.getReference("users");
         // Read from the database
         Msg.addValueEventListener(new ValueEventListener() {
@@ -115,7 +116,7 @@ public class FirebaseWrapper {
      * Description: Upload a photo along with its metadata. Hash is the toString'd hash value of a
      * user's email and photo is the photo we want to upload
      */
-    public void uploadPhoto(String hash, BackgroundPhoto photo){
+    public void uploadPhoto(String hash, BackgroundPhoto photo) {
         // Create a child reference
         // imagesRef now points to the child which is a user
         // and photos should be stored under each user node
@@ -150,38 +151,56 @@ public class FirebaseWrapper {
      */
     public void getPhotoListFromFriend(String hashedFriend) {
         final String friendId = hashedFriend;
-        DatabaseReference photos = database.getReference("users").child(hashedFriend).child("photos");
-        // Read from the database
-        photos.addValueEventListener(new ValueEventListener() {
+        Log.e("FirebaseWrapper", friendId);
+        DatabaseReference isShared = database.getReference("users").child(hashedFriend).child("isSharingOn");
+        isShared.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Log.e("fbwrapper", "size of this friend's photo list: "+ snapshot.getChildrenCount());
-                // here we loop through our entire list of photos
-                // for each photo we add the photo to our arraylist, and we set the value listener
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    // now we loop through each field in the photo
-                    String parsedName = postSnapshot.getKey();
-                    Log.e("fbwrapper", parsedName);
-                    String name = parsedName + ".jpg";
-                    int karma = Integer.parseInt(postSnapshot.child("karmaCount").getValue().toString());
-                    String customLocation = "default";
-                    try {
-                        customLocation = postSnapshot.child("customLocation").getValue().toString();
-                    }catch (Exception e){
-                    }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean s = (Boolean) dataSnapshot.getValue();
+                Log.e("FirebaseWrapper", "Bool val=" + String.valueOf(s));
+                if (s) {
+                    DatabaseReference photos = database.getReference("users").child(friendId).child("photos");
+                    // Read from the database
+                    photos.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            Log.e("fbwrapper", "size of this friend's photo list: " + snapshot.getChildrenCount());
+                            // here we loop through our entire list of photos
+                            // for each photo we add the photo to our arraylist, and we set the value listener
+                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                // now we loop through each field in the photo
+                                String parsedName = postSnapshot.getKey();
+                                Log.e("fbwrapper", parsedName);
+                                String name = parsedName + ".jpg";
+                                int karma = Integer.parseInt(postSnapshot.child("karmaCount").getValue().toString());
+                                String customLocation = "default";
+                                try {
+                                    customLocation = postSnapshot.child("customLocation").getValue().toString();
+                                } catch (Exception e) {
+                                }
 
-                    // once we get the photo's metadata, we can now download it
-                    downloadPhoto(friendId, name, karma, customLocation);
+                                // once we get the photo's metadata, we can now download it
+                                downloadPhoto(friendId, name, karma, customLocation);
 
-                    Log.d("fbWrapper", "this friend's photo: " + name + " has karma = " + karma + " customLocation = " + customLocation);
+                                Log.d("fbWrapper", "this friend's photo: " + name + " has karma = " + karma + " customLocation = " + customLocation);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+                            Log.w(TAG, "Failed to read value.", error.toException());
+                        }
+                    });
                 }
             }
+
             @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
+
     }
 
     // call this to download photos from all friends
