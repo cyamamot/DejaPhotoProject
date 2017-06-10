@@ -48,6 +48,8 @@ public class DejaPhotoService extends Service {
             Log.e("ChangeWallpaperReceiver", "INITIALIZED");
         }
         else if(intent.getAction() == UPDATE){
+            getSharedPrefs();
+            initializeAlarm();
             fbWrapper.syncFriends();
             Log.e("ChangeWallpaperReceiver", "UPDATING from Firebase");
         }
