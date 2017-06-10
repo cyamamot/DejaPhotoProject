@@ -387,6 +387,7 @@ public class FirebaseWrapper {
         });
     }
 
+
     /**
      * Description: Return the user's ID
      */
