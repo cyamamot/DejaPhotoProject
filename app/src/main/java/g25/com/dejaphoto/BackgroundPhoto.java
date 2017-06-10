@@ -58,7 +58,7 @@ public class BackgroundPhoto {
     Uri uri;
     GregorianCalendar dateCalendar;
     Location location;
-    boolean karma;
+    boolean karma = false;
     boolean released;
     boolean hasLocation;
     boolean hasDate;
@@ -278,14 +278,11 @@ public class BackgroundPhoto {
         //karma
         if(settings.getBoolean(karmaStr, false)){
             Log.i("Parse Karma", "Karma Detected");
-            /*if (temp != null) {
+            if (temp != null) {
                 for (String str : temp) {
                     giveKarma(str, null);
                 }
-            }*/
-            this.karma = true;
-        }else{
-            this.karma = false;
+            }
         }
 
         //release
@@ -369,14 +366,13 @@ public class BackgroundPhoto {
             Log.e("BackgroundPhoto", "k2");
             return;
         }
-        if(this.hasKarma()){
+        if(hasKarma() && listOfKarmaers.contains(id)){
             Log.e("BackgroundPhoto", "k3");
             return;
         }
 
         initializeSettings();
         listOfKarmaers.add(id);
-        this.karma = true;
         karmaCount += 1;
         if (uri == null) {
             Log.e("BackgroundPhoto", "k4");
@@ -385,13 +381,11 @@ public class BackgroundPhoto {
         }
         String uriStr = uri.toString() + KARMA_INDICATOR;
         String uriStr2 = uri.toString() + KARMAERS;
-        String countStr = uri.toString() + KARMA_COUNT;
         settingsEditor.putBoolean(uriStr, true);
         settingsEditor.commit();
         settingsEditor.putStringSet(uriStr2, listOfKarmaers);
         settingsEditor.commit();
-        settingsEditor.putInt(countStr, karmaCount);
-        settingsEditor.commit();
+        this.karma = true;
 
         if (wrapper != null){
             Log.e("BackgroundPhoto", "hello");
