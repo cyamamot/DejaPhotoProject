@@ -58,7 +58,7 @@ public class BackgroundPhoto {
     Uri uri;
     GregorianCalendar dateCalendar;
     Location location;
-    boolean karma = false;
+    boolean karma;
     boolean released;
     boolean hasLocation;
     boolean hasDate;
@@ -75,7 +75,7 @@ public class BackgroundPhoto {
     static final String CLOCATION_INDICATOR = "DJP_CLOCATION";
     static SharedPreferences settings;
     static SharedPreferences.Editor settingsEditor;
-    int karmaCount = 0;
+    int karmaCount;
     String customLocation;
 
     /**
@@ -386,11 +386,14 @@ public class BackgroundPhoto {
             this.karma = true;
             return;
         }
+        String countStr = uri.toString() + KARMA_COUNT;
         String uriStr = uri.toString() + KARMA_INDICATOR;
         String uriStr2 = uri.toString() + KARMAERS;
         settingsEditor.putBoolean(uriStr, true);
         settingsEditor.commit();
         settingsEditor.putStringSet(uriStr2, listOfKarmaers);
+        settingsEditor.commit();
+        settingsEditor.putInt(countStr, karmaCount);
         settingsEditor.commit();
         this.karma = true;
 
