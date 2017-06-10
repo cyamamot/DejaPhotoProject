@@ -131,7 +131,7 @@ public class DejaPhotoService extends Service {
         updatePhotosIntent.setAction(UPDATE);
         alarmUpdatePhotos = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         pendingUpdatePhotosIntent = PendingIntent.getService(getApplicationContext(), 10,
-                updatePhotosIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                updatePhotosIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         alarmUpdatePhotos.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
                 20000, pendingUpdatePhotosIntent);
 
