@@ -166,7 +166,7 @@ public class FirebaseWrapper {
                     String customLocation = postSnapshot.child("customLocation").getValue().toString();
 
                     // once we get the photo's metadata, we can now download it
-                    downloadPhoto(friendId, name);
+                    downloadPhoto(friendId, name, karma, customLocation);
 
                     Log.d("fbWrapper", "this friend's photo: " + name + " has karma = " + karma + " customLocation = " + customLocation);
                 }
@@ -181,7 +181,7 @@ public class FirebaseWrapper {
 
     // call this to download photos from all friends
     //CURRENTLY NOT USED BY DO NOT DELETE
-    public void downloadAllFriendsPhotos(){
+    /*public void downloadAllFriendsPhotos(){
         StorageReference friendRef;
         String hashCode;
         for(int i = 0; i < friendsList.size(); i++){
@@ -194,12 +194,12 @@ public class FirebaseWrapper {
                 downloadPhoto(hashCode, currFriendPhotos.get(j).getName());
             }
         }
-    }
+    }*/
 
     /**
      * Description: Downloads a photo from the firebase storage, places it in local friends album
      */
-    public void downloadPhoto(String hash, String photoName){
+    public void downloadPhoto(String hash, String photoName, int karma, String customLoc){
 
         // checks if user has released a friends' photo; if so, we don't return
         if(photoIsReleased(photoName)){
@@ -217,6 +217,7 @@ public class FirebaseWrapper {
         localFriendsPhotoFile = new File(DJPFriends, photoName);
         final Uri uri = Uri.fromFile(localFriendsPhotoFile);
 
+        BackgroundPhoto photo = new BackgroundPhoto(uri, karma, customLoc, context);
         imageRef.getFile(localFriendsPhotoFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {

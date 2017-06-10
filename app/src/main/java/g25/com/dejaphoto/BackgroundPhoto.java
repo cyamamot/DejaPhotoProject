@@ -58,7 +58,7 @@ public class BackgroundPhoto {
     Uri uri;
     GregorianCalendar dateCalendar;
     Location location;
-    boolean karma;
+    boolean karma = false;
     boolean released;
     boolean hasLocation;
     boolean hasDate;
@@ -69,6 +69,7 @@ public class BackgroundPhoto {
     Set<String> listOfKarmaers;
     Context context;
     static final String KARMA_INDICATOR = "DJP_KARMA";
+    static final String KARMA_COUNT = "DJP_COUNT";
     static final String KARMAERS = "DJP_KARMAERS";
     static final String RELEASED_INDICATOR = "DJP_RELEASED";
     static final String CLOCATION_INDICATOR = "DJP_CLOCATION";
@@ -97,9 +98,10 @@ public class BackgroundPhoto {
     /**
      * Description: constructor for creating arraylist of photo metadata
      */
-    public BackgroundPhoto(String name, int karma, String customLocation){
-        this.name = name;
-        this.karmaCount = karma;
+    public BackgroundPhoto(Uri uri, int karma, String customLocation, Context context){
+        setContext(context);
+        setUri(uri);
+        this.setKarma(karma);
         this.setCustomLocation(customLocation);
 
     }
@@ -264,12 +266,14 @@ public class BackgroundPhoto {
     private void parseKarmaAndReleasedAndCLoc(){
         initializeSettings();
         String karmaStr = uri.toString() + KARMA_INDICATOR;
+        String countStr = uri.toString() + KARMA_COUNT;
         String releaseStr = uri.toString() + RELEASED_INDICATOR;
         String karmaersStr = uri.toString() + KARMAERS;
         String clocationStr = uri.toString() + CLOCATION_INDICATOR;
         Set<String> temp = settings.getStringSet(karmaersStr, null);
 
         customLocation = settings.getString(clocationStr, "default");
+        karmaCount = settings.getInt(countStr, 0);
 
         //karma
         if(settings.getBoolean(karmaStr, false)){
@@ -331,6 +335,22 @@ public class BackgroundPhoto {
         settingsEditor.commit();
         this.customLocation = s;
     }
+
+    public void setKarma(int k){
+        initializeSettings();
+        String countStr = uri.toString() + KARMA_COUNT;
+        if (settingsEditor == null){
+            Log.e("BackgroundPhoto", "here");
+        }
+        if (countStr == null){
+            Log.e("BackgroundPhoto", "here1");
+        }
+
+        settingsEditor.putInt(countStr, k);
+        settingsEditor.commit();
+        this.karmaCount = k;
+    }
+
 
 
     /**
