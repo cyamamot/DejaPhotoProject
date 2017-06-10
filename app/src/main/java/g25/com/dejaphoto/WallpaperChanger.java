@@ -1,6 +1,7 @@
 package g25.com.dejaphoto;
 
 import android.app.WallpaperManager;
+import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -16,6 +17,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+import android.util.DisplayMetrics;
+import android.content.res.Resources;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,10 +71,15 @@ public class WallpaperChanger {
         Uri uri = photoWrapper.getUri();
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
+            int height = Resources.getSystem().getDisplayMetrics().widthPixels;
+            int width = Resources.getSystem().getDisplayMetrics().heightPixels;
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+            Bitmap b = Bitmap.createScaledBitmap(bitmap, width, height, true);
             //Bitmap b = addLocationtoBitmap(bitmap);
-
             myWallpaperManager.setBitmap(bitmap);
+
+            //this one resizes it by stretching it out which isn't right
+            //myWallpaperManager.setBitmap(b);
         } catch (IOException e) {
             e.printStackTrace();
         }
