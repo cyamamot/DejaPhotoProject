@@ -47,12 +47,12 @@ public class DejaPhotoService extends Service {
             initializeAlarm();
             Log.e("ChangeWallpaperReceiver", "INITIALIZED");
         }
-        else if(intent.getAction() == UPDATE){
+      /*  else if(intent.getAction() == UPDATE){
             getSharedPrefs();
-            initializeAlarm();
-            fbWrapper.syncFriends();
+            //initializeAlarm();
+            //fbWrapper.syncFriends();
             Log.e("ChangeWallpaperReceiver", "UPDATING from Firebase");
-        }
+        }*/
 
         //see what action is requested
         else if(intent.getAction() == NEXT)
@@ -129,14 +129,14 @@ public class DejaPhotoService extends Service {
                 MINUTE_MULTIPLIER * transitionDelay, pendingChangingWallpaperIntent);
 
         //Update photos from firebase every 5 seconds
-        Intent updatePhotosIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
+       /* Intent updatePhotosIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
         updatePhotosIntent.setAction(UPDATE);
         alarmUpdatePhotos = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         pendingUpdatePhotosIntent = PendingIntent.getService(getApplicationContext(), 10,
                 updatePhotosIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         alarmUpdatePhotos.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
                 20000, pendingUpdatePhotosIntent);
-
+*/
         //Recalculate Points every Hour
         Intent calcIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
         calcIntent.setAction(INIT);

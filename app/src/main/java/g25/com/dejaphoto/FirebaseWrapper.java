@@ -240,10 +240,19 @@ public class FirebaseWrapper {
             return;
         }
 
+
         // Create a child reference
         // imagesRef now points to the child which is a user
         // and photos should be stored under each user node
         StorageReference imageRef = storageRef.child("images").child(hash).child(photoName);
+
+        if (hash.equals(selfId)){
+            File DJP = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), LoginActivity.DJP_DIR);
+            File f = new File(DJP, photoName);
+            final Uri uri = Uri.fromFile(f);
+            BackgroundPhoto photo = new BackgroundPhoto(uri, karma, customLoc, context);
+            return;
+        }
 
         // this is where file is stored; photo should be downloaded to friends' album
         File DJPFriends = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), DJP_FRIENDS_DIR);
@@ -252,22 +261,20 @@ public class FirebaseWrapper {
         final Uri uri = Uri.fromFile(localFriendsPhotoFile);
 
         BackgroundPhoto photo = new BackgroundPhoto(uri, karma, customLoc, context);
-        try {
-            imageRef.getFile(localFriendsPhotoFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    // Local temp file has been created
-                    Log.d("fbwrapper download", "photo successfully downloaded");
-                    updateGallery(uri);
+        imageRef.getFile(localFriendsPhotoFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                // Local temp file has been created
+                Log.d("fbwrapper download", "photo successfully downloaded");
+                updateGallery(uri);
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                }
-            });
-        }catch(Exception e){}
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
     }
 
     /**
@@ -392,7 +399,30 @@ public class FirebaseWrapper {
                     isFriends(friendEmail);
                     Log.e("friend email: ", friendEmail);
                 }
+                getPhotoListFromFriend(selfId);
 
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    /**
+     * Description: Sync the current user with the database
+     */
+    public void syncCurrentUserPhotos(){
+
+        DatabaseReference currentUserPhotos = database.getReference("users").child(selfId).child("photos");
+        // Read from the database
+         currentUserPhotos.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Log.e("number of photos " ,""+snapshot.getChildrenCount());
+                //Use this method to update current user's photos
+                getPhotoListFromFriend(selfId);
             }
             @Override
             public void onCancelled(DatabaseError error) {
