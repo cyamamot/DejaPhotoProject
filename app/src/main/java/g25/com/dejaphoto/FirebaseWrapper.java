@@ -261,20 +261,22 @@ public class FirebaseWrapper {
         final Uri uri = Uri.fromFile(localFriendsPhotoFile);
 
         BackgroundPhoto photo = new BackgroundPhoto(uri, karma, customLoc, context);
-        imageRef.getFile(localFriendsPhotoFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                // Local temp file has been created
-                Log.d("fbwrapper download", "photo successfully downloaded");
-                updateGallery(uri);
+        try {
+            imageRef.getFile(localFriendsPhotoFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    // Local temp file has been created
+                    Log.d("fbwrapper download", "photo successfully downloaded");
+                    updateGallery(uri);
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        }catch(Exception e){}
     }
 
     /**

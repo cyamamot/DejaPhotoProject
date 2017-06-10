@@ -1,7 +1,6 @@
 package g25.com.dejaphoto;
 
 import android.app.WallpaperManager;
-import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -18,8 +17,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-import android.util.DisplayMetrics;
-import android.content.res.Resources;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -77,23 +74,27 @@ public class WallpaperChanger {
 
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
-            int height = Resources.getSystem().getDisplayMetrics().widthPixels;
-            int width = Resources.getSystem().getDisplayMetrics().heightPixels;
+            //int height = Resources.getSystem().getDisplayMetrics().widthPixels;
+            //int width = Resources.getSystem().getDisplayMetrics().heightPixels;
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-            Bitmap b = Bitmap.createScaledBitmap(bitmap, width, height, true);
+            //Bitmap b = Bitmap.createScaledBitmap(bitmap, width, height, true);
             //Bitmap b = addLocationtoBitmap(bitmap);
 
-            int bitmap_ratio = bitmap.getHeight()/bitmap.getWidth();
+            /*int bitmap_ratio = bitmap.getHeight()/bitmap.getWidth();
 
+            // Check if the bitmap width is bigger than the display width
             if(bitmap.getWidth() > display_width) {
+                // Set the height/width to the new proportions
                 bitmap.setHeight(bitmap_ratio * display_width);
                 bitmap.setWidth(display_width);
             }
 
+            // Check if the bitmap height is bigger than the display height
             if(bitmap.getHeight() > display_height) {
+                // Set the height/width to the new proportions
                 bitmap.setWidth(display_height / bitmap_ratio);
                 bitmap.setHeight(display_height);
-            }
+            }*/
 
             myWallpaperManager.setBitmap(bitmap);
 
