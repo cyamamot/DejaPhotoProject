@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import g25.com.dejaphoto.BackgroundPhoto;
@@ -127,7 +126,7 @@ public class SortingAlgorithmTests {
 
         photo.giveKarma("unique Id 1", null);
         points = sorter.assignPoints(photo);
-        assertTrue(points ==  -1);
+        assertTrue(points !=  0);
 
         photo.release();
         sorter.assignPoints(photo);

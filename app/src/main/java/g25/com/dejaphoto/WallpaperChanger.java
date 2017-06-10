@@ -74,13 +74,13 @@ public class WallpaperChanger {
 
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
-            int height = Resources.getSystem().getDisplayMetrics().widthPixels;
-            int width = Resources.getSystem().getDisplayMetrics().heightPixels;
+            //int height = Resources.getSystem().getDisplayMetrics().widthPixels;
+            //int width = Resources.getSystem().getDisplayMetrics().heightPixels;
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-            Bitmap b = Bitmap.createScaledBitmap(bitmap, width, height, true);
+            //Bitmap b = Bitmap.createScaledBitmap(bitmap, width, height, true);
             //Bitmap b = addLocationtoBitmap(bitmap);
 
-            int bitmap_ratio = bitmap.getHeight()/bitmap.getWidth();
+            /*int bitmap_ratio = bitmap.getHeight()/bitmap.getWidth();
 
             // Check if the bitmap width is bigger than the display width
             if(bitmap.getWidth() > display_width) {
@@ -94,7 +94,7 @@ public class WallpaperChanger {
                 // Set the height/width to the new proportions
                 bitmap.setWidth(display_height / bitmap_ratio);
                 bitmap.setHeight(display_height);
-            }
+            }*/
 
             myWallpaperManager.setBitmap(bitmap);
 
