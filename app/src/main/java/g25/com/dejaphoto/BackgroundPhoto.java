@@ -337,8 +337,12 @@ public class BackgroundPhoto {
     }
 
     public void setKarma(int k){
+        this.karmaCount = k;
+        String countStr = null;
         initializeSettings();
-        String countStr = uri.toString() + KARMA_COUNT;
+        if(this.uri != null) {
+            countStr = uri.toString() + KARMA_COUNT;
+        }
         if (settingsEditor == null){
             Log.e("BackgroundPhoto", "here");
         }
@@ -346,9 +350,10 @@ public class BackgroundPhoto {
             Log.e("BackgroundPhoto", "here1");
         }
 
-        settingsEditor.putInt(countStr, k);
-        settingsEditor.commit();
-        this.karmaCount = k;
+        if(this.settingsEditor != null) {
+            settingsEditor.putInt(countStr, k);
+            settingsEditor.commit();
+        }
     }
 
 
@@ -372,7 +377,9 @@ public class BackgroundPhoto {
         }
 
         initializeSettings();
-        listOfKarmaers.add(id);
+        if(this.listOfKarmaers != null){
+            listOfKarmaers.add(id);
+        }
         karmaCount += 1;
         if (uri == null) {
             Log.e("BackgroundPhoto", "k4");
@@ -428,8 +435,9 @@ public class BackgroundPhoto {
     /**
      * Description: Setter method for the location
      */
-    private void setLocation(Location loc){
+     public void setLocation(Location loc){
         if(loc == null){ return; }
+         this.hasLocation = true;
         this.location = loc;
     }
 
@@ -552,6 +560,14 @@ public class BackgroundPhoto {
      * Description: Getter method for whether or not the photo was released
      */
     public boolean getReleased() { return released; }
+
+    /**
+     * Description: Set the calendar for testing
+     */
+    public void setCalendar(GregorianCalendar cal){
+        this.dateCalendar = cal;
+        this.hasDate = true;
+    }
 }
 
 

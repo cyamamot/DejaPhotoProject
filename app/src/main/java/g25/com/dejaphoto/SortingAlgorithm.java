@@ -29,6 +29,7 @@ public class SortingAlgorithm {
     Context context;
     static LocationWrapper loc;
     Location currentL;
+    Date currentDate;
 
     /**
      * Default Constructor
@@ -40,7 +41,8 @@ public class SortingAlgorithm {
      */
     public SortingAlgorithm (Context context){
         this.context = context;
-        loc = new LocationWrapper(context, MIN_TIME, MIN_DISTANCE);
+        setLocationWrapper(new LocationWrapper(context, MIN_TIME, MIN_DISTANCE));
+        setCurrentDate(new Date());
     }
 
     /**
@@ -82,12 +84,9 @@ public class SortingAlgorithm {
         else if(currentL == null){
             Log.e("SortingAlg", "Current Location is Null");
         }
-        else{
+        else if(location == null){
             Log.e("SortingAlg", "Pic Location is Null");
         }
-
-
-        Date currentDate = new Date();
 
         if (currentDate == null){
             Log.e("DEBUG", "currentDate is null");
@@ -138,4 +137,20 @@ public class SortingAlgorithm {
         int hoursInMins = hour * MIN_IN_ONE_HOUR;
         return hoursInMins + mins;
     }
+
+    /**
+     * Sets current Date, allows for testing purposes
+     */
+    public void setCurrentDate(Date date){
+        this.currentDate = date;
+    }
+
+
+    /**
+     * Sets location wrapper, allows for testing purposes
+     */
+    public void setLocationWrapper(LocationWrapper lw){
+        this.loc = lw;
+    }
 }
+

@@ -40,6 +40,11 @@ public class LocationWrapper {
     GoogleMap mMap;
 
     /**
+     * Null Constructor for testing purposes, create "Fake" objects
+     */
+    public LocationWrapper(){}
+
+    /**
      * Constructor takes in context for access to context, time, and distance
      * minTime is minimum time interval between location updates, in milliseconds
      * minDistance is minimum distance between location updates, in meter
@@ -112,7 +117,7 @@ public class LocationWrapper {
     /**
      * Setter method that sets our user's current location
      */
-    private void setCurrentUserLocation(Location location){
+    public void setCurrentUserLocation(Location location){
         currentUserLocation = location;
     }
 
