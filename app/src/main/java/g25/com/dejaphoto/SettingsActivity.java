@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     int transitionDelay;
     SharedPreferences settings;
     SharedPreferences.Editor settingsEditor;
+    private FirebaseWrapper fbWrapper;
 
     static final String PREFS_NAME = "DejaPhotoPreferences";
     static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
@@ -281,6 +283,20 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     public void additionalSettings(View view){
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+
+    public void sharePhotos(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+        if (checked) {
+            settingsEditor.putBoolean("use my album", true);
+            settingsEditor.commit();
+        }
+        else {
+            settingsEditor.putBoolean("use my album", false);
+            settingsEditor.commit();
+            CheckBox cb = (CheckBox)findViewById(R.id.checkbox_share);
+            cb.setChecked(false);
+        }
     }
 }
 

@@ -313,6 +313,10 @@ public class FirebaseWrapper {
         });
     }
 
+    public void updateShare(boolean s){
+        database.getReference("users").child(selfId).child("isSharingOn").setValue(s);
+    }
+
     /**
      * Description: Goes through checks and returns if the friend is a confirmed friend. Once we
      * confirm a friend, we add/get their list of photos.

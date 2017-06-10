@@ -333,6 +333,7 @@ public class WallpaperChanger {
 
 
         geocoder = new Geocoder(context, Locale.getDefault());
+
         if (!(curr.getCustomLocation().equals("default"))){
             String output = curr.getCustomLocation()+ " --- " + Integer.toString(curr.karmaCount) + " <3";
             remoteViews.setTextViewText(R.id.location_textview, output);

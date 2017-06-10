@@ -74,6 +74,20 @@
         android:layout_height="wrap_content"
         android:checked="true"
         android:text="Enable" />
+    <TextView
+        android:id="@+id/label_share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Share My Photo with Friends:"
+        android:textSize="18sp" />
+
+    <CheckBox
+        android:id="@+id/checkbox_share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:onClick="sharePhotos"
+        android:text="Enable" />
 
     <TextView
         android:id="@+id/label_transitionDelay"
