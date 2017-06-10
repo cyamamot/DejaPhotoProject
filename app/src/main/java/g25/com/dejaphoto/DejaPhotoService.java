@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.support.annotation.RestrictTo;
 import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
@@ -29,6 +30,9 @@ public class DejaPhotoService extends Service {
     PendingIntent pendingUpdatePhotosIntent;
     static WallpaperChanger wallpaperChanger;
     static FirebaseWrapper fbWrapper;
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    private static boolean isServiceStarted;
 
     public DejaPhotoService() {
     }
@@ -162,8 +166,12 @@ public class DejaPhotoService extends Service {
     @Override
     public void onDestroy(){
         super.onDestroy();
+        isServiceStarted = false;
     }
 
+    public static boolean isServiceStarted() {
+        return isServiceStarted;
+    }
 
     @Override
     public IBinder onBind(Intent intent) {

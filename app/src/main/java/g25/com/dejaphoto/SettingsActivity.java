@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.support.annotation.RestrictTo;
 
 
 public class SettingsActivity extends AppCompatActivity /*implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener*/{
@@ -35,10 +36,16 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     private Button mapsButton;
     private boolean debug = false;
 
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    private static boolean isServiceStarted;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        isServiceStarted = true;
 
         // requests required permissions like read_external storage
         if(!hasPermissions()){
@@ -305,6 +312,14 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
             CheckBox cb = (CheckBox)findViewById(R.id.checkbox_share);
             cb.setChecked(false);
         }
+
+
+
+    }
+
+
+    public static boolean isServiceStarted() {
+        return isServiceStarted;
     }
 }
 
