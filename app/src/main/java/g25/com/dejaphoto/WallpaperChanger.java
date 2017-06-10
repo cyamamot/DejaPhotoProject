@@ -82,7 +82,6 @@ public class WallpaperChanger {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
             Bitmap b = Bitmap.createScaledBitmap(bitmap, width, height, true);
             //Bitmap b = addLocationtoBitmap(bitmap);
-<<<<<<< HEAD
 
             int bitmap_ratio = bitmap.getHeight()/bitmap.getWidth();
 
@@ -96,8 +95,6 @@ public class WallpaperChanger {
                 bitmap.setHeight(display_height);
             }
 
-=======
->>>>>>> 901d2c05f9b608db807c1011fb9712d1e0aa3678
             myWallpaperManager.setBitmap(bitmap);
 
             //this one resizes it by stretching it out which isn't right
