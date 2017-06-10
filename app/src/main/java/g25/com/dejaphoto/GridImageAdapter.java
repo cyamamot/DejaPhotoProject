@@ -4,6 +4,7 @@ import android.content.Context;
 import java.util.ArrayList;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -61,6 +62,7 @@ public class GridImageAdapter extends BaseAdapter {
         Bitmap bm = decodeSampledBitmapFromUri(itemList.get(position).getUri().getPath(), 220, 220);
 
         imageView.setImageBitmap(bm);
+        Log.d("getView", "grid of images set");
         return imageView;
     }
 
@@ -78,7 +80,7 @@ public class GridImageAdapter extends BaseAdapter {
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
         bm = BitmapFactory.decodeFile(path, options);
-
+        Log.d("decodeSampled", "decoded");
         return bm;
     }
 
@@ -97,7 +99,7 @@ public class GridImageAdapter extends BaseAdapter {
                 inSampleSize = Math.round((float)width / (float)reqWidth);
             }
         }
-
+        Log.d("grid size", Integer.toString(inSampleSize));
         return inSampleSize;
     }
 
@@ -114,6 +116,7 @@ public class GridImageAdapter extends BaseAdapter {
             BackgroundPhoto curr = new BackgroundPhoto(file.getAbsolutePath(), mContext);
             add(curr);
         }
+        Log.d("getImages", Integer.toString(itemList.size()));
 
     }
 

@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     int transitionDelay;
     SharedPreferences settings;
     SharedPreferences.Editor settingsEditor;
+    private FirebaseWrapper fbWrapper = new FirebaseWrapper(this);
 
     static final String PREFS_NAME = "DejaPhotoPreferences";
     static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
@@ -62,10 +64,14 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
             mapsButton.setVisibility(View.GONE);
         }
 
+        CheckBox cb = (CheckBox)findViewById(R.id.checkbox_share);
+        cb.setChecked(settings.getBoolean("sharePhotos", true));
+
         // calling syncFriends to pull confirmed friends from database
         // and so fbWrapper.friendsList will be the updated list we use and iterate through
         FirebaseWrapper fbWrapper = new FirebaseWrapper(this);
         fbWrapper.syncFriends();
+        //fbWrapper.syncCurrentUserPhotos();
     }
 
     /**
@@ -281,6 +287,24 @@ public class SettingsActivity extends AppCompatActivity /*implements GoogleApiCl
     public void additionalSettings(View view){
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+
+    public void sharePhotos(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+        if (checked) {
+            Log.e("SettingsAct", "hello1");
+            settingsEditor.putBoolean("sharePhotos", true);
+            settingsEditor.commit();
+            fbWrapper.updateShare(true);
+        }
+        else {
+            Log.e("SettingsAct", "hello2");
+            fbWrapper.updateShare(false);
+            settingsEditor.putBoolean("sharePhotos", false);
+            settingsEditor.commit();
+            CheckBox cb = (CheckBox)findViewById(R.id.checkbox_share);
+            cb.setChecked(false);
+        }
     }
 }
 

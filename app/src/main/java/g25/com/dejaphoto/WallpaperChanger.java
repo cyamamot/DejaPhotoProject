@@ -1,6 +1,7 @@
 package g25.com.dejaphoto;
 
 import android.app.WallpaperManager;
+import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -17,6 +18,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+import android.util.DisplayMetrics;
+import android.content.res.Resources;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,8 +77,12 @@ public class WallpaperChanger {
 
         try {
             myWallpaperManager = WallpaperManager.getInstance(context);
+            int height = Resources.getSystem().getDisplayMetrics().widthPixels;
+            int width = Resources.getSystem().getDisplayMetrics().heightPixels;
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+            Bitmap b = Bitmap.createScaledBitmap(bitmap, width, height, true);
             //Bitmap b = addLocationtoBitmap(bitmap);
+<<<<<<< HEAD
 
             int bitmap_ratio = bitmap.getHeight()/bitmap.getWidth();
 
@@ -89,7 +96,12 @@ public class WallpaperChanger {
                 bitmap.setHeight(display_height);
             }
 
+=======
+>>>>>>> 901d2c05f9b608db807c1011fb9712d1e0aa3678
             myWallpaperManager.setBitmap(bitmap);
+
+            //this one resizes it by stretching it out which isn't right
+            //myWallpaperManager.setBitmap(b);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -350,6 +362,7 @@ public class WallpaperChanger {
 
 
         geocoder = new Geocoder(context, Locale.getDefault());
+
         if (!(curr.getCustomLocation().equals("default"))){
             String output = curr.getCustomLocation()+ " --- " + Integer.toString(curr.karmaCount) + " <3";
             remoteViews.setTextViewText(R.id.location_textview, output);

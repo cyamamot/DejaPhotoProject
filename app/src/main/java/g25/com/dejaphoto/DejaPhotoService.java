@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class DejaPhotoService extends Service {
     static final int MINUTE_MULTIPLIER = 1000 * 60;
     static final String INIT = "INITIALIZE";
+    static final String UPDATE = "UPDATE";
     static final String NEXT = "NEXT";
     static final String PREV = "PREV";
     static final String RELEASE = "RELEASE";
@@ -22,8 +23,10 @@ public class DejaPhotoService extends Service {
     static int transitionDelay;
     AlarmManager alarmChangeWallpaper;
     AlarmManager alarmRecalculatePoints;
+    AlarmManager alarmUpdatePhotos;
     PendingIntent pendingChangingWallpaperIntent;
     PendingIntent pendingCalcIntent;
+    PendingIntent pendingUpdatePhotosIntent;
     static WallpaperChanger wallpaperChanger;
     static FirebaseWrapper fbWrapper;
 
@@ -44,6 +47,12 @@ public class DejaPhotoService extends Service {
             initializeAlarm();
             Log.e("ChangeWallpaperReceiver", "INITIALIZED");
         }
+      /*  else if(intent.getAction() == UPDATE){
+            getSharedPrefs();
+            //initializeAlarm();
+            //fbWrapper.syncFriends();
+            Log.e("ChangeWallpaperReceiver", "UPDATING from Firebase");
+        }*/
 
         //see what action is requested
         else if(intent.getAction() == NEXT)
@@ -103,7 +112,7 @@ public class DejaPhotoService extends Service {
      * service back with a intent indicating the action to take.
      */
     private void initializeAlarm() {
-        if(alarmChangeWallpaper != null || alarmRecalculatePoints != null){
+        if(alarmChangeWallpaper != null || alarmRecalculatePoints != null || alarmUpdatePhotos != null){
             return;
         }
         //Change Pictures Every Interval
@@ -119,7 +128,15 @@ public class DejaPhotoService extends Service {
         alarmChangeWallpaper.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
                 MINUTE_MULTIPLIER * transitionDelay, pendingChangingWallpaperIntent);
 
-
+        //Update photos from firebase every 5 seconds
+       /* Intent updatePhotosIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
+        updatePhotosIntent.setAction(UPDATE);
+        alarmUpdatePhotos = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        pendingUpdatePhotosIntent = PendingIntent.getService(getApplicationContext(), 10,
+                updatePhotosIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmUpdatePhotos.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                20000, pendingUpdatePhotosIntent);
+*/
         //Recalculate Points every Hour
         Intent calcIntent = new Intent(getApplicationContext(), DejaPhotoService.class);
         calcIntent.setAction(INIT);
