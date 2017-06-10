@@ -161,9 +161,14 @@ public class FirebaseWrapper {
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                     // now we loop through each field in the photo
                     String parsedName = postSnapshot.getKey();
-                    String name = postSnapshot.child("name").getValue().toString();
+                    Log.e("fbwrapper", parsedName);
+                    String name = parsedName + ".jpg";
                     int karma = Integer.parseInt(postSnapshot.child("karmaCount").getValue().toString());
-                    String customLocation = postSnapshot.child("customLocation").getValue().toString();
+                    String customLocation = "default";
+                    try {
+                        customLocation = postSnapshot.child("customLocation").getValue().toString();
+                    }catch (Exception e){
+                    }
 
                     // once we get the photo's metadata, we can now download it
                     downloadPhoto(friendId, name, karma, customLocation);
